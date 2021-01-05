@@ -1,0 +1,16 @@
+version: '3.7'
+
+services: 
+  frontend: 
+    build: ./frontend
+    container_name: frontend
+    environment: 
+     - TZ=Asia/Tokyo
+     - DEBUG=app:*
+    volumes: 
+     - ./frontend/nuxt_app:/app/frontend/nuxt_app
+    tty: true
+    working_dir: /app/frontend/nuxt_app
+    command: "npm run dev"
+    ports: 
+     - 3000:3000
