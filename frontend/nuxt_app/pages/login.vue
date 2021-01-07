@@ -1,24 +1,16 @@
 <template>
   <div class="container">
-    <div class="register">
+    <div class="login">
       <div class="title">
-        <h1>新規登録</h1>
+        <h1>ログイン</h1>
       </div>
-      <div class="register-input">
-        <div>
-          <label for="">Name</label>
-          <input type="text">
-        </div>
+      <div class="login-input">
         <div>
           <label for="">Email</label>
           <input type="email">
         </div>
         <div>
           <label for="">Password</label>
-          <input type="password">
-        </div>
-        <div>
-          <label for="">Confirmation Password</label>
           <input type="password">
         </div>
         <button class="btn" href="#">登録</button>
@@ -28,7 +20,9 @@
 </template>
 
 <script>
-export default {}
+export default {
+
+}
 </script>
 
 <style scoped>
@@ -37,13 +31,12 @@ export default {}
   min-height: 100vh;
   text-align: center;
 }
-.register {
+.login {
   margin: 0 auto;
 }
-.register-input {
+.login-input {
   text-align: right;
   margin: 0 auto;
-  
   margin-right: 30%;
 }
 .title {
@@ -83,4 +76,5 @@ label {
   color:#474747;
   margin-right: 20px;
 }
+
 </style>

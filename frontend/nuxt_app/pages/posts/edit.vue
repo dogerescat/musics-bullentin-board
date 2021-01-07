@@ -1,34 +1,40 @@
 <template>
   <div class="container">
-    <div class="register">
+    <div class="post">
       <div class="title">
-        <h1>新規登録</h1>
+        <h1>投稿</h1>
       </div>
-      <div class="register-input">
+      <div class="post-input">
         <div>
-          <label for="">Name</label>
+          <label for="">曲名</label>
           <input type="text">
         </div>
         <div>
-          <label for="">Email</label>
-          <input type="email">
+          <label for="">アーティスト名</label>
+          <input type="text">
         </div>
         <div>
-          <label for="">Password</label>
-          <input type="password">
+          <label for="">カテゴリー</label>
+          <select name="categoly" id="">
+              <option value="aaa">aaa</option>
+              <option value="bbb">bbb</option>
+              <option value="ccc">ccc</option>
+          </select>
         </div>
         <div>
-          <label for="">Confirmation Password</label>
-          <input type="password">
+          <label class="comment-label" for="">コメント</label>
+          <textarea name="" id="" cols="60" rows="5"></textarea>
         </div>
-        <button class="btn" href="#">登録</button>
+        <button class="btn" href="#">編集</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+
+}
 </script>
 
 <style scoped>
@@ -37,10 +43,10 @@ export default {}
   min-height: 100vh;
   text-align: center;
 }
-.register {
+.post {
   margin: 0 auto;
 }
-.register-input {
+.post-input {
   text-align: right;
   margin: 0 auto;
   
@@ -82,5 +88,19 @@ input {
 label {
   color:#474747;
   margin-right: 20px;
+}
+select {
+    width: 200px;
+    height: 30px;
+    margin-bottom: 20px;
+    margin-left: 55px;
+}
+textarea {
+    margin: 10px;
+    margin-left: 70px;
+    padding: 5px;
+}
+.comment-label {
+    margin-right: 330px;
 }
 </style>
