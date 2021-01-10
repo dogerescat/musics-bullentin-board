@@ -7,13 +7,13 @@
       <div class="login-input">
         <div>
           <label for="">Email</label>
-          <input type="email">
+          <input type="email" v-model="email" />
         </div>
         <div>
           <label for="">Password</label>
-          <input type="password">
+          <input type="password" v-model="password" />
         </div>
-        <button class="btn" href="#">登録</button>
+        <button class="btn" @click="login" href="#">登録</button>
       </div>
     </div>
   </div>
@@ -21,8 +21,33 @@
 
 <script>
 export default {
-
-}
+  data() {
+    return {
+      email: '',
+      password: '',
+    };
+  },
+  methods: {
+    login() {
+      if (this.email === '' || this.password === '') {
+        alert('全て入力してください');
+        return;
+      }
+      try {
+        this.$store.dispatch('users/login', {
+          email: this.email,
+          password: this.password,
+        });
+      } catch(error) {
+        return;
+      } finally {
+        this.email = '';
+        this.password = '';
+        this.$router.push('/posts');
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -44,7 +69,7 @@ export default {
   height: 200px;
   position: relative;
   margin: 0 auto;
-  color:#474747;
+  color: #474747;
 }
 h1 {
   margin: 0;
@@ -52,17 +77,17 @@ h1 {
   top: 30%;
   left: 30%;
 }
-.btn{
-  display:block;
+.btn {
+  display: block;
   height: 50px;
   width: 150px;
   margin: 0 auto;
-  line-height:20px;
-  background: #AAEFE7;
-  color:#474747;
-  border-radius:25px;
-  text-decoration:none;
-  text-align:center;
+  line-height: 20px;
+  background: #aaefe7;
+  color: #474747;
+  border-radius: 25px;
+  text-decoration: none;
+  text-align: center;
   margin-top: 40px;
   margin-right: 20%;
 }
@@ -73,8 +98,7 @@ input {
   margin-bottom: 20px;
 }
 label {
-  color:#474747;
+  color: #474747;
   margin-right: 20px;
 }
-
 </style>

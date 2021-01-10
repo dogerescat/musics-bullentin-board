@@ -7,28 +7,63 @@
       <div class="register-input">
         <div>
           <label for="">Name</label>
-          <input type="text">
+          <input type="text" v-model="name" />
         </div>
         <div>
           <label for="">Email</label>
-          <input type="email">
+          <input type="email" v-model="email" />
         </div>
         <div>
           <label for="">Password</label>
-          <input type="password">
+          <input type="password" v-model="password" />
         </div>
         <div>
           <label for="">Confirmation Password</label>
-          <input type="password">
+          <input type="password" v-model="confirmation" />
         </div>
-        <button class="btn" href="#">登録</button>
+        <button class="btn" @click="signUp" href="#">登録</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      name: '',
+      email: '',
+      password: '',
+      confirmation: '',
+    };
+  },
+  methods: {
+    signUp() {
+      if (this.name === '' || this.email === '' || this.password === '') {
+        alert('全て入力してください');
+        return;
+      } else if (this.password !== this.confirmation) {
+        alert('パスワードが一致しません');
+        return;
+      }
+      try {
+        this.$store.dispatch('users/signUp', {
+          name: this.name,
+          email: this.email,
+          password: this.password,
+        });
+      } catch (error) {
+        return;
+      } finally {
+        this.name = '';
+        this.email = '';
+        this.password = '';
+        this.confirmation = '';
+        this.$router.push('/posts');
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -43,7 +78,7 @@ export default {}
 .register-input {
   text-align: right;
   margin: 0 auto;
-  
+
   margin-right: 30%;
 }
 .title {
@@ -51,7 +86,7 @@ export default {}
   height: 200px;
   position: relative;
   margin: 0 auto;
-  color:#474747;
+  color: #474747;
 }
 h1 {
   margin: 0;
@@ -59,17 +94,17 @@ h1 {
   top: 30%;
   left: 30%;
 }
-.btn{
-  display:block;
+.btn {
+  display: block;
   height: 50px;
   width: 150px;
   margin: 0 auto;
-  line-height:20px;
-  background: #AAEFE7;
-  color:#474747;
-  border-radius:25px;
-  text-decoration:none;
-  text-align:center;
+  line-height: 20px;
+  background: #aaefe7;
+  color: #474747;
+  border-radius: 25px;
+  text-decoration: none;
+  text-align: center;
   margin-top: 40px;
   margin-right: 20%;
 }
@@ -80,7 +115,7 @@ input {
   margin-bottom: 20px;
 }
 label {
-  color:#474747;
+  color: #474747;
   margin-right: 20px;
 }
 </style>

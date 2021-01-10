@@ -7,15 +7,15 @@
       <div class="post-input">
         <div>
           <label for="">曲名</label>
-          <input type="text" />
+          <input type="text" v-model="title" />
         </div>
         <div>
           <label for="">アーティスト名</label>
-          <input type="text" />
+          <input type="text" v-model="artist"/>
         </div>
         <div>
           <label for="">カテゴリー</label>
-          <select name="categoly" id="">
+          <select name="category" id="" v-model="category">
             <option value="aaa">aaa</option>
             <option value="bbb">bbb</option>
             <option value="ccc">ccc</option>
@@ -23,16 +23,45 @@
         </div>
         <div>
           <label class="comment-label" for="">コメント</label>
-          <textarea name="" id="" cols="60" rows="5"></textarea>
+          <textarea name="" id="" cols="60" rows="5" v-model="body"></textarea>
         </div>
-        <button class="btn" href="#">投稿</button>
+        <button class="btn" @click="postArticle" href="#">投稿</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      title: '',
+      artist: '',
+      category: '',
+      body: '',
+    }
+  },
+  methods: {
+    postArticle() {
+      if (this.title === '' || this.artist === '' || this.category === '' || this.body === '') {
+        return;
+      }
+      try {
+        this.$store.dispatch('posts/post', {
+          title: this.title,
+          artist: this.artist,
+          category: this.category,
+          body: this.body,
+          user_id: this.$store.state.users.user_data.user_id 
+        });
+      } catch(error) {
+        return;
+      } finally {
+        this.$router.push('/posts');
+      }
+    }
+  }
+};
 </script>
 
 <style scoped>

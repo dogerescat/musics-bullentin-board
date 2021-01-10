@@ -50,8 +50,21 @@ export default {
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/proxy'
   ],
-
+  axios: {
+    baseURL: 'http://backend:8080/',
+    browserBaseURL: 'http://localhost:8080'
+  },
+  proxy: {
+    '/api': {
+      target: 'http://backend:8080',
+      pathRewrite: {
+        '^/api' : '/'
+      }
+    }
+  },
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
   }
