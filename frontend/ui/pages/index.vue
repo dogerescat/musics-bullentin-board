@@ -51,8 +51,8 @@ export default {
           name: this.name,
           email: this.email,
           password: this.password,
+          confirmation: this.confirmation
         });
-        this.saveToken(data);
       } catch (error) {
         return;
       } finally {
@@ -60,14 +60,8 @@ export default {
         this.email = '';
         this.password = '';
         this.confirmation = '';
-        this.$router.push('/posts');
-
       }
     },
-    saveToken(data) {
-      const token = JSON.stringify(data.token);
-      localStorage.setItem('token', token);
-    }
   },
 };
 </script>

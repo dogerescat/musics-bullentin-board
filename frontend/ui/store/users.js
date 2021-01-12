@@ -23,6 +23,9 @@ export const actions = {
   async signUp({ commit }, userData) {
     try {
       const res = await this.$axios.$post('users/', userData);
+      if(res.result) {
+        return res;
+      }
       const data = JSON.parse(res);
       commit('login', data);
       return data;
@@ -32,7 +35,6 @@ export const actions = {
   
   },
   async login({ commit }, userData) {
-    console.log(userData);
     const res = await this.$axios.$post('users/login', userData);
     const data = JSON.parse(res);
     commit('login', data);

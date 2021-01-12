@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS `users` (
     `user_id` INT(20) AUTO_INCREMENT,
     `name` VARCHAR(20) NOT NULL,
     `email` VARCHAR(20) NOT NULL,
-    `password` VARCHAR(20) NOT NULL,
+    `password` VARCHAR(80) NOT NULL,
+    `emailVerifiedAt` DATETIME(6) NULL,
     PRIMARY KEY (`user_id`)
 )DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 

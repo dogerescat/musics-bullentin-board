@@ -6,7 +6,6 @@ const logger = require('morgan');
 const cors = require('cors');
 const passport = require('passport');
 const bodyParser = require('body-parser');
-
 const postRouter = require('./routes/posts');
 const usersRouter = require('./routes/users');
 
@@ -28,7 +27,6 @@ app.use(passport.initialize());
 
 app.use('/posts', postRouter);
 app.use('/users', usersRouter);
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

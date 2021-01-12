@@ -10,7 +10,7 @@ opts.secretOrKey = env.SECRET_KEY;
 opts.algorithms = 'HS256';
 
 module.exports = new JwtStrategy(opts, function (jwt_payload, done) {
-  User.findOne(jwt_payload, function (err, user) {
+  User.findOne(jwt_payload.email, jwt_payload.password, function (err, user) {
     if (err) {
       return done(err, false);
     }

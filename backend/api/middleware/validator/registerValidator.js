@@ -6,7 +6,7 @@ module.exports = [
   check('password')
     .isLength({ min: 7 })
     .withMessage('パスワードは７文字以上に設定してください'),
-  check('confirm').custom((value, { req }) => {
+  check('confirmation').custom((value, { req }) => {
     if (value !== req.body.password) {
       throw new Error('確認用パスワードが一致しません');
     } else {
