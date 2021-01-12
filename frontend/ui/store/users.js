@@ -21,14 +21,21 @@ export const mutations = {
 
 export const actions = {
   async signUp({ commit }, userData) {
-    const res = await this.$axios.$post('users/', userData);
-    const data = JSON.parse(res);
-    commit('login', data);
+    try {
+      const res = await this.$axios.$post('users/', userData);
+      const data = JSON.parse(res);
+      commit('login', data);
+      return data;
+    } catch(error) {
+      return;
+    };
   
   },
   async login({ commit }, userData) {
+    console.log(userData);
     const res = await this.$axios.$post('users/login', userData);
     const data = JSON.parse(res);
     commit('login', data);
+    return data;
   }
 };

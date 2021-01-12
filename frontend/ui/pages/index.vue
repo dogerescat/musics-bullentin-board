@@ -38,7 +38,7 @@ export default {
     };
   },
   methods: {
-    signUp() {
+    async signUp() {
       if (this.name === '' || this.email === '' || this.password === '') {
         alert('全て入力してください');
         return;
@@ -47,11 +47,12 @@ export default {
         return;
       }
       try {
-        this.$store.dispatch('users/signUp', {
+        const data = await this.$store.dispatch('users/signUp', {
           name: this.name,
           email: this.email,
           password: this.password,
         });
+        this.saveToken(data);
       } catch (error) {
         return;
       } finally {
@@ -60,8 +61,13 @@ export default {
         this.password = '';
         this.confirmation = '';
         this.$router.push('/posts');
+
       }
     },
+    saveToken(data) {
+      const token = JSON.stringify(data.token);
+      localStorage.setItem('token', token);
+    }
   },
 };
 </script>

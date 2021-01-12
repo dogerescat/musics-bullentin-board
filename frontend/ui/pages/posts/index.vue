@@ -13,8 +13,15 @@
 
 <script>
 export default {
-  async asyncData({ $axios }) {
-    let lists = await $axios.$get('/posts');
+  async asyncData({ $axios, store }) {
+    let token = localStorage.getItem("token");
+    token = JSON.parse(token);
+    const config = {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    };
+    let lists = await $axios.$get("/posts/", config);
     lists = JSON.parse(lists);
     return { lists };
   },

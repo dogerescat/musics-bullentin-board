@@ -43,7 +43,7 @@
                 {{userName}}
               </NuxtLink>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <NuxtLink class="dropdown-item" to="/login" @click="switchLoginUser">Logout</NuxtLink>
+                <button class="dropdown-item" @click="switchLoginUser">Logout</button>
               </div>
             </li>
           </ul>
@@ -58,7 +58,12 @@ export default {
   methods: {
     switchLoginUser() {
       this.$store.commit('users/logout');
+      this.deleteToken();
     },
+    deleteToken() {
+      localStorage.removeItem('token');
+      this.$router.push('/login');
+    }
   },
   computed: {
     userName() {

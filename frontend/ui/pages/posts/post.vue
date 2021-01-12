@@ -16,9 +16,10 @@
         <div>
           <label for="">カテゴリー</label>
           <select name="category" id="" v-model="category">
-            <option value="aaa">aaa</option>
-            <option value="bbb">bbb</option>
-            <option value="ccc">ccc</option>
+            <option value="j-pop">j-pop</option>
+            <option value="洋楽">洋楽</option>
+            <option value="クラシック">クラシック</option>
+            <option value="アニメソング">アニメソング</option>
           </select>
         </div>
         <div>

@@ -28,23 +28,29 @@ export default {
     };
   },
   methods: {
-    login() {
+    async login() {
       if (this.email === '' || this.password === '') {
         alert('全て入力してください');
         return;
       }
       try {
-        this.$store.dispatch('users/login', {
+        const data = await this.$store.dispatch('users/login', {
           email: this.email,
           password: this.password,
         });
+        this.saveToken(data);
       } catch(error) {
+        this.$router.push('/login');
         return;
       } finally {
         this.email = '';
         this.password = '';
         this.$router.push('/posts');
       }
+    },
+    saveToken(data) {
+      const token = JSON.stringify(data.token);
+      localStorage.setItem('token', token);
     },
   },
 };
