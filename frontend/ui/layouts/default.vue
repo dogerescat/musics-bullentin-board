@@ -50,14 +50,16 @@
         </div>
       </div>
     </nav>
-    <div class="error" v-if="isError">
-      {{errorMessage}}
+    <div class="error"  v-if="isError">
+      <modal name="modal"></modal>
     </div>
     <Nuxt/>
   </div>
 </template>
 <script>
+import ErrorModal from '../components/ErrorModal';
 export default {
+  components: {ErrorModal},
   methods: {
     switchLoginUser() {
       this.$store.commit('users/logout');
@@ -66,6 +68,21 @@ export default {
     deleteToken() {
       localStorage.removeItem('token');
       this.$router.push('/login');
+    },
+    showError() {
+      this.$modal.show(
+        ErrorModal,
+        {
+          errorMessage: this.errorMessage,
+          title: 'エラーが発生しました。',
+        },
+        { height: 100 },
+        { 
+          'before-close': () => {
+            this.$store.commit('users/releaseError');
+          } 
+        }
+      )
     }
   },
   computed: {
@@ -76,11 +93,14 @@ export default {
       return this.$store.state.users.user_data.isLogin;
     },
     isError() {
+      if(this.$store.state.users.error_data.isError) {
+        this.showError();
+      }
       return this.$store.state.users.error_data.isError;
     },
     errorMessage() {
       return this.$store.state.users.error_data.message;
-    }
+    },
   }
 };
 </script>

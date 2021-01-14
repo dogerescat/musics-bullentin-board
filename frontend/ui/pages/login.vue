@@ -43,6 +43,7 @@ export default {
         }
         this.saveToken(data);
       } catch(error) {
+        console.log(error);
         return;
       } 
       this.$router.push('/posts');

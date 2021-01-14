@@ -22,7 +22,7 @@ const createErrorMessage = (msg) => {
   return message;
 }
 
-const createToken = (user) => {
+const createToken = (user, msg) => {
   let data = {
     user_id: user[0].user_id,
     name: user[0].name,
@@ -33,7 +33,11 @@ const createToken = (user) => {
     algorithm: 'HS256',
     expiresIn: '1h',
   };
-  return jwt.sign(data, env.SECRET_KEY, option);
+  const token = jwt.sign(data, env.SECRET_KEY, option);
+  data.token = token;
+  data.msg = msg;
+  data = JSON.stringify(data);
+  return data;
 }
 
 module.exports = {
@@ -112,10 +116,7 @@ module.exports = {
               let message = createErrorMessage('本登録できませんでした。');
               return res.json(message);  
             }
-            const token = createToken(result);
-            data.token = token;
-            data.msg = '本登録完了しました。'
-            data = JSON.stringify(data);
+            const data = createToken(result,'本登録完了しました。');
             res.json(data);
           })
         }
@@ -138,9 +139,7 @@ module.exports = {
         let message = createErrorMessage('本登録が済んでいません。');
         return res.json(message)
       }
-      const token = createToken(result);
-      data.token = token;
-      data = JSON.stringify(data);
+      const data = createToken(result,'ログインしました。');
       res.json(data);
     });
   },

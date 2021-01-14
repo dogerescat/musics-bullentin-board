@@ -64,7 +64,6 @@ export default {
       this.email = '';
       this.password = '';
       this.confirmation = '';
-      
     },
   },
 };

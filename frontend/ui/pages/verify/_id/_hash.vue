@@ -15,7 +15,11 @@ export default {
   },
   methods: {
     login() {
-      this.saveToken(this.data);
+    try {
+        this.saveToken(this.data);
+      } catch(error) {
+        return;
+      }
       this.$store.commit('users/login', this.data);
       this.$router.push('/posts');
     },
