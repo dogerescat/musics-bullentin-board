@@ -16,21 +16,44 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+const createErrorMessage = (msg) => {
+  let message = {error: msg};
+  message = JSON.stringify(message);
+  return message;
+}
+
+const createToken = (user) => {
+  let data = {
+    user_id: user[0].user_id,
+    name: user[0].name,
+    email: user[0].email,
+    password: user[0].password,
+  };
+  const option = {
+    algorithm: 'HS256',
+    expiresIn: '1h',
+  };
+  return jwt.sign(data, env.SECRET_KEY, option);
+}
+
 module.exports = {
   create: (req, res) => {
     const validationErrors = validationResult(req);
     if(!validationErrors.isEmpty()) {
-      return res.json(validationErrors.errors[0].msg);
+      let message = createErrorMessage(validationErrors.errors[0].msg);
+      return res.json(message);
     }
     const salt = bcrypt.genSaltSync(8)
     const hashPassword = bcrypt.hashSync(req.body.password, salt);
     User.checkEmail(req.body.email, (err, re) => {
       if(!re.length === 0) {
-        return res.json({ message: '既に登録されています' });
+        let message = createErrorMessage('既に登録されています');
+        return res.json(message);
       }
       User.create(req.body, hashPassword, (error, result) => {
         if(error) {
-          return res.status(422).json({message: '登録できませんでした'});
+          let message = createErrorMessage('登録できませんでした');
+          return res.json(message);
         }
         User.findOne(req.body.email, hashPassword, (erro, resu) => {
           const hash = crypto.createHash('sha1')
@@ -49,11 +72,12 @@ module.exports = {
             text: "以下のURLをクリックして本登録を完了させてください。\n\n"+ verificationUrl,
             subject: '本登録メール',
           });
-          return res.json({
+          let data = {
             result: true,
             message: 'メールを送信しました。' 
-          });
-
+          };
+          data = JSON.stringify(data);
+          return res.json(data);
         })
       })
     })
@@ -62,12 +86,10 @@ module.exports = {
     const id = req.params.id
     User.checkUserId(id, (error, result) => {
       if(result.length === 0) {
-        let message = {msg: 'このurlは正しくありません。'}
-        message = JSON.stringify(message);
+        let message = createErrorMessage('このurlは正しくありません。');
         return res.json(message);
       } else if(result[0].emailVerifiedAt) {
-        let message = {msg: '本登録済みです'}
-        message = JSON.stringify(message);
+        let message = createErrorMessage('本登録済みです');
         return res.json(message);
       }
       const now = new Date();
@@ -82,29 +104,16 @@ module.exports = {
           .digest('hex');
         const isCorrectSignature = (signature === req.query.signature);
         if(!isCorrectHash || !isCorrectSignature || isExpired) {
-          let message = {msg: 'このURLはすでに有効期限切れか、正しくありません。'}
-          message = JSON.stringify(message);
+          let message = createErrorMessage('このURLはすでに有効期限切れか、正しくありません。');
           return res.json(message);  
         } else {  
           User.addEmailVerifiedAt(now, id, (err, resu) => {
             if(err) {
-              let message = {msg: '本登録できませんでした。'}
-              message = JSON.stringify(message);
+              let message = createErrorMessage('本登録できませんでした。');
               return res.json(message);  
             }
-            let data = {
-              user_id: result[0].user_id,
-              name: result[0].name,
-              email: result[0].email,
-              password: result[0].password,
-            };
-            const option = {
-              algorithm: 'HS256',
-              expiresIn: '1h',
-            };
-            const token = jwt.sign(data, env.SECRET_KEY, option);
+            const token = createToken(result);
             data.token = token;
-            data.url = '/posts'
             data.msg = '本登録完了しました。'
             data = JSON.stringify(data);
             res.json(data);
@@ -115,29 +124,21 @@ module.exports = {
   login: (req, res) => {
     const validationErrors = validationResult(req);
     if(!validationErrors.isEmpty()) {
-      return res.json(validationErrors.errors[0].msg);
+      let message = createErrorMessage(validationErrors.errors[0].msg);
+      return res.json(message);
     }
     User.checkEmail(req.body.email, (error, result) => {
       if(result[0].length === 0) {
-        let message = {msg: 'ユーザーが見つかりません。'}
-        message = JSON.stringify(message);
+        let message = createErrorMessage('ユーザーが見つかりません。');
         return res.json(message);
       } else if(!bcrypt.compareSync(req.body.password, result[0].password)) {
-        let message = {msg: 'パスワードが正しくありません。'}
-        message = JSON.stringify(message);
+        let message = createErrorMessage('パスワードが正しくありません。');
+        return res.json(message)
+      } else if(!result[0].emailVerifiedAt) {
+        let message = createErrorMessage('本登録が済んでいません。');
         return res.json(message)
       }
-      let data = {
-        user_id: result[0].user_id,
-        name: result[0].name,
-        email: result[0].email,
-        password: result[0].password,
-      };
-      const option = {
-        algorithm: 'HS256',
-        expiresIn: '1h',
-      };
-      const token = jwt.sign(data, env.SECRET_KEY, option);
+      const token = createToken(result);
       data.token = token;
       data = JSON.stringify(data);
       res.json(data);

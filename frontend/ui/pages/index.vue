@@ -53,14 +53,18 @@ export default {
           password: this.password,
           confirmation: this.confirmation
         });
+
+        if(!data.result) {
+          return;
+        }
       } catch (error) {
         return;
-      } finally {
-        this.name = '';
-        this.email = '';
-        this.password = '';
-        this.confirmation = '';
-      }
+      } 
+      this.name = '';
+      this.email = '';
+      this.password = '';
+      this.confirmation = '';
+      
     },
   },
 };

@@ -50,6 +50,9 @@
         </div>
       </div>
     </nav>
+    <div class="error" v-if="isError">
+      {{errorMessage}}
+    </div>
     <Nuxt/>
   </div>
 </template>
@@ -69,11 +72,14 @@ export default {
     userName() {
       return this.$store.state.users.user_data.user_name;
     },
-    userId() {
-      return this.$store.state.users.user_data.user_id;
-    },
     isLoginUser() {
       return this.$store.state.users.user_data.isLogin;
+    },
+    isError() {
+      return this.$store.state.users.error_data.isError;
+    },
+    errorMessage() {
+      return this.$store.state.users.error_data.message;
     }
   }
 };

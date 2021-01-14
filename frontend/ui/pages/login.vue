@@ -38,15 +38,14 @@ export default {
           email: this.email,
           password: this.password,
         });
+        if(data.error) {
+          throw new Error(data.error);
+        }
         this.saveToken(data);
       } catch(error) {
-        this.$router.push('/login');
         return;
-      } finally {
-        this.email = '';
-        this.password = '';
-        this.$router.push('/posts');
-      }
+      } 
+      this.$router.push('/posts');
     },
     saveToken(data) {
       const token = JSON.stringify(data.token);

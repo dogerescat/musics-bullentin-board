@@ -4,6 +4,10 @@ export const state = () => ({
     user_id: 0,
     isLogin: false
   },
+  error_data: {
+    isError: false,
+    message: ''
+  }
 });
 
 export const mutations = {
@@ -16,6 +20,14 @@ export const mutations = {
     state.user_data.user_name = '';
     state.user_data.user_id = ''; 
     state.user_data.isLogin = false;
+  },
+  setError(state, msg) {
+    state.error_data.isError = true;
+    state.error_data.message = msg;
+  },
+  releaseError(state) {
+    state.error_data.isError = false;
+    state.error_data.message = '';
   }
 };
 
@@ -23,11 +35,10 @@ export const actions = {
   async signUp({ commit }, userData) {
     try {
       const res = await this.$axios.$post('users/', userData);
-      if(res.result) {
-        return res;
-      }
       const data = JSON.parse(res);
-      commit('login', data);
+      if(data.error) {
+        commit('setError', data.error);
+      }
       return data;
     } catch(error) {
       return;
@@ -37,6 +48,10 @@ export const actions = {
   async login({ commit }, userData) {
     const res = await this.$axios.$post('users/login', userData);
     const data = JSON.parse(res);
+    if(data.error) {
+      commit('setError',data.error);
+      return data;
+    }
     commit('login', data);
     return data;
   }
