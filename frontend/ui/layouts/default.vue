@@ -79,7 +79,7 @@ export default {
         { height: 100 },
         { 
           'before-close': () => {
-            this.$store.commit('users/releaseError');
+            this.$store.commit('errors/releaseError');
           } 
         }
       )
@@ -93,13 +93,13 @@ export default {
       return this.$store.state.users.user_data.isLogin;
     },
     isError() {
-      if(this.$store.state.users.error_data.isError) {
+      if(this.$store.state.errors.error_data.isError) {
         this.showError();
       }
-      return this.$store.state.users.error_data.isError;
+      return this.$store.state.errors.error_data.isError;
     },
     errorMessage() {
-      return this.$store.state.users.error_data.message;
+      return this.$store.state.errors.error_data.message;
     },
   }
 };

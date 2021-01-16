@@ -33,7 +33,12 @@
 
 <script>
 export default {
-
+  validate({store, redirect ,params}) {
+    if(store.state.users.user_data.isLogin) {
+      return true;
+    }
+    redirect('login');
+  }
 }
 </script>
 

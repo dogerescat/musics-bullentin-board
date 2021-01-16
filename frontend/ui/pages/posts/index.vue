@@ -14,8 +14,14 @@
 <script>
 import Post from '../../components/Post';
 export default {
+  validate({ store, redirect }) {
+    if( store.state.users.user_data.isLogin ) {
+      return true;
+    }
+    redirect('/login');
+  },
   async asyncData({ $axios }) {
-    let token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     token = JSON.parse(token);
     const config = {
       headers: {
