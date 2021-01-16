@@ -1,5 +1,7 @@
 const Post = require('../model/post');
 const User = require('../model/user');
+const PostLike = require('../model/post.like');
+
 module.exports = {
   get: (req, res) => {
     Post.get((error, posts) => {
@@ -10,11 +12,17 @@ module.exports = {
         if (err) {
           return;
         }
-        let data = {};
-        data.posts = posts;
-        data.users = users;
-        data = JSON.stringify(data);
-        res.json(data);
+        PostLike.get((er, postLikes) => {
+          if(er) {
+            return;
+          }
+          let data = {};
+          data.posts = posts;
+          data.users = users;
+          data.postLikes = postLikes;
+          data = JSON.stringify(data);
+          res.json(data);
+        });
       }) 
     });
   },

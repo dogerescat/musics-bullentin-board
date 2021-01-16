@@ -48,7 +48,7 @@ export default {
         return;
       }
       try {
-        this.$store.dispatch('posts/post', {
+        this.post({
           title: this.title,
           artist: this.artist,
           category: this.category,
@@ -60,7 +60,23 @@ export default {
       } finally {
         this.$router.push('/posts');
       }
-    }
+    },
+    async post(postData) {
+      const config = this.getData();
+      const res = await this.$axios.$post('/posts/create', postData, config);
+    },
+    getData() {
+      let token = localStorage.getItem('token');
+      token = JSON.parse(token);
+      const config = {
+        headers: {
+          authorization: `Bearer ${token}`
+        }
+      }
+      return config;
+    },
+
+
   }
 };
 </script>

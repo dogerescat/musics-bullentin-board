@@ -11,9 +11,19 @@
       <p class="post-comment-label">コメント:</p>
       <p class="post-body">{{ data.posts[index].body }}</p>
       <div class="icon">
-          <span>いいね</span><Like/> 
-          0<!-- <UnLike/> -->
-          <span>コメント</span><Comment/>
+        <div class="like-icon">
+          <span>いいね</span>
+          <span v-if="likes.isLike">
+            <Like @offLike="offLike" />
+          </span>
+          <span v-if="!likes.isLike">
+            <UnLike @onLike="onLike" />
+          </span>
+          {{likes.counter}}
+        </div>
+        <div class="comment-icon">
+          <span>コメント</span><Comment />
+        </div>
       </div>
       <div class="button">
         <button class="btn1 btn">編集</button>
@@ -28,11 +38,19 @@
 
 <script>
 import Like from './Like';
-import UnLike from './UnLike'; 
+import UnLike from './UnLike';
 import Comment from './Comment';
 export default {
   name: 'Post',
   component: { Like, UnLike, Comment },
+  data() {
+    return {
+      likes: {
+        counter: 0,
+        isLike: false  
+      }
+    }
+  },
   props: {
     data: {
       type: Object,
@@ -41,17 +59,58 @@ export default {
       type: Number,
     },
   },
-  computed: {
-      contributor() {
-          let name;
-          this.data.users.forEach(user => {
-              if(user.user_id === this.data.posts[this.index].user_id) {
-                  name = user.name;
-              }
-          })
-          return name;
+  created() {
+    const postId = this.data.posts[this.index].post_id;
+    const userId = this.$store.state.users.user_data.user_id;
+    this.data.postLikes.forEach(postLike => {
+      if(userId === postLike.user_id || postId === postLike.post_id) {
+        this.switchLike();
       }
-  }
+      if(postLike.post_id === postId) {
+        this.increaseLikeCounter();
+      }
+    });
+  },
+  methods: {
+    async onLike() {
+      const res = await this.$axios.$post(`post/likes/${this.$store.state.users.user_data.user_id}/${this.data.posts[this.index].post_id}`);
+      const result = await JSON.parse(res);
+      if(!result.result) {
+        return;
+      }
+      this.increaseLikeCounter();
+      this.switchLike();
+    },
+    async offLike() {
+      const res = await this.$axios.$delete(`post/likes/delete/${this.$store.state.users.user_data.user_id}/${this.data.posts[this.index].post_id}`);
+      const result = await JSON.parse(res);
+      if(!result.result){
+        return;
+      }
+      this.decreaseLikeCounter();
+      this.switchLike();
+    },
+    switchLike() {
+      this.likes.isLike = !this.likes.isLike;
+    },
+    increaseLikeCounter() {
+      this.likes.counter++;
+    },
+    decreaseLikeCounter() {
+      this.likes.counter--;
+    }
+  },
+  computed: {
+    contributor() {
+      let name;
+      this.data.users.forEach(user => {
+        if (user.user_id === this.data.posts[this.index].user_id) {
+          name = user.name;
+        }
+      });
+      return name;
+    },
+  },
 };
 </script>
 
@@ -121,7 +180,15 @@ export default {
   margin-bottom: 20px;
 }
 .icon {
-    width: 300px;
-    height: 30px;
+  display: inline;
+  margin-right: 500px;
+  width: 300px;
+  height: 30px;
+}
+.like-icon {
+  display: inline;
+}
+.comment-icon {
+  display: inline;
 }
 </style>

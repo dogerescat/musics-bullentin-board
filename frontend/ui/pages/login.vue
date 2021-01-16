@@ -13,7 +13,7 @@
           <label for="">Password</label>
           <input type="password" v-model="password" />
         </div>
-        <button class="btn" @click="login" href="#">登録</button>
+        <button class="btn" @click="login" href="#">ログイン</button>
       </div>
     </div>
   </div>

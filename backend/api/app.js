@@ -8,7 +8,7 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const postRouter = require('./routes/posts');
 const usersRouter = require('./routes/users');
-
+const postLikesRouter = require('./routes/post.likes');
 const app = express();
 
 // view engine setup
@@ -23,10 +23,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({ origin: true, credentials: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
-// app.use(passport.session());
 
 app.use('/posts', postRouter);
 app.use('/users', usersRouter);
+app.use('/post/likes', postLikesRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

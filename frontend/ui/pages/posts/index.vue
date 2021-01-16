@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <h1>投稿一覧</h1>
-    <div id="post">
+    <div id="post" >
       <ul v-for="(post, index) in data.posts" :key="index">
         <li>
-          <Post :data="data" :index="index"/>
+          <Post :data="data" :index="index"/> 
         </li>
       </ul>
     </div>
@@ -14,7 +14,7 @@
 <script>
 import Post from '../../components/Post';
 export default {
-  async asyncData({ $axios, store }) {
+  async asyncData({ $axios }) {
     let token = localStorage.getItem('token');
     token = JSON.parse(token);
     const config = {
@@ -23,7 +23,7 @@ export default {
       },
     };
     let data = await $axios.$get('posts/', config);
-    data = JSON.parse(data);
+    data = await JSON.parse(data);
     return { data };
   },
   components: {
