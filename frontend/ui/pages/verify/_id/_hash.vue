@@ -8,7 +8,7 @@
 <script>
 export default {
   async asyncData({ $axios, params, query }) {
-    const url = `users/verify/${params.id}/${params.hash}?expires=${query.expires}&signature=${query.signature}`;
+    const url = `/api/users/verify/${params.id}/${params.hash}?expires=${query.expires}&signature=${query.signature}`;
     let data = await $axios.$get(url);
     data = JSON.parse(data);
     return { data };

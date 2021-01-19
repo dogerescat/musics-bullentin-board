@@ -10,4 +10,23 @@ module.exports = {
       callback
     );
   },
+  getEdit: (id, callback) => {
+    connection.query(
+      `select * from posts where post_id = ${id}`,
+      callback
+    );
+  },
+  update: (id, body, callback) => {
+    connection.query(
+      `update posts set title = ?, artist = ?, category = ?, body = ? where post_id = ?`,
+      [body.title, body.artist, body.category, body.body, id],
+      callback
+    )
+  },
+  delete: (id, callback) => {
+    connection.query(
+      `delete from posts where post_id = '${id}'`,
+      callback
+    );
+  }
 };

@@ -16,4 +16,10 @@ module.exports = {
   get(callback) {
     connection.query('select * from post_likes', callback);
   },
+  deletePost: (id, callback) => {
+    connection.query(
+      `delete from post_likes where post_id = '${id}'`,
+      callback
+    );
+  }
 };

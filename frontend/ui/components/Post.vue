@@ -25,9 +25,9 @@
           <span>コメント</span><Comment />
         </div>
       </div>
-      <div class="button">
-        <button class="btn1 btn">編集</button>
-        <button class="btn2 btn">削除</button>
+      <div class="button" v-if="myPost">
+        <button @click="goEditPage" class="btn1 btn">編集</button>
+        <button @click="deletePost" class="btn2 btn">削除</button>
       </div>
       <div class="contributor">
         <p>投稿者:&nbsp; &nbsp;{{ contributor }}</p>
@@ -48,7 +48,8 @@ export default {
       likes: {
         counter: 0,
         isLike: false  
-      }
+      },
+      myPost: false 
     }
   },
   props: {
@@ -61,6 +62,7 @@ export default {
   },
   created() {
     const postId = this.data.posts[this.index].post_id;
+    const postuserId = this.data.posts[this.index].user_id;
     const userId = this.$store.state.users.user_data.user_id;
     this.data.postLikes.forEach(postLike => {
       if(userId === postLike.user_id || postId === postLike.post_id) {
@@ -70,10 +72,13 @@ export default {
         this.increaseLikeCounter();
       }
     });
+    if(postuserId === userId) {
+      this.myPost = !this.myPost;
+    }
   },
   methods: {
     async onLike() {
-      const res = await this.$axios.$post(`post/likes/${this.$store.state.users.user_data.user_id}/${this.data.posts[this.index].post_id}`);
+      const res = await this.$axios.$post(`api/post/likes/${this.$store.state.users.user_data.user_id}/${this.data.posts[this.index].post_id}`);
       const result = await JSON.parse(res);
       if(!result.result) {
         return;
@@ -82,7 +87,7 @@ export default {
       this.switchLike();
     },
     async offLike() {
-      const res = await this.$axios.$delete(`post/likes/delete/${this.$store.state.users.user_data.user_id}/${this.data.posts[this.index].post_id}`);
+      const res = await this.$axios.$delete(`api/post/likes/delete/${this.$store.state.users.user_data.user_id}/${this.data.posts[this.index].post_id}`);
       const result = await JSON.parse(res);
       if(!result.result){
         return;
@@ -98,6 +103,25 @@ export default {
     },
     decreaseLikeCounter() {
       this.likes.counter--;
+    },
+    goEditPage() {
+      this.$router.push(`/posts/${this.data.posts[this.index].post_id}`);
+    },
+    async deletePost() {
+      try {
+        let token = localStorage.getItem('token');
+        token = JSON.parse(token);
+        const config = {
+          headers: {
+            authorization: `Bearer ${token}`
+          }
+        }
+        const postId = this.data.posts[this.index].post_id;
+        const res = await this.$axios.$delete(`api/posts/delete/${postId}`,config);
+      } catch(error) {
+        return;
+      }
+      this.$emit('deletePost', this.index);
     }
   },
   computed: {

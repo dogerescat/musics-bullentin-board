@@ -37,9 +37,8 @@ const createToken = (user, msg) => {
   data.token = token;
   data.msg = msg;
   data = JSON.stringify(data);
-  return data;
+  return {data, token};
 }
-
 module.exports = {
   create: (req, res) => {
     const validationErrors = validationResult(req);
@@ -117,7 +116,7 @@ module.exports = {
               return res.json(message);  
             }
             const data = createToken(result,'本登録完了しました。');
-            res.json(data);
+            res.json(data.data);
           })
         }
     })
@@ -140,7 +139,44 @@ module.exports = {
         return res.json(message)
       }
       const data = createToken(result,'ログインしました。');
-      res.json(data);
+      req.session.accessToken = `Bearer ${data.token}`;
+      res.json(data.data);
     });
   },
+  loginJwt: (req, res) => {
+    let token = '';
+    let data = {
+      userData: {}
+    };
+    if (
+      req.session.accessToken &&
+      req.session.accessToken.split(' ')[0] === 'Bearer'
+    ) {
+      token = req.session.accessToken.split(' ')[1];
+    } else {
+      data.result = false;
+      data = JSON.stringify(data);
+      res.json(data);
+      return;
+    }
+    jwt.verify(token, env.SECRET_KEY, (err, decoded) => {
+      if (err) {
+        data.result = false;
+        data = JSON.stringify(data);
+        res.json(data);
+        return;
+      } else {
+        data.result = true;
+        data.token = token;
+        data.userData.user_id = decoded.user_id;
+        data.userData.name = decoded.name;
+        data = JSON.stringify(data);
+        res.json(data);
+      }
+    });
+  },
+  logout: (req, res) => {
+    delete req.session.accessToken;
+    res.json();
+  }
 };

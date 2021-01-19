@@ -29,6 +29,16 @@
 
 <script>
 export default {
+  async asyncData({ $axios, redirect }) {
+    if(process.server) {
+      let res = await $axios.get('/api/users/login/jwt');
+      const data = JSON.parse(res.data);
+      if(data.result) {
+        redirect('/posts');
+        return;
+      }
+    }
+  },
   data() {
     return {
       name: '',

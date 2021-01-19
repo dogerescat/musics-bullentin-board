@@ -16,5 +16,19 @@ router.post(
   passport.authenticate('jwt', { session: false }),
   postController.create
 );
-
+router.get(
+  '/:id',
+  passport.authenticate('jwt', {session: false}),
+  postController.getEdit
+);
+router.put(
+  '/update/:id',
+  passport.authenticate('jwt', {session: false}),
+  postController.update
+);
+router.delete(
+  '/delete/:id',
+  passport.authenticate('jwt', {session: false}),
+  postController.delete
+)
 module.exports = router;

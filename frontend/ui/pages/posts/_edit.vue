@@ -7,26 +7,26 @@
       <div class="post-input">
         <div>
           <label for="">曲名</label>
-          <input type="text" v-model="title" />
+          <input type="text" v-model="post.title">
         </div>
         <div>
           <label for="">アーティスト名</label>
-          <input type="text" v-model="artist"/>
+          <input type="text" v-model="post.artist">
         </div>
         <div>
           <label for="">カテゴリー</label>
-          <select name="category" id="" v-model="category">
+          <select name="categoly" v-model="post.category" >
             <option value="j-pop">j-pop</option>
-            <option value="洋楽">洋楽</option>
+             <option value="洋楽">洋楽</option>
             <option value="クラシック">クラシック</option>
             <option value="アニメソング">アニメソング</option>
           </select>
         </div>
         <div>
           <label class="comment-label" for="">コメント</label>
-          <textarea name="" id="" cols="60" rows="5" v-model="body"></textarea>
+          <textarea v-model="post.body" name="" id="" cols="60" rows="5"></textarea>
         </div>
-        <button class="btn" @click="postArticle" href="#">投稿</button>
+        <button @click="editArticle" class="btn" href="#">編集</button>
       </div>
     </div>
   </div>
@@ -34,26 +34,35 @@
 
 <script>
 export default {
-  data() {
-    return {
-      title: '',
-      artist: '',
-      category: '',
-      body: '',
+  validate({store, redirect ,params}) {
+    if(store.state.users.user_data.isLogin) {
+      return true;
     }
+    redirect('/login');
+  },
+  async asyncData({$axios, params}) {
+    let token = localStorage.getItem('token');
+    token = JSON.parse(token);
+    const config = {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    };
+    let post = await $axios.$get(`/api/posts/${params.edit}`, config);
+    post = await JSON.parse(post);
+    return { post };
   },
   methods: {
-    postArticle() {
+    editArticle() {
       if (this.title === '' || this.artist === '' || this.category === '' || this.body === '') {
         return;
       }
       try {
-        this.post({
-          title: this.title,
-          artist: this.artist,
-          category: this.category,
-          body: this.body,
-          user_id: this.$store.state.users.user_data.user_id 
+        this.edit({
+          title: this.post.title,
+          artist: this.post.artist,
+          category: this.post.category,
+          body: this.post.body,
         });
       } catch(error) {
         return;
@@ -61,11 +70,11 @@ export default {
         this.$router.push('/posts');
       }
     },
-    async post(postData) {
-      const config = this.getData();
-      const res = await this.$axios.$post('/api/posts/create', postData, config);
+    async edit(editData) {
+      const config = this.getToken();
+      const data = await this.$axios.$put(`/api/posts/update/${this.$route.params.edit}`, editData, config);
     },
-    getData() {
+    getToken() {
       let token = localStorage.getItem('token');
       token = JSON.parse(token);
       const config = {
@@ -75,10 +84,8 @@ export default {
       }
       return config;
     },
-
-
   }
-};
+}
 </script>
 
 <style scoped>
@@ -93,7 +100,7 @@ export default {
 .post-input {
   text-align: right;
   margin: 0 auto;
-
+  
   margin-right: 30%;
 }
 .title {
@@ -101,7 +108,7 @@ export default {
   height: 200px;
   position: relative;
   margin: 0 auto;
-  color: #474747;
+  color:#474747;
 }
 h1 {
   margin: 0;
@@ -109,17 +116,17 @@ h1 {
   top: 30%;
   left: 30%;
 }
-.btn {
-  display: block;
+.btn{
+  display:block;
   height: 50px;
   width: 150px;
   margin: 0 auto;
-  line-height: 20px;
-  background: #aaefe7;
-  color: #474747;
-  border-radius: 25px;
-  text-decoration: none;
-  text-align: center;
+  line-height:20px;
+  background: #AAEFE7;
+  color:#474747;
+  border-radius:25px;
+  text-decoration:none;
+  text-align:center;
   margin-top: 40px;
   margin-right: 20%;
 }
@@ -130,21 +137,21 @@ input {
   margin-bottom: 20px;
 }
 label {
-  color: #474747;
+  color:#474747;
   margin-right: 20px;
 }
 select {
-  width: 200px;
-  height: 30px;
-  margin-bottom: 20px;
-  margin-left: 55px;
+    width: 200px;
+    height: 30px;
+    margin-bottom: 20px;
+    margin-left: 55px;
 }
 textarea {
-  margin: 10px;
-  margin-left: 70px;
-  padding: 5px;
+    margin: 10px;
+    margin-left: 70px;
+    padding: 5px;
 }
 .comment-label {
-  margin-right: 330px;
+    margin-right: 330px;
 }
 </style>

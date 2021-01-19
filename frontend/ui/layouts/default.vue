@@ -64,10 +64,14 @@ export default {
     switchLoginUser() {
       this.$store.commit('users/logout');
       this.deleteToken();
+      this.deleteSession();
     },
     deleteToken() {
       localStorage.removeItem('token');
       this.$router.push('/login');
+    },
+    async deleteSession() {
+      await this.$axios.get('/api/users/logout');
     },
     showError() {
       this.$modal.show(

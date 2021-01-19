@@ -22,7 +22,7 @@ export const mutations = {
 export const actions = {
   async signUp({ commit }, userData) {
     try {
-      const res = await this.$axios.$post('users/', userData);
+      const res = await this.$axios.$post('/api/users/', userData);
       const data = JSON.parse(res);
       if(data.error) {
         commit('errors/setError', data.error, {root: true});
@@ -34,7 +34,7 @@ export const actions = {
   
   },
   async login({ commit }, userData) {
-    const res = await this.$axios.$post('users/login', userData);
+    const res = await this.$axios.$post('/api/users/login', userData);
     const data = JSON.parse(res);
     if(data.error) {
       commit('errors/setError',data.error, {root: true});
@@ -42,5 +42,16 @@ export const actions = {
     }
     commit('login', data);
     return data;
+  },
+  async loginJwt({commit}, token) {
+    const config = {
+      headers: {
+        authorization: `Bearer ${token}`
+      }
+    }
+    const res = await this.$axios.$get('/api/users/login/jwt', config);
+    const data = JSON.parse(res);
+    commit('login', data);
+    return;
   }
 };

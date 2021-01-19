@@ -10,23 +10,29 @@ const postRouter = require('./routes/posts');
 const usersRouter = require('./routes/users');
 const postLikesRouter = require('./routes/post.likes');
 const app = express();
+const session = require('express-session');
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'ejs');
-
+app.use(session({
+  secret: 'secret',
+  resave: true,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 30 * 60 * 1000
+  }
+}));
+  
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({ origin: true, credentials: true }));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
 
-app.use('/posts', postRouter);
-app.use('/users', usersRouter);
-app.use('/post/likes', postLikesRouter);
+app.use('/api/posts', postRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/post/likes', postLikesRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -40,6 +46,6 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.json();
 });
 module.exports = app;

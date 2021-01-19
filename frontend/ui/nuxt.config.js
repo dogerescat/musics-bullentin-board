@@ -40,7 +40,7 @@ export default {
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
-    {src: '~/plugins/modal.js', ssr: false}
+    {src: '~/plugins/modal.js', ssr: false},
   ],
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
@@ -48,7 +48,6 @@ export default {
   // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
   buildModules: [
   ],
-
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
     '@nuxtjs/axios',
@@ -56,15 +55,11 @@ export default {
     'nuxt-fontawesome'
   ],
   axios: {
-    baseURL: 'http://backend:8080/',
-    browserBaseURL: 'http://localhost:8080'
+    proxy: true
   },
   proxy: {
-    '/api': {
+    '/api/': {
       target: 'http://backend:8080',
-      pathRewrite: {
-        '^/api' : '/'
-      }
     }
   },
   fontawesome: {
