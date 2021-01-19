@@ -14,21 +14,23 @@
 <script>
 import Post from '../../components/Post';
 export default {
+  validate({ store, redirect }) {
+    if(!store.state.users.user_data.isLogin) {
+      redirect('/login');
+      return false;
+    }
+    return true;
+  },
   async asyncData({ $axios, redirect, store }) {
     if (process.server) {
-      let userInfo = await $axios.$get('/api/users/login/jwt');
-      userInfo = await JSON.parse(userInfo);
-      if(!userInfo.result) {
-        redirect('/login');
-      }
+      const token = store.state.users.user_data.token;
       const config = {
         headers: {
-          authorization: `Bearer ${userInfo.token}`,
+          authorization: `Bearer ${token}`,
         },
       };
       let data = await $axios.$get('api/posts/', config);
       data = await JSON.parse(data);
-      store.commit('users/login',userInfo.userData);
       return { data };
     } else if(process.client) {
       let token = localStorage.getItem('token');

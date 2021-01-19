@@ -18,7 +18,7 @@
         <button class="btn">検索</button>
       </div>
       <div class="other">
-        <NuxtLink to="/search/categoly"> カテゴリーで検索 </NuxtLink>
+        <NuxtLink to="/search/category"> カテゴリーで検索 </NuxtLink>
       </div>
     </div>
   </div>
@@ -26,6 +26,14 @@
 
 <script>
 export default {
+  validate({ store, redirect }) {
+    if(!store.state.users.user_data.isLogin) {
+      redirect('/login');
+      return false;
+    }
+    return true;
+  },
+
 };
 </script>
 

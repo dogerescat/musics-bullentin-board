@@ -28,7 +28,7 @@
               <NuxtLink class="nav-link" to="/posts/post">投稿</NuxtLink>
             </li>
             <li class="nav-item" v-if="isLoginUser">
-              <NuxtLink class="nav-link" to="/search/">検索</NuxtLink>
+              <NuxtLink class="nav-link" to="/search/category">検索</NuxtLink>
             </li>
             <li class="nav-item dropdown" v-if="isLoginUser">
               <NuxtLink

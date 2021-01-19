@@ -167,7 +167,7 @@ module.exports = {
         return;
       } else {
         data.result = true;
-        data.token = token;
+        data.userData.token = token;
         data.userData.user_id = decoded.user_id;
         data.userData.name = decoded.name;
         data = JSON.stringify(data);

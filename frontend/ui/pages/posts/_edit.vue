@@ -34,11 +34,12 @@
 
 <script>
 export default {
-  validate({store, redirect ,params}) {
-    if(store.state.users.user_data.isLogin) {
-      return true;
+  validate({ store, redirect }) {
+    if(!store.state.users.user_data.isLogin) {
+      redirect('/login');
+      return false;
     }
-    redirect('/login');
+    return true;
   },
   async asyncData({$axios, params}) {
     let token = localStorage.getItem('token');

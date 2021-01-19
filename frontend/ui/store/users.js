@@ -2,7 +2,8 @@ export const state = () => ({
   user_data: {
     user_name: '',
     user_id: 0,
-    isLogin: false
+    isLogin: false,
+    token: ''
   },
 });
 
@@ -11,6 +12,7 @@ export const mutations = {
     state.user_data.user_name = data.name;
     state.user_data.user_id = data.user_id; 
     state.user_data.isLogin = true; 
+    state.user_data.token = data.token;
   },
   logout(state) {
     state.user_data.user_name = '';
@@ -43,15 +45,4 @@ export const actions = {
     commit('login', data);
     return data;
   },
-  async loginJwt({commit}, token) {
-    const config = {
-      headers: {
-        authorization: `Bearer ${token}`
-      }
-    }
-    const res = await this.$axios.$get('/api/users/login/jwt', config);
-    const data = JSON.parse(res);
-    commit('login', data);
-    return;
-  }
 };
