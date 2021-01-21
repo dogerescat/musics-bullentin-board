@@ -4,15 +4,13 @@
       <div class="title">
         <h1>コメント編集</h1>
       </div>
-      　
       <div>
         <label class="comment-label" for="">コメント</label>
-        <textarea name="" id="" cols="60" rows="5"></textarea>
-        　
+        <textarea v-model="data.comment.body" name="" id="" cols="60" rows="5"></textarea>
       </div>
       <div class="button">
-        <button class="btn1" href="#">戻る</button>
-        <button class="btn2" href="#">編集</button>
+        <button class="btn1 btn" @click="backPage" >戻る</button>
+        <button class="btn2 btn" @click="edit" >編集</button>
       </div>
     </div>
   </div>
@@ -21,13 +19,47 @@
 <script>
 export default {
   validate({ store, redirect }) {
-    if(!store.state.users.user_data.isLogin) {
+    if(!store.state.users.userData.isLogin) {
       redirect('/login');
       return false;
     }
     return true;
   },
-
+  async asyncData({ $axios, store, params}) {
+    const config = {
+      headers: {
+        authorization: `Bearer ${store.state.users.userData.token}`
+      }
+    }
+    const res = await $axios.$get(`/api/comments/edit/${params.commentId}`, config);
+    const data = await JSON.parse(res);
+    return { data }
+  },
+  methods: {
+    async edit() {
+      try {
+        const config = {
+          headers: {
+            authorization: `Bearer ${this.$store.state.users.userData.token}`
+          }
+        }
+        const postData = {
+          body: this.data.comment.body
+        }
+        const res = await this.$axios.$put(`/api/comments/update/${this.$route.params.commentId}`,postData, config);
+        const data = await JSON.parse(res);
+        if(!data.result) {
+          throw new Error('did not update');
+        }
+      } catch(error) {
+        return;
+      }
+      this.backPage();
+    },
+    backPage() {
+      this.$router.go(-1);
+    }
+  }
 };
 </script>
 
@@ -81,8 +113,8 @@ h1 {
   margin-right: 20px;
 }
 .button {
-  margin-top: 30px;
-  margin-left: 30px;
+   margin: 0 auto;
+   margin-top: 30px;
 }
 .comment-label {
   position: absolute;

@@ -91,19 +91,19 @@ export default {
   },
   computed: {
     userName() {
-      return this.$store.state.users.user_data.user_name;
+      return this.$store.state.users.userData.userName;
     },
     isLoginUser() {
-      return this.$store.state.users.user_data.isLogin;
+      return this.$store.state.users.userData.isLogin;
     },
     isError() {
-      if(this.$store.state.errors.error_data.isError) {
+      if(this.$store.state.errors.errorData.isError) {
         this.showError();
       }
-      return this.$store.state.errors.error_data.isError;
+      return this.$store.state.errors.errorData.isError;
     },
     errorMessage() {
-      return this.$store.state.errors.error_data.message;
+      return this.$store.state.errors.errorData.message;
     },
   }
 };

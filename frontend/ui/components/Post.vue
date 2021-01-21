@@ -1,6 +1,6 @@
 <template>
   <div id="container">
-    <div class="post-container">
+    <div class="post-container" @click.self='goCommentListPage'>
       <h3 class="post-title">{{ data.posts[index].title }}</h3>
       <p class="post-artist">
         アーティスト名:&nbsp; &nbsp;{{ data.posts[index].artist }}
@@ -22,7 +22,9 @@
           {{likes.counter}}
         </div>
         <div class="comment-icon">
-          <span>コメント</span><Comment />
+          <span>コメント</span>
+          <CommentIcon @goCommentPage="goCommentPage" />
+          {{comments.counter}}
         </div>
       </div>
       <div class="button" v-if="myPost">
@@ -36,19 +38,20 @@
   </div>
 </template>
 
-<script>
+<script scoped>
 import Like from './Like';
 import UnLike from './UnLike';
-import Comment from './Comment';
+import CommentIcon from './CommentIcon';
 export default {
   name: 'Post',
-  component: { Like, UnLike, Comment },
+  component: { Like, UnLike, CommentIcon },
   data() {
     return {
       likes: {
         counter: 0,
         isLike: false  
       },
+      comments: { counter: 0 },
       myPost: false 
     }
   },
@@ -63,9 +66,9 @@ export default {
   created() {
     const postId = this.data.posts[this.index].post_id;
     const postuserId = this.data.posts[this.index].user_id;
-    const userId = this.$store.state.users.user_data.user_id;
+    const userId = this.$store.state.users.userData.userId;
     this.data.postLikes.forEach(postLike => {
-      if(userId === postLike.user_id || postId === postLike.post_id) {
+      if(userId === postLike.user_id && postId === postLike.post_id) {
         this.switchLike();
       }
       if(postLike.post_id === postId) {
@@ -75,10 +78,15 @@ export default {
     if(postuserId === userId) {
       this.myPost = !this.myPost;
     }
+    this.data.comments.forEach(comment => {
+      if(comment.post_id === postId) {
+        this.comments.counter++
+      }
+    })
   },
   methods: {
     async onLike() {
-      const res = await this.$axios.$post(`api/post/likes/${this.$store.state.users.user_data.user_id}/${this.data.posts[this.index].post_id}`);
+      const res = await this.$axios.$post(`api/post/likes/${this.$store.state.users.userData.userId}/${this.data.posts[this.index].post_id}`);
       const result = await JSON.parse(res);
       if(!result.result) {
         return;
@@ -87,7 +95,7 @@ export default {
       this.switchLike();
     },
     async offLike() {
-      const res = await this.$axios.$delete(`api/post/likes/delete/${this.$store.state.users.user_data.user_id}/${this.data.posts[this.index].post_id}`);
+      const res = await this.$axios.$delete(`api/post/likes/delete/${this.$store.state.users.userData.userId}/${this.data.posts[this.index].post_id}`);
       const result = await JSON.parse(res);
       if(!result.result){
         return;
@@ -106,6 +114,12 @@ export default {
     },
     goEditPage() {
       this.$router.push(`/posts/${this.data.posts[this.index].post_id}`);
+    },
+    goCommentPage() {
+      this.$router.push(`/comments/post/${this.data.posts[this.index].post_id}`);
+    },
+    goCommentListPage() {
+      this.$router.push(`/comments/${this.data.posts[this.index].post_id}`);
     },
     async deletePost() {
       try {
@@ -164,32 +178,41 @@ export default {
   margin-right: 20px;
 }
 .post-container {
-  width: 100%;
+  width: 85%;
   height: 350px;
   border: 1px solid;
-  padding: 10px;
+  padding: 20px;
   margin: 40px auto;
   border-radius: 50px/50px;
   text-align: center;
 }
 .post-title {
-  margin: 10px;
+  width: 30%;
+  margin: 0 auto;
+  margin-bottom: 10px;
 }
 .post-artist {
+  width: 50%;
   text-align: right;
-  margin-right: 15px;
+  margin: 0 auto;
+  margin-left: 50%;
+  margin-bottom: 10px;
 }
 .post-category {
+  width: 30%;
   text-align: right;
-  margin-right: 15px;
+  margin: 0 ;
+  margin-left: 70%;
+  margin-bottom: 10px;
 }
 .post-comment-label {
+  width: 15%;
   text-align: left;
   margin-left: 150px;
   margin-bottom: 0;
 }
 .post-body {
-  width: 80%;
+  width: 70%;
   height: 70px;
   margin: 0 auto;
 }
@@ -198,13 +221,15 @@ export default {
   margin: 0 auto;
 }
 .contributor {
+  width: 50%;
   text-align: right;
-  margin-left: 0px;
-  margin-right: 60px;
-  margin-bottom: 20px;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-left: 40%;
 }
 .icon {
-  display: inline;
+  text-align: left;
+  display: inline-block;
   margin-right: 500px;
   width: 300px;
   height: 30px;

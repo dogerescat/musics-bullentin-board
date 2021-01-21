@@ -1,27 +1,34 @@
 const Post = require('../model/post');
 const User = require('../model/user');
 const PostLike = require('../model/post.like');
+const Comment = require('../model/comment');
 
 module.exports = {
-  get: (req, res) => {
-    Post.get((error, posts) => {
+  read: (req, res) => {
+    Post.read((error, posts) => {
       if (error) {
         return;
       }
-      User.get((err, users) => {
+      User.read((err, users) => {
         if (err) {
           return;
         }
-        PostLike.get((er, postLikes) => {
+        PostLike.read((er, postLikes) => {
           if(er) {
             return;
           }
-          let data = {};
-          data.posts = posts;
-          data.users = users;
-          data.postLikes = postLikes;
-          data = JSON.stringify(data);
-          res.json(data);
+          Comment.read((e, comments) => {
+            if(e) {
+              return;
+            }
+            let data = {};
+            data.posts = posts;
+            data.users = users;
+            data.postLikes = postLikes;
+            data.comments = comments;
+            data = JSON.stringify(data);
+            res.json(data);
+          });
         });
       }) 
     });
@@ -35,7 +42,7 @@ module.exports = {
     });
   },
   getEdit: (req, res) => {
-    Post.getEdit(req.params.id, (error, post) => {
+    Post.readPostId(req.params.id, (error, post) => {
       if(error) {
         return;
       }
@@ -45,7 +52,6 @@ module.exports = {
     });
   },
   update: (req, res) => {
-     console.log(req.params);
     Post.update(req.params.id, req.body,(error,result) => {
       if(error) {
         return;
@@ -54,7 +60,6 @@ module.exports = {
     });
   },
   delete: (req, res) => {
-    console.log(req.params);
     Post.delete(req.params.id, (error, result) => {
       if(error) {
         return;

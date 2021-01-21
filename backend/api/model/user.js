@@ -1,7 +1,7 @@
 const connection = require('./db');
 
 module.exports = {
-  get: (callback) => {
+  read: (callback) => {
     connection.query(`select * from users`, callback);
   },
   create: (body, password, callback) => {
@@ -16,10 +16,10 @@ module.exports = {
       callback
     );
   },
-  checkEmail: (email, callback) => {
+  readEmail: (email, callback) => {
     connection.query(`select * from users where email = '${email}'`, callback);
   },
-  checkUserId: (id, callback) => {
+  readUserId: (id, callback) => {
     connection.query(`select * from users where user_id = '${id}'`, callback);
   },
   addEmailVerifiedAt: (emailVerifiedAt, id, callback) => {

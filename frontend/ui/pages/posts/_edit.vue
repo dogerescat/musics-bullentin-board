@@ -26,7 +26,10 @@
           <label class="comment-label" for="">コメント</label>
           <textarea v-model="post.body" name="" id="" cols="60" rows="5"></textarea>
         </div>
-        <button @click="editArticle" class="btn" href="#">編集</button>
+        <div class="button">
+          <button class="btn" @click="backPage">戻る</button>
+          <button @click="editArticle" class="btn" href="#">編集</button>
+        </div>
       </div>
     </div>
   </div>
@@ -35,7 +38,7 @@
 <script>
 export default {
   validate({ store, redirect }) {
-    if(!store.state.users.user_data.isLogin) {
+    if(!store.state.users.userData.isLogin) {
       redirect('/login');
       return false;
     }
@@ -55,9 +58,6 @@ export default {
   },
   methods: {
     editArticle() {
-      if (this.title === '' || this.artist === '' || this.category === '' || this.body === '') {
-        return;
-      }
       try {
         this.edit({
           title: this.post.title,
@@ -85,6 +85,9 @@ export default {
       }
       return config;
     },
+    backPage() {
+      this.$router.go(-1);
+    }
   }
 }
 </script>

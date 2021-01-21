@@ -48,7 +48,7 @@ module.exports = {
     }
     const salt = bcrypt.genSaltSync(8)
     const hashPassword = bcrypt.hashSync(req.body.password, salt);
-    User.checkEmail(req.body.email, (err, re) => {
+    User.readEmail(req.body.email, (err, re) => {
       if(!re.length === 0) {
         let message = createErrorMessage('既に登録されています');
         return res.json(message);
@@ -85,9 +85,9 @@ module.exports = {
       })
     })
   },
-  realSignUp: (req, res) => {
+  signUp: (req, res) => {
     const id = req.params.id
-    User.checkUserId(id, (error, result) => {
+    User.readUserId(id, (error, result) => {
       if(result.length === 0) {
         let message = createErrorMessage('このurlは正しくありません。');
         return res.json(message);
@@ -127,7 +127,7 @@ module.exports = {
       let message = createErrorMessage(validationErrors.errors[0].msg);
       return res.json(message);
     }
-    User.checkEmail(req.body.email, (error, result) => {
+    User.readEmail(req.body.email, (error, result) => {
       if(result[0].length === 0) {
         let message = createErrorMessage('ユーザーが見つかりません。');
         return res.json(message);

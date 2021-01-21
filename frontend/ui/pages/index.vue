@@ -30,7 +30,7 @@
 <script>
 export default {
   validate({ store, redirect }) {
-    if(store.state.users.user_data.isLogin) {
+    if(store.state.users.userData.isLogin) {
       redirect('/posts');
       return false;
     }

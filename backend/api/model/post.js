@@ -1,7 +1,7 @@
 const connection = require('./db');
 
 module.exports = {
-  get: (callback) => {
+  read: (callback) => {
     connection.query(`select * from posts`, callback);
   },
   create: (body, callback) => {
@@ -10,7 +10,7 @@ module.exports = {
       callback
     );
   },
-  getEdit: (id, callback) => {
+  readPostId: (id, callback) => {
     connection.query(
       `select * from posts where post_id = ${id}`,
       callback

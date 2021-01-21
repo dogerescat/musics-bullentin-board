@@ -35,7 +35,7 @@
 <script>
 export default {
   validate({ store, redirect }) {
-    if(!store.state.users.user_data.isLogin) {
+    if(!store.state.users.userData.isLogin) {
       redirect('/login');
       return false;
     }
@@ -60,7 +60,7 @@ export default {
           artist: this.artist,
           category: this.category,
           body: this.body,
-          user_id: this.$store.state.users.user_data.user_id 
+          user_id: this.$store.state.users.userData.userId 
         });
       } catch(error) {
         return;

@@ -1,7 +1,7 @@
 export const state = () => ({
-  user_data: {
-    user_name: '',
-    user_id: 0,
+  userData: {
+    userName: '',
+    userId: 0,
     isLogin: false,
     token: ''
   },
@@ -9,15 +9,15 @@ export const state = () => ({
 
 export const mutations = {
   login(state, data) {
-    state.user_data.user_name = data.name;
-    state.user_data.user_id = data.user_id; 
-    state.user_data.isLogin = true; 
-    state.user_data.token = data.token;
+    state.userData.userName = data.name;
+    state.userData.userId = data.user_id; 
+    state.userData.isLogin = true; 
+    state.userData.token = data.token;
   },
   logout(state) {
-    state.user_data.user_name = '';
-    state.user_data.user_id = ''; 
-    state.user_data.isLogin = false;
+    state.userData.userName = '';
+    state.userData.userId = ''; 
+    state.userData.isLogin = false;
   },
 };
 

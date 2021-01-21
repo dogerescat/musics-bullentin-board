@@ -9,7 +9,7 @@ passport.use(jwtAuth);
 router.get(
   '/',
   passport.authenticate('jwt', { session: false }),
-  postController.get
+  postController.read
 );
 router.post(
   '/create',

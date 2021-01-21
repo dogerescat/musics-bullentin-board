@@ -7,12 +7,12 @@
       　
       <div>
         <label class="comment-label" for="">コメント</label>
-        <textarea name="" id="" cols="60" rows="5"></textarea>
+        <textarea name="" id="" cols="60" rows="5" v-model="body"></textarea>
         　
       </div>
       <div class="button">
-        <button class="btn1" href="#">戻る</button>
-        <button class="btn2" href="#">コメント</button>
+        <button class="btn1 btn" @click="backPage">戻る</button>
+        <button class="btn2 btn" @click="comment" href="#">コメント</button>
       </div>
     </div>
   </div>
@@ -21,12 +21,38 @@
 <script>
 export default {
   validate({ store, redirect }) {
-    if(!store.state.users.user_data.isLogin) {
+    if(!store.state.users.userData.isLogin) {
       redirect('/login');
     }
     return true;
   },
-
+  data() {
+    return {
+      body: ''
+    }
+  },
+  methods: {
+    async comment() {
+      const config = {
+        headers: {
+          authorization: `Bearer ${this.$store.state.users.userData.token}`
+        }
+      }
+      const postData = {
+        body: this.body,
+        userId: this.$store.state.users.userData.userId
+      }
+      try {
+        const res = await this.$axios.$post(`/api/comments/create/${this.$route.params.postId}`, postData, config);
+      } catch(error) {
+        return;
+      }
+      this.$router.push(`/comments/${this.$route.params.postId}`);
+    },
+    backPage() {
+      this.$router.go(-1);
+    }
+  }
 };
 </script>
 
@@ -81,13 +107,14 @@ h1 {
 }
 .button {
   margin-top: 30px;
-  margin-left: 30px;
+  margin-left: 30%;
 }
 .comment-label {
   position: absolute;
   margin-left: 30px;
 }
 textarea {
+  padding: 10px;
   margin-top: 35px;
   margin-left: 20px;
 }

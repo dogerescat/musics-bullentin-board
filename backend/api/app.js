@@ -9,6 +9,8 @@ const bodyParser = require('body-parser');
 const postRouter = require('./routes/posts');
 const usersRouter = require('./routes/users');
 const postLikesRouter = require('./routes/post.likes');
+const commentRouter = require('./routes/comments');
+const commnetLikeRouter = require('./routes/comment.likes');
 const app = express();
 const session = require('express-session');
 
@@ -33,6 +35,9 @@ app.use(passport.initialize());
 app.use('/api/posts', postRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/post/likes', postLikesRouter);
+app.use('/api/comments', commentRouter);
+app.use('/api/comment/likes', commnetLikeRouter);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

@@ -1,5 +1,5 @@
 export const state = () => ({
-  error_data: {
+  errorData: {
     isError: false,
     message: ""
   }
@@ -7,11 +7,11 @@ export const state = () => ({
 
 export const mutations = {
   setError(state, msg) {
-    state.error_data.isError = true;
-    state.error_data.message = msg;
+    state.errorData.isError = true;
+    state.errorData.message = msg;
   },
   releaseError(state) {
-    state.error_data.isError = false;
-    state.error_data.message = '';
+    state.errorData.isError = false;
+    state.errorData.message = '';
   }
 };

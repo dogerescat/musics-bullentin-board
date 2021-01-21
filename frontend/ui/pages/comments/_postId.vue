@@ -1,10 +1,10 @@
 <template>
-  <div class="container">
-    <h1>投稿一覧</h1>
-    <div id="post" >
+  <div>
+    <h1>コメント一覧</h1>
+    <div id="comment-container" >
       <ul>
-        <li v-for="(post, index) in data.posts" :key="index" :id="index" >
-          <Post :data="data" :index="index" @deletePost="deleteList"/> 
+        <li v-for="(comment, index) in data.comments" :key="index" :id="index" >
+          <Comment :data="data" :index="index" @deleteComment="deleteComment" /> 
         </li>
       </ul>
     </div>
@@ -12,24 +12,24 @@
 </template>
 
 <script>
-import Post from '../../components/Post';
+import Comment from '../../components/Comment';
 export default {
   validate({ store, redirect }) {
     if(!store.state.users.userData.isLogin) {
       redirect('/login');
-      return false;
     }
     return true;
   },
-  async asyncData({ $axios, store }) {
-    if (process.server) {
+  components: { Comment },
+  async asyncData({ $axios, params, store }) {
+    if(process.server){
       const token = store.state.users.userData.token;
       const config = {
         headers: {
           authorization: `Bearer ${token}`,
         },
       };
-      let data = await $axios.$get('api/posts/', config);
+      let data = await $axios.$get(`api/comments/${params.postId}`, config);
       data = await JSON.parse(data);
       return { data };
     } else if(process.client) {
@@ -40,29 +40,22 @@ export default {
           authorization: `Bearer ${token}`,
         },
       };
-      let data = await $axios.$get('/api/posts/', config);
+      let data = await $axios.$get(`/api/comments/${params.postId}`, config);
       data = await JSON.parse(data);
       return { data };
     }
   },
-  components: {
-    Post,
-  },
   methods: {
-    deleteList(id) {
-      const li = document.getElementById(id);
+    deleteComment(index) {
+      const li = document.getElementById(index);
       li.remove();
-    },
+    }
   }
-};
+}
 </script>
 
 <style>
 ul {
-  list-style: none;
-}
-h1 {
-  margin: 15px;
-  text-align: center;
+  padding: 30px;
 }
 </style>
