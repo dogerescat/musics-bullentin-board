@@ -2,23 +2,19 @@
   <div class="container">
     <div class="search">
       <div class="title">
-        <h1>検索</h1>
+        <h1>アーティスト検索</h1>
       </div>
       <div class="select">
         <label for="">
           <h3>アーティスト名</h3>
         </label>
-        <select name="" id="">
-          <option value="">aaa</option>
-          <option value="">bbb</option>
-          <option value="">ccc</option>
-        </select>
+        <input type="text" v-model="artist">
       </div>
       <div class="button">
-        <button class="btn">検索</button>
+        <button class="btn" @click="search">検索</button>
       </div>
       <div class="other">
-        <NuxtLink to="/search/category"> カテゴリーで検索 </NuxtLink>
+        <NuxtLink class="category-link" to="/search/category/search"> カテゴリーで検索 </NuxtLink>
       </div>
     </div>
   </div>
@@ -33,7 +29,19 @@ export default {
     }
     return true;
   },
-
+  data() {
+    return {
+      artist: ''
+    }
+  },
+  methods: {
+    search() {
+      if(this.artist === '') {
+        return;
+      }
+      this.$router.push(`/search/artist/${this.artist}`);
+    }
+  }
 };
 </script>
 
@@ -91,5 +99,13 @@ select {
 }
 .select {
   display: inline;
+}
+.category-link {
+  font-size: 25px;
+}
+input {
+  padding: 5px;
+  width: 300px;
+  height: 40px;
 }
 </style>

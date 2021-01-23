@@ -4,7 +4,7 @@
     <div id="comment-container" >
       <ul>
         <li v-for="(comment, index) in data.comments" :key="index" :id="index" >
-          <Comment :data="data" :index="index" @deleteComment="deleteComment" /> 
+          <Comment :data="data" :index="index" @deleteComment="deleteList" /> 
         </li>
       </ul>
     </div>
@@ -31,6 +31,11 @@ export default {
       };
       let data = await $axios.$get(`api/comments/${params.postId}`, config);
       data = await JSON.parse(data);
+      
+      if(!data.result) {
+        store.commit('errors/setError', data.error);
+        return;
+      }
       return { data };
     } else if(process.client) {
       let token = localStorage.getItem('token');
@@ -42,11 +47,15 @@ export default {
       };
       let data = await $axios.$get(`/api/comments/${params.postId}`, config);
       data = await JSON.parse(data);
+      if(!data.result) {
+        store.commit('errors/setError', data.error);
+        return;
+      }
       return { data };
     }
   },
   methods: {
-    deleteComment(index) {
+    deleteList(index) {
       const li = document.getElementById(index);
       li.remove();
     }

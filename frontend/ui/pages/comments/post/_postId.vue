@@ -42,9 +42,10 @@ export default {
         body: this.body,
         userId: this.$store.state.users.userData.userId
       }
-      try {
-        const res = await this.$axios.$post(`/api/comments/create/${this.$route.params.postId}`, postData, config);
-      } catch(error) {
+      const res = await this.$axios.$post(`/api/comments/create/${this.$route.params.postId}`, postData, config);
+      const result = JSON.parse(res);
+      if(!result.result) {
+        this.$store.commit('errors/setError', result.error);
         return;
       }
       this.$router.push(`/comments/${this.$route.params.postId}`);

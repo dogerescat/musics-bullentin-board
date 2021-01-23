@@ -1,7 +1,8 @@
 <template>
   <div class="container">
-    <h1>投稿一覧</h1>
-    <div id="post" >
+    <h2>{{$route.params.category}}で検索した結果</h2>
+    <div class="post-non-message" v-if="!data.posts.length ">該当する投稿がありません。</div>
+    <div id="category">
       <ul>
         <li v-for="(post, index) in data.posts" :key="index" :id="index" >
           <Post :data="data" :index="index" @deletePost="deleteList"/> 
@@ -12,7 +13,7 @@
 </template>
 
 <script>
-import Post from '../../components/Post';
+import Post from '../../../components/Post';
 export default {
   validate({ store, redirect }) {
     if(!store.state.users.userData.isLogin) {
@@ -21,7 +22,7 @@ export default {
     }
     return true;
   },
-  async asyncData({ $axios, store }) {
+  async asyncData({ $axios, store, params }) {
     if (process.server) {
       const token = store.state.users.userData.token;
       const config = {
@@ -29,10 +30,11 @@ export default {
           authorization: `Bearer ${token}`,
         },
       };
-      let data = await $axios.$get('api/posts/', config);
+      let data = await $axios.$get(`/api/posts/search/category/${params.category}`, config);
       data = await JSON.parse(data);
       if(!data.result) {
         store.commit('errors/setError', data.error);
+        return;
       }
       return { data };
     } else if(process.client) {
@@ -43,10 +45,11 @@ export default {
           authorization: `Bearer ${token}`,
         },
       };
-      let data = await $axios.$get('/api/posts/', config);
+      let data = await $axios.$get(`/api/posts/search/category/${params.category}`, config);
       data = await JSON.parse(data);
       if(!data.result) {
-        store.commit('errors/setError', data.error);
+        this.$store.commit('errors/setError', data.error);
+        return;
       }
       return { data };
     }
@@ -63,12 +66,19 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 ul {
   list-style: none;
 }
-h1 {
-  margin: 15px;
+h2 {
+  margin: 20px;
+  margin-top: 20px;
+  text-align: center;
+}
+.post-non-message {
+  font-size: 20px;
+  margin: 0 auto;  
+  margin-top: 100px;
   text-align: center;
 }
 </style>

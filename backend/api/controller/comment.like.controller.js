@@ -6,11 +6,8 @@ module.exports = {
       if (error) {
         return;
       }
-      let data = {
-        result: true,
-      };
-      data = JSON.stringify(data);
-      res.json(data);
+      const response = JSON.stringify({ result: true});
+      res.json(response);
     });
   },
   delete: (req, res) => {
@@ -18,11 +15,8 @@ module.exports = {
       if (error) {
         return;
       }
-      let data = {
-        result: true,
-      };
-      data = JSON.stringify(data);
-      res.json(data);
+      const response = JSON.stringify({ result: true});
+      res.json(response);
     });
   },
 };

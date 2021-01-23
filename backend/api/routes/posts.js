@@ -21,6 +21,14 @@ router.get(
   passport.authenticate('jwt', {session: false}),
   postController.getEdit
 );
+router.get(
+  '/search/category/:category',
+  postController.searchCategory
+);
+router.get(
+  '/search/artist/:artist', 
+  postController.searchArtist
+);
 router.put(
   '/update/:id',
   passport.authenticate('jwt', {session: false}),

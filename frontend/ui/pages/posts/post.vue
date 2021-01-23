@@ -45,32 +45,33 @@ export default {
     return {
       title: '',
       artist: '',
-      category: '',
+      category: 'j-pop',
       body: '',
     }
   },
   methods: {
-    postArticle() {
+    async postArticle() {
       if (this.title === '' || this.artist === '' || this.category === '' || this.body === '') {
         return;
       }
-      try {
-        this.post({
-          title: this.title,
-          artist: this.artist,
-          category: this.category,
-          body: this.body,
-          user_id: this.$store.state.users.userData.userId 
-        });
-      } catch(error) {
+      const result = await this.post({
+        title: this.title,
+        artist: this.artist,
+        category: this.category,
+        body: this.body,
+        user_id: this.$store.state.users.userData.userId 
+      });
+      if(!result.result) {
+        this.$store.commit('errors/setError', result.error);
         return;
-      } finally {
-        this.$router.push('/posts');
       }
+      this.$router.push('/posts');
     },
     async post(postData) {
       const config = this.getData();
       const res = await this.$axios.$post('/api/posts/create', postData, config);
+      const result =  JSON.parse(res);
+      return result;
     },
     getData() {
       let token = localStorage.getItem('token');

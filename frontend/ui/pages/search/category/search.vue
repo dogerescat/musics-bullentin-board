@@ -2,23 +2,24 @@
   <div class="container">
     <div class="search">
       <div class="title">
-        <h1>検索</h1>
+        <h1>カテゴリー検索</h1>
       </div>
       <div class="select">
         <label for="">
           <h3>カテゴリー</h3>
         </label>
-        <select name="" id="">
-          <option value="">aaa</option>
-          <option value="">bbb</option>
-          <option value="">ccc</option>
-        </select>
+        <select name="category" id="" v-model="category">
+            <option value="j-pop">j-pop</option>
+            <option value="洋楽">洋楽</option>
+            <option value="クラシック">クラシック</option>
+            <option value="アニメソング">アニメソング</option>
+          </select>
       </div>
       <div class="button">
-        <button class="btn">検索</button>
+        <button class="btn" @click="search">検索</button>
       </div>
       <div class="other">
-        <NuxtLink to="/search/artist"> アーティスト名で検索 </NuxtLink>
+        <NuxtLink class="artist-link" to="/search/artist/search"> アーティスト名で検索 </NuxtLink>
       </div>
     </div>
   </div>
@@ -33,7 +34,16 @@ export default {
     }
     return true;
   },
-
+  data() {
+    return {
+      category: 'j-pop'
+    }
+  },
+  methods: {
+    search() {
+      this.$router.push(`/search/category/${this.category}`) 
+    }
+  }
 };
 </script>
 
@@ -91,5 +101,8 @@ select {
 }
 .select {
   display: inline;
+}
+.artist-link {
+  font-size: 25px;
 }
 </style>

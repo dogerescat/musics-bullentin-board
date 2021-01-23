@@ -122,19 +122,20 @@ export default {
       this.$router.push(`/comments/${this.data.posts[this.index].post_id}`);
     },
     async deletePost() {
-      try {
-        let token = localStorage.getItem('token');
-        token = JSON.parse(token);
-        const config = {
-          headers: {
-            authorization: `Bearer ${token}`
-          }
+      let token = localStorage.getItem('token');
+      token = JSON.parse(token);
+      const config = {
+        headers: {
+          authorization: `Bearer ${token}`
         }
-        const postId = this.data.posts[this.index].post_id;
-        const res = await this.$axios.$delete(`api/posts/delete/${postId}`,config);
-      } catch(error) {
-        return;
       }
+      const postId = this.data.posts[this.index].post_id;
+      const res = await this.$axios.$delete(`api/posts/delete/${postId}`,config);
+      const result = JSON.parse(res);
+      if(!result.result) {
+        this.$store.commit('errors/setError', result.error);
+        return;
+      }; 
       this.$emit('deletePost', this.index);
     }
   },

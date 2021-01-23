@@ -8,7 +8,7 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const postRouter = require('./routes/posts');
 const usersRouter = require('./routes/users');
-const postLikesRouter = require('./routes/post.likes');
+const postLikeRouter = require('./routes/post.likes');
 const commentRouter = require('./routes/comments');
 const commnetLikeRouter = require('./routes/comment.likes');
 const app = express();
@@ -29,15 +29,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({ origin: true, credentials: true }));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 
 app.use('/api/posts', postRouter);
 app.use('/api/users', usersRouter);
-app.use('/api/post/likes', postLikesRouter);
+app.use('/api/post/likes', postLikeRouter);
 app.use('/api/comments', commentRouter);
 app.use('/api/comment/likes', commnetLikeRouter);
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

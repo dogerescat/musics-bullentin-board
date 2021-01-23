@@ -16,6 +16,18 @@ module.exports = {
       callback
     );
   },
+  searchCategory: (category, callback) => {
+    connection.query(
+      `select * from posts where category = '${category}'`,
+      callback
+    ); 
+  },
+  searchArtist: (artist, callback) => {
+    connection.query(
+      `select * from posts where artist = '${artist}'`,
+      callback
+    )
+  },
   update: (id, body, callback) => {
     connection.query(
       `update posts set title = ?, artist = ?, category = ?, body = ? where post_id = ?`,
