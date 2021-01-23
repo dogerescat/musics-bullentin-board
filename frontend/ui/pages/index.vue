@@ -47,26 +47,20 @@ export default {
   methods: {
     async signUp() {
       if (this.name === '' || this.email === '' || this.password === '') {
-        alert('全て入力してください');
         return;
       } else if (this.password !== this.confirmation) {
         alert('パスワードが一致しません');
         return;
       }
-      try {
-        const data = await this.$store.dispatch('users/signUp', {
-          name: this.name,
-          email: this.email,
-          password: this.password,
-          confirmation: this.confirmation
-        });
-
-        if(!data.result) {
-          return;
-        }
-      } catch (error) {
+      const data = await this.$store.dispatch('users/signUp', {
+        name: this.name,
+        email: this.email,
+        password: this.password,
+        confirmation: this.confirmation
+      });
+      if(!data.result) {
         return;
-      } 
+      }
       this.name = '';
       this.email = '';
       this.password = '';

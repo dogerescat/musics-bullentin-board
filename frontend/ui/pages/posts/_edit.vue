@@ -44,16 +44,20 @@ export default {
     }
     return true;
   },
-  async asyncData({$axios, params}) {
-    let token = localStorage.getItem('token');
-    token = JSON.parse(token);
+  async asyncData({$axios, params, store}) {
+    const token = store.state.users.userData.token;
     const config = {
       headers: {
         authorization: `Bearer ${token}`,
       },
     };
-    let post = await $axios.$get(`/api/posts/${params.edit}`, config);
-    post = await JSON.parse(post);
+    const res = await $axios.$get(`/api/posts/${params.edit}`, config);
+    const data = await JSON.parse(res);
+    if(!data.result) {
+      store.commit('errors/setError', data.error);
+      return;
+    }
+    const post = data.post;
     return { post };
   },
   methods: {
@@ -71,21 +75,27 @@ export default {
       this.$router.push('/posts');
     },
     async edit(editData) {
-      const config = this.getToken();
-      const res = await this.$axios.$put(`/api/posts/update/${this.$route.params.edit}`, editData, config);
-      const result = JSON.parse(res);
-      return result;
-    },
-    getToken() {
-      let token = localStorage.getItem('token');
-      token = JSON.parse(token);
+      // const config = this.getToken();
+      const token = this.$store.state.users.userData.token;
       const config = {
         headers: {
           authorization: `Bearer ${token}`
         }
       }
-      return config;
+      const res = await this.$axios.$put(`/api/posts/update/${this.$route.params.edit}`, editData, config);
+      const result = JSON.parse(res);
+      return result;
     },
+    // getToken() {
+    //   let token = localStorage.getItem('token');
+    //   token = JSON.parse(token);
+    //   const config = {
+    //     headers: {
+    //       authorization: `Bearer ${token}`
+    //     }
+    //   }
+    //   return config;
+    // },
     backPage() {
       this.$router.go(-1);
     }

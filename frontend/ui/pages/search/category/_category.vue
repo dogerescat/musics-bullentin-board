@@ -23,36 +23,19 @@ export default {
     return true;
   },
   async asyncData({ $axios, store, params }) {
-    if (process.server) {
-      const token = store.state.users.userData.token;
-      const config = {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      };
-      let data = await $axios.$get(`/api/posts/search/category/${params.category}`, config);
-      data = await JSON.parse(data);
-      if(!data.result) {
-        store.commit('errors/setError', data.error);
-        return;
-      }
-      return { data };
-    } else if(process.client) {
-      let token = localStorage.getItem('token');
-      token = JSON.parse(token);
-      const config = {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      };
-      let data = await $axios.$get(`/api/posts/search/category/${params.category}`, config);
-      data = await JSON.parse(data);
-      if(!data.result) {
-        this.$store.commit('errors/setError', data.error);
-        return;
-      }
-      return { data };
-    }
+    const token = store.state.users.userData.token;
+    const config = {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    };
+    let data = await $axios.$get(`/api/posts/search/category/${params.category}`, config);
+    data = await JSON.parse(data);
+    if(!data.result) {
+      store.commit('errors/setError', data.error);
+      return;
+    };
+    return { data };
   },
   components: {
     Post,

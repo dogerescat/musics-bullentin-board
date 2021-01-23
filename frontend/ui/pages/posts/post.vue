@@ -68,21 +68,27 @@ export default {
       this.$router.push('/posts');
     },
     async post(postData) {
-      const config = this.getData();
-      const res = await this.$axios.$post('/api/posts/create', postData, config);
-      const result =  JSON.parse(res);
-      return result;
-    },
-    getData() {
-      let token = localStorage.getItem('token');
-      token = JSON.parse(token);
+      // const config = this.getData();
+      const token = this.$store.state.users.userData.token;
       const config = {
         headers: {
           authorization: `Bearer ${token}`
         }
-      }
-      return config;
+      };
+      const res = await this.$axios.$post('/api/posts/create', postData, config);
+      const result =  JSON.parse(res);
+      return result;
     },
+    // getData() {
+    //   let token = localStorage.getItem('token');
+    //   token = JSON.parse(token);
+    //   const config = {
+    //     headers: {
+    //       authorization: `Bearer ${token}`
+    //     }
+    //   }
+    //   return config;
+    // },
   }
 };
 </script>

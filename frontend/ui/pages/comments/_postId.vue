@@ -22,37 +22,19 @@ export default {
   },
   components: { Comment },
   async asyncData({ $axios, params, store }) {
-    if(process.server){
-      const token = store.state.users.userData.token;
-      const config = {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      };
-      let data = await $axios.$get(`api/comments/${params.postId}`, config);
-      data = await JSON.parse(data);
-      
-      if(!data.result) {
-        store.commit('errors/setError', data.error);
-        return;
-      }
-      return { data };
-    } else if(process.client) {
-      let token = localStorage.getItem('token');
-      token = JSON.parse(token);
-      const config = {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      };
-      let data = await $axios.$get(`/api/comments/${params.postId}`, config);
-      data = await JSON.parse(data);
-      if(!data.result) {
-        store.commit('errors/setError', data.error);
-        return;
-      }
-      return { data };
+    const token = store.state.users.userData.token;
+    const config = {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    };
+    let data = await $axios.$get(`api/comments/${params.postId}`, config);
+    data = await JSON.parse(data);
+    if(!data.result) {
+      store.commit('errors/setError', data.error);
+      return;
     }
+    return { data };
   },
   methods: {
     deleteList(index) {

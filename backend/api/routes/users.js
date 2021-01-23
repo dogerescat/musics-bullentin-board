@@ -5,7 +5,7 @@ const registerValidation = require('../middleware/validator/registerValidator');
 const loginValidation = require('../middleware/validator/loginValidator');
 
 router.post('/', registerValidation, userController.create);
-router.get('/verify/:id/:hash',userController.signUp);
+router.get('/verify/:id/:hash', userController.signUp);
 router.post('/login', loginValidation, userController.login);
 router.get('/login/jwt', userController.loginJwt);
 router.get('/logout', userController.logout);

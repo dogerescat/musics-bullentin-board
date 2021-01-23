@@ -43,31 +43,27 @@
                 {{userName}}
               </NuxtLink>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <button class="dropdown-item" @click="switchLoginUser">Logout</button>
+                <button class="dropdown-item" @click="logout">Logout</button>
               </div>
             </li>
           </ul>
         </div>
       </div>
     </nav>
-    <div class="error"  v-if="isError">
+    <div class="error"  v-if="isError || isSignUp">
       <modal name="modal"></modal>
     </div>
     <Nuxt/>
   </div>
 </template>
 <script>
-import ErrorModal from '../components/ErrorModal';
+import ModalMessage from '../components/ModalMessage';
 export default {
-  components: {ErrorModal},
+  components: { ModalMessage },
   methods: {
-    switchLoginUser() {
+    logout() {
       this.$store.commit('users/logout');
-      this.deleteToken();
       this.deleteSession();
-    },
-    deleteToken() {
-      localStorage.removeItem('token');
       this.$router.push('/login');
     },
     async deleteSession() {
@@ -75,19 +71,36 @@ export default {
     },
     showError() {
       this.$modal.show(
-        ErrorModal,
+        ModalMessage,
         {
-          errorMessage: this.errorMessage,
+          message: this.errorMessage,
           title: 'エラーが発生しました。',
         },
-        { height: 100 },
+        { 
+          height: 100 },
         { 
           'before-close': () => {
             this.$store.commit('errors/releaseError');
           } 
         }
-      )
-    }
+      );
+    },
+    showSignUp() {
+      this.$modal.show(
+        ModalMessage,
+        {
+          message: this.signUpMessage,
+          title: '本登録を済ませてください。',
+        },
+        { 
+          height: 100 },
+        { 
+          'before-close': () => {
+            this.$store.commit('users/completeSignUp');
+          } 
+        }
+      );
+    },
   },
   computed: {
     userName() {
@@ -105,6 +118,15 @@ export default {
     errorMessage() {
       return this.$store.state.errors.errorData.message;
     },
+    isSignUp() {
+      if(this.$store.state.users.userData.signUp.isSignUp) {
+        this.showSignUp();
+      }
+      return this.$store.state.users.userData.signUp.isSignUp;
+    },
+    signUpMessage() {
+      return this.$store.state.users.userData.signUp.message;
+    }
   }
 };
 </script>

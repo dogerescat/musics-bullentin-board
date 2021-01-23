@@ -64,18 +64,30 @@ export default {
   },
   methods: {
     async onLike() {
-      const res = await this.$axios.$post(`api/comment/likes/${this.data.comments[this.index].comment_id}/${this.$store.state.users.userData.userId}`);
-      const result = await JSON.parse(res);
-      if (!result.result) {
+      const config = {
+        headers: {
+          authorization: `Bearer ${this.$store.state.users.userData.token}`
+        }
+      }
+      const res = await this.$axios.$post(`api/comment/likes/${this.data.comments[this.index].comment_id}/${this.$store.state.users.userData.userId}`, null, config);
+      const data = await JSON.parse(res);
+      if (!data.result) {
+        this.$store.commit('errors/setError', data.error);
         return;
       }
       this.increaseLikeCounter();
       this.switchLike();
     },
     async offLike() {
-      const res = await this.$axios.$delete(`api/comment/likes/delete/${this.data.comments[this.index].comment_id}/${this.$store.state.users.userData.userId}`);
-      const result = await JSON.parse(res);
-      if (!result.result) {
+      const config = {
+        headers: {
+          authorization: `Bearer ${this.$store.state.users.userData.token}`
+        }
+      }
+      const res = await this.$axios.$delete(`api/comment/likes/delete/${this.data.comments[this.index].comment_id}/${this.$store.state.users.userData.userId}`, config);
+      const data = await JSON.parse(res);
+      if (!data.result) {
+        this.$store.commit('errors/setError', data.error);
         return;
       }
       this.decreaseLikeCounter();
@@ -94,20 +106,20 @@ export default {
       this.$router.push(`/comments/edit/${this.data.comments[this.index].comment_id}`);
     },
     async deleteComment() {
-      try {
-        let token = localStorage.getItem('token');
-        token = JSON.parse(token);
-        const config = {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        };
-        const commentId = this.data.comments[this.index].comment_id;
-        const res = await this.$axios.$delete(
-          `api/comments/delete/${commentId}`,
-          config
-        );
-      } catch (error) {
+      const token = this.$store.state.users.userData.token;
+      const config = {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      };
+      const commentId = this.data.comments[this.index].comment_id;
+      const res = await this.$axios.$delete(
+        `api/comments/delete/${commentId}`,
+        config
+      );
+      const data = JSON.parse(res);
+      if(!data.result) {
+        this.$store.commit('errors/setError', data.error);
         return;
       }
       this.$emit('deleteComment', this.index);

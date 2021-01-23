@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h3>{{ title }}</h3>
-    <p>{{ errorMessage }}</p>
+    <h3>{{title}}</h3>
+    <p>{{ message }}</p>
   </div>
 </template>
 
@@ -9,7 +9,7 @@
 export default {
   name: 'ErrorModal',
   props: {
-    errorMessage: {
+    message: {
       type: String,
     },
     title: {

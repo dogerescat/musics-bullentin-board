@@ -21,15 +21,12 @@
 
 <script>
 export default {
-  async asyncData({ $axios, redirect }) {
-    if(process.server) {
-      let res = await $axios.get('/api/users/login/jwt');
-      const data = JSON.parse(res.data);
-      if(data.result) {
-        redirect('/posts');
-        return;
-      }
+  validate({ store, redirect }) {
+    if(store.state.users.userData.isLogin) {
+      redirect('/posts');
+      return false;
     }
+    return true;
   },
   data() {
     return {
@@ -40,26 +37,16 @@ export default {
   methods: {
     async login() {
       if (this.email === '' || this.password === '') {
-        alert('全て入力してください');
         return;
       }
-      try {
-        const data = await this.$store.dispatch('users/login', {
-          email: this.email,
-          password: this.password,
-        });
-        if(data.error) {
-          throw new Error(data.error);
-        }
-        this.saveToken(data);
-      } catch(error) {
+      const data = await this.$store.dispatch('users/login', {
+        email: this.email,
+        password: this.password,
+      });
+      if(!data.result) {
         return;
-      } 
+      }
       this.$router.push('/posts');
-    },
-    saveToken(data) {
-      const token = JSON.stringify(data.token);
-      localStorage.setItem('token', token);
     },
   },
 };

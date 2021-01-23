@@ -1,11 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const commentController = require('../controller/comment.controller');
+const contentValidation = require('../middleware/validator/contentValidator');
+const passport = require('passport');
+const jwtAuth = require('../middleware/auth/jwtAuth');
 
-router.get('/:postId',commentController.read);
-router.get('/edit/:commentId', commentController.getEdit);
-router.post('/create/:postId', commentController.create);
-router.put('/update/:commentId', commentController.update);
-router.delete('/delete/:commentId', commentController.delete);
+passport.use(jwtAuth);
+
+router.get('/:postId', passport.authenticate('jwt', {session: false}), commentController.read);
+router.get('/edit/:commentId', passport.authenticate('jwt', {session: false}),commentController.getEdit);
+router.post('/create/:postId', passport.authenticate('jwt', {session: false}), contentValidation, commentController.create);
+router.put('/update/:commentId', passport.authenticate('jwt', {session: false}), contentValidation, commentController.update);
+router.delete('/delete/:commentId', passport.authenticate('jwt', {session: false}), commentController.delete);
 
 module.exports = router;

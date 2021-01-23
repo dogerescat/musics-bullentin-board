@@ -7,7 +7,7 @@
       <div>
         <label class="comment-label" for="">コメント</label>
         <textarea
-          v-model="data.comment.body"
+          v-model="comment.body"
           name=""
           id=""
           cols="60"
@@ -46,7 +46,8 @@ export default {
       store.commit("errors/setError", data.error);
       return;
     }
-    return { data };
+    const comment = data.comment;
+    return { comment };
   },
   methods: {
     async edit() {

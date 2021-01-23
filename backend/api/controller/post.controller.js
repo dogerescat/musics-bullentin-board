@@ -2,6 +2,7 @@ const Post = require('../model/post');
 const User = require('../model/user');
 const PostLike = require('../model/post.like');
 const Comment = require('../model/comment');
+const { validationResult } = require('express-validator');
 
 const createErrorMessage = (msg) => {
   let message = {error: msg};
@@ -48,6 +49,11 @@ module.exports = {
     });
   },
   create: (req, res) => {
+    const validationErrors = validationResult(req);
+    if(!validationErrors.isEmpty()) {
+      const response = createErrorMessage(validationErrors.errors[0].msg);
+      return res.json(response);
+    }
     Post.create(req.body, (error, result) => {
       if (error) {
         const response = createErrorMessage('投稿できませんでした。');
@@ -61,7 +67,7 @@ module.exports = {
   getEdit: (req, res) => {
     Post.readPostId(req.params.id, (error, post) => {
       if(error) {
-        const response = createErrorMessage('投稿できませんでした。');
+        const response = createErrorMessage('投稿情報を取得できませんでした。');
         res.json(response);
         return;
       }
@@ -150,6 +156,11 @@ module.exports = {
     });
   },
   update: (req, res) => {
+    const validationErrors = validationResult(req);
+    if(!validationErrors.isEmpty()) {
+      const response = createErrorMessage(validationErrors.errors[0].msg);
+      return res.json(response);
+    }
     Post.update(req.params.id, req.body,(error,result) => {
       if(error) {
         const response = createErrorMessage('更新に失敗しました。');

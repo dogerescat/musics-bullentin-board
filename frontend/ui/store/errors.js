@@ -1,7 +1,7 @@
 export const state = () => ({
   errorData: {
     isError: false,
-    message: ""
+    message: ''
   }
 });
 

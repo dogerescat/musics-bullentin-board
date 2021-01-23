@@ -35,6 +35,7 @@ const createToken = (user, msg) => {
   };
   const token = jwt.sign(data, env.SECRET_KEY, option);
   data.token = token;
+  data.result = true;
   data.msg = msg;
   data = JSON.stringify(data);
   return {data, token};
@@ -128,7 +129,6 @@ module.exports = {
       return res.json(response);
     }
     User.readEmail(req.body.email, (error, result) => {
-      console.log(!result[0].length)
       if(result[0].length === 0) {
         const response = createErrorMessage('ユーザーが見つかりません。');
         return res.json(response);

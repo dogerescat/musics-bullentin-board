@@ -1,6 +1,7 @@
 const Comment = require('../model/comment');
 const User = require('../model/user');
 const CommentLike = require('../model/comment.like');
+const { validationResult } = require('express-validator');
 
 const createErrorMessage = (msg) => {
   let message = {error: msg};
@@ -10,6 +11,11 @@ const createErrorMessage = (msg) => {
 
 module.exports = {
   create: (req, res) => {
+    const validationErrors = validationResult(req);
+    if(!validationErrors.isEmpty()) {
+      const response = createErrorMessage(validationErrors.errors[0].msg);
+      return res.json(response);
+    }
     Comment.create(req.params.postId, req.body, (error, result) => {
       if (error) {
         const response = createErrorMessage('投稿に失敗しました。');
@@ -67,6 +73,11 @@ module.exports = {
     });
   },
   update: (req, res) => {
+    const validationErrors = validationResult(req);
+    if(!validationErrors.isEmpty()) {
+      const response = createErrorMessage(validationErrors.errors[0].msg);
+      return res.json(response);
+    }
     Comment.update(req.body.body, req.params.commentId, (error, result) => {
       if (error) {
         const response = createErrorMessage('更新に失敗しました。');
@@ -81,13 +92,13 @@ module.exports = {
     });
   },
   delete: (req, res) => {
-    Comment.delete(req.params.commentId, (error, result) => {
+    Comment.delete(req.params.commentId, (error) => {
       if (error) {
         const response = createErrorMessage('削除にに失敗しました。');
         res.json(response);
         return;
       }
-      CommentLike.deleteComment(req.params.commentId, (err, resu) => {
+      CommentLike.deleteComment(req.params.commentId, (err) => {
         const response = JSON.stringify({result: true});
         res.json(response);
       });
