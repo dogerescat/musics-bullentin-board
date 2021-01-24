@@ -29,4 +29,12 @@ module.exports = {
       callback
     );
   },
+  snsFindEmail: (sns,callback) => {
+    connection.query(`select * from users where email = '${sns.email}'`, callback);
+  },
+  snsCreate: ( sns, callback) => {
+    connection.query(
+      `insert into users set name = '${sns.displayName}', email = '${sns.emails[0].value}'`,callback
+    );
+  }
 };

@@ -11,6 +11,7 @@ const usersRouter = require('./routes/users');
 const postLikeRouter = require('./routes/post.likes');
 const commentRouter = require('./routes/comments');
 const commnetLikeRouter = require('./routes/comment.likes');
+const oauthRouter = require('./routes/oauth');
 const app = express();
 const session = require('express-session');
 
@@ -37,6 +38,7 @@ app.use('/api/users', usersRouter);
 app.use('/api/post/likes', postLikeRouter);
 app.use('/api/comments', commentRouter);
 app.use('/api/comment/likes', commnetLikeRouter);
+app.use('/api/oauth', oauthRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

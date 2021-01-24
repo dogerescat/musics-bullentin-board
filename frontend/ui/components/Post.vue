@@ -191,7 +191,7 @@ export default {
 }
 .post-container {
   width: 85%;
-  height: 350px;
+  height: 400px;
   border: 1px solid;
   padding: 20px;
   margin: 40px auto;
@@ -225,8 +225,9 @@ export default {
 }
 .post-body {
   width: 70%;
-  height: 70px;
+  height: 100px;
   margin: 0 auto;
+  word-wrap: normal;
 }
 .button {
   width: 40%;
@@ -243,6 +244,7 @@ export default {
   text-align: left;
   display: inline-block;
   margin-right: 500px;
+  margin-top: 10px;
   width: 300px;
   height: 30px;
 }

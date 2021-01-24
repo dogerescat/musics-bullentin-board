@@ -66,6 +66,10 @@ export default {
         set: '@fortawesome/free-regular-svg-icons',
         icons: ['far'],
       },
+      {
+        set: '@fortawesome/free-brands-svg-icons',
+        icons: ['fab']
+      }
     ],
   },
   // Build Configuration (https://go.nuxtjs.dev/config-build)

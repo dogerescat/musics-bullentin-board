@@ -13,9 +13,23 @@
           <label for="">Password</label>
           <input type="password" v-model="password" />
         </div>
-        <button class="btn" @click="login" href="#">ログイン</button>
+        <button class="btn login-btn" @click="login" href="#">ログイン</button>
       </div>
     </div>
+        <div class="oauth">
+          <div class="btn google-auth-btn" @click="loginGoogle">
+            <font-awesome-icon :icon="['fab','google']" style="color: #fff; font-size: 23px; margin-top: 5px;"/>
+            <a>Sign In with Google</a>
+          </div>
+          <div class="btn twitter-auth-btn">
+            <font-awesome-icon :icon="['fab','twitter']" style="color: #fff; font-size: 23px; margin-top: 5px;"/>
+            <a>Sign In with Twitter</a>
+          </div>
+          <div class="btn github-auth-btn">
+            <font-awesome-icon :icon="['fab','github']" style="color: #fff; font-size: 23px; margin-top: 5px; margin-right: 5px;"/>
+            <a>Sign In with github</a>
+          </div>
+        </div>
   </div>
 </template>
 
@@ -48,6 +62,15 @@ export default {
       }
       this.$router.push('/posts');
     },
+    loginGoogle() {
+      open('/api/oauth/google');  
+      setInterval(() => {
+        this.doReroad();
+      }, 5000);
+    },
+    doReroad() {
+      location.reload();
+    }
   },
 };
 </script>
@@ -79,7 +102,7 @@ h1 {
   top: 30%;
   left: 30%;
 }
-.btn {
+.login-btn {
   display: block;
   height: 50px;
   width: 150px;
@@ -102,5 +125,44 @@ input {
 label {
   color: #474747;
   margin-right: 20px;
+}
+.oauth {
+  width: 60%;
+  height: 300px;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+.google-auth-btn {
+  display: block;
+  text-align: right;
+  width: 250px;
+  height: 50px;
+  margin: 10px auto;
+  background-color:#ce5c65;
+  font-size: 20px;
+}
+.twitter-auth-btn {
+  display: block;
+  text-align: right;
+  width: 250px;
+  height: 50px;
+  margin: 10px auto;
+  margin-top: 15px;
+  background-color:#51abf5;
+  font-size: 20px;
+}
+.github-auth-btn {
+  display: block;
+  text-align: right;
+  width: 250px;
+  height: 50px;
+  margin: 10px auto;
+  margin-top: 15px;
+  background-color: #424649;
+  font-size: 20px;
+}
+a {
+  margin-left: 15px;
+  color: #fff;
 }
 </style>
