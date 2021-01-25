@@ -21,7 +21,7 @@
             <font-awesome-icon :icon="['fab','google']" style="color: #fff; font-size: 23px; margin-top: 5px;"/>
             <a>Sign In with Google</a>
           </div>
-          <div class="btn twitter-auth-btn">
+          <div class="btn twitter-auth-btn" @click="loginTwitter">
             <font-awesome-icon :icon="['fab','twitter']" style="color: #fff; font-size: 23px; margin-top: 5px;"/>
             <a>Sign In with Twitter</a>
           </div>
@@ -64,6 +64,12 @@ export default {
     },
     loginGoogle() {
       open('/api/oauth/google');  
+      setInterval(() => {
+        this.doReroad();
+      }, 5000);
+    },
+    loginTwitter() {
+      open('/api/oauth/twitter');  
       setInterval(() => {
         this.doReroad();
       }, 5000);

@@ -15,6 +15,9 @@ const oauthRouter = require('./routes/oauth');
 const app = express();
 const session = require('express-session');
 
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
 app.use(session({
   secret: 'secret',
   resave: true,

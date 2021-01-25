@@ -1,13 +1,12 @@
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-// require('dotenv').config();
-// const env = process.env;
+const TwitterStrategy = require('passport-twitter').Strategy;
 const User = require('../../model/user');
 
-module.exports = new GoogleStrategy(
+module.exports = new TwitterStrategy(
   {
-    clientID: '321065443441-22c8rscuq09lat0c8kd9gg7arcv5juhp.apps.googleusercontent.com',
-    clientSecret: 'na2xf6tCX-jYEI_KaREbonvQ',
-    callbackURL: 'http://localhost:3000/api/oauth/google/callback',
+    consumerKey: '45r1t0f1uYVZENKbj13dk74Sd',
+    consumerSecret: 'f2ZkexUrjLqe3uNgWUFkJ9JJrq3niHJKQubKtky3B4ewqdwU79',
+    callbackURL: "http://localhost:3000/api/oauth/twitter/callback",
+    includeEmail: true
   },
   function (token, tokenSecret, profile, done) {
     User.snsFindEmail({ email: profile.emails[0].value }, function (err, user) {

@@ -21,8 +21,12 @@ const createToken = (user) => {
 
 module.exports = {
   snsLogin: (req, res) => {
+    if(req.authInfo.message) {
+      res.render('message.ejs', { message: req.authInfo.message });
+      return;
+    }
     const response = createToken(req.user);
     req.session.accessToken = `Bearer ${response.token}`;
-    res.send('ログイン完了');
+    res.render('message.ejs', { message: 'ログイン完了しました。'});
   },
 };

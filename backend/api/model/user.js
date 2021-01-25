@@ -34,7 +34,7 @@ module.exports = {
   },
   snsCreate: ( sns, callback) => {
     connection.query(
-      `insert into users set name = '${sns.displayName}', email = '${sns.emails[0].value}'`,callback
+      `insert into users set name = '${sns.displayName}', email = '${sns.emails[0].value}', sns = '${sns.provider}'`,callback
     );
   }
 };

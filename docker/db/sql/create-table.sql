@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS `users` (
     `email` VARCHAR(40) NOT NULL,
     `password` VARCHAR(80),
     `emailVerifiedAt` DATETIME(6) NULL,
+    `sns` VARCHAR(10),
     PRIMARY KEY (`user_id`)
 )DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
