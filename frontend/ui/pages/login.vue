@@ -25,9 +25,9 @@
             <font-awesome-icon :icon="['fab','twitter']" style="color: #fff; font-size: 23px; margin-top: 5px;"/>
             <a>Sign In with Twitter</a>
           </div>
-          <div class="btn github-auth-btn">
+          <div class="btn github-auth-btn" @click="loginGithub">
             <font-awesome-icon :icon="['fab','github']" style="color: #fff; font-size: 23px; margin-top: 5px; margin-right: 5px;"/>
-            <a>Sign In with github</a>
+            <a>Sign In with Github</a>
           </div>
         </div>
   </div>
@@ -70,6 +70,12 @@ export default {
     },
     loginTwitter() {
       open('/api/oauth/twitter');  
+      setInterval(() => {
+        this.doReroad();
+      }, 5000);
+    },
+    loginGithub() {
+      open('/api/oauth/github');  
       setInterval(() => {
         this.doReroad();
       }, 5000);

@@ -1,12 +1,12 @@
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-// require('dotenv').config();
-// const env = process.env;
+require('dotenv').config();
+const env = process.env;
 const User = require('../../model/user');
 
 module.exports = new GoogleStrategy(
   {
-    clientID: '321065443441-22c8rscuq09lat0c8kd9gg7arcv5juhp.apps.googleusercontent.com',
-    clientSecret: 'na2xf6tCX-jYEI_KaREbonvQ',
+    clientID: env.GOOGLE_CLIENT_KEY,
+    clientSecret: env.GOOGLE_CLIENT_SECRET,
     callbackURL: 'http://localhost:3000/api/oauth/google/callback',
   },
   function (token, tokenSecret, profile, done) {

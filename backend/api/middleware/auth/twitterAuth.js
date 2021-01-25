@@ -1,10 +1,12 @@
 const TwitterStrategy = require('passport-twitter').Strategy;
 const User = require('../../model/user');
+require('dotenv').config();
+const env = process.env;
 
 module.exports = new TwitterStrategy(
   {
-    consumerKey: '45r1t0f1uYVZENKbj13dk74Sd',
-    consumerSecret: 'f2ZkexUrjLqe3uNgWUFkJ9JJrq3niHJKQubKtky3B4ewqdwU79',
+    consumerKey: env.TWITTER_CONSUMER_KEY,
+    consumerSecret: env.TWITTER_CONSUMER_SECRET,
     callbackURL: "http://localhost:3000/api/oauth/twitter/callback",
     includeEmail: true
   },
