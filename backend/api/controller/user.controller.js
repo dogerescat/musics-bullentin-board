@@ -16,10 +16,10 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-const blockLogin = (req) => {
+const saveThirtyMinutesLater = (req) => {
   const now = new Date();
-  const atTime  = now.setMinutes(now.getMinutes() + 30);
-  req.session.atTime = atTime;
+  const thirtyMinutesLater  = now.setMinutes(now.getMinutes() + 30);
+  req.session.thirtyMinutesLaterTime = thirtyMinutesLater;
   delete req.session.falseLoginCounter;
 };
 
@@ -130,13 +130,13 @@ module.exports = {
     })
   },
   login: (req, res) => {
-    if(req.session.atTime) {
+    if(req.session.thirtyMinutesLaterTime) {
       const now = new Date();
-      if( now < req.session.atTime) {
+      if( now < req.session.thirtyMinutesLaterTime) {
         const response = createErrorMessage('ログインに3回失敗したので、30分間ログインできません。');
         return res.json(response);
       };
-      delete req.session.atTime;
+      delete req.session.thirtyMinutesLaterTime;
     };
     const validationErrors = validationResult(req);
     if(!validationErrors.isEmpty()) {
@@ -148,7 +148,7 @@ module.exports = {
         if(!req.session.falseLoginCounter) {
           req.session.falseLoginCounter = 1;
         } else if(req.session.falseLoginCounter === 1){
-          blockLogin(req);
+          saveThirtyMinutesLater(req);
         } else {
           req.session.falseLoginCounter++;
         }
