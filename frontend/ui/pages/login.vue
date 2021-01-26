@@ -52,7 +52,7 @@ export default {
     async login() {
       if (this.email === '' || this.password === '') {
         return;
-      }
+      } 
       const data = await this.$store.dispatch('users/login', {
         email: this.email,
         password: this.password,

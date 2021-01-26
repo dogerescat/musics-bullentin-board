@@ -16,11 +16,18 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+const blockLogin = (req) => {
+  const now = new Date();
+  const atTime  = now.setMinutes(now.getMinutes() + 30);
+  req.session.atTime = atTime;
+  delete req.session.falseLoginCounter;
+};
+
 const createErrorMessage = (msg) => {
   let message = {error: msg};
   message = JSON.stringify(message);
   return message;
-}
+};
 
 const createToken = (user, msg) => {
   let data = {
@@ -78,7 +85,7 @@ module.exports = {
           });
           let data = {
             result: true,
-            message: 'メールを送信しました。' 
+            message: 'メールを送信しました。\n本登録リンクの有効期限は1時間です。' 
           };
           data = JSON.stringify(data);
           return res.json(data);
@@ -123,19 +130,44 @@ module.exports = {
     })
   },
   login: (req, res) => {
+    if(req.session.atTime) {
+      const now = new Date();
+      if( now < req.session.atTime) {
+        const response = createErrorMessage('ログインに3回失敗したので、30分間ログインできません。');
+        return res.json(response);
+      };
+      delete req.session.atTime;
+    };
     const validationErrors = validationResult(req);
     if(!validationErrors.isEmpty()) {
       const response = createErrorMessage(validationErrors.errors[0].msg);
       return res.json(response);
     }
     User.readEmail(req.body.email, (error, result) => {
-      if(result[0].length === 0) {
+      if(result.length === 0) {
+        if(!req.session.falseLoginCounter) {
+          req.session.falseLoginCounter = 1;
+        } else if(req.session.falseLoginCounter === 1){
+          blockLogin(req);
+        } else {
+          req.session.falseLoginCounter++;
+        }
         const response = createErrorMessage('ユーザーが見つかりません。');
         return res.json(response);
       } else if(!bcrypt.compareSync(req.body.password, result[0].password)) {
+        if(!req.session.falseLoginCounter) {
+          req.session.falseLoginCounter = 1;
+        } else {
+          req.session.falseLoginCounter++;
+        }
         const response = createErrorMessage('パスワードが正しくありません。');
         return res.json(response);
       } else if(!result[0].emailVerifiedAt) {
+        if(!req.session.falseLoginCounter) {
+          req.session.falseLoginCounter = 1;
+        } else {
+          req.session.falseLoginCounter++;
+        }
         const response = createErrorMessage('本登録が済んでいません。');
         return res.json(response);
       }
@@ -171,7 +203,7 @@ module.exports = {
         response.userData.name = decoded.name;
         response = JSON.stringify(response);
         res.json(response);
-      }
+      };
     });
   },
   logout: (req, res) => {
