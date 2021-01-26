@@ -122,6 +122,7 @@ h1 {
   line-height: 20px;
   background: #aaefe7;
   color: #474747;
+  box-shadow: 0 10px 10px 0 rgb(97, 96, 96);
   border-radius: 25px;
   text-decoration: none;
   text-align: center;
@@ -151,6 +152,7 @@ label {
   height: 50px;
   margin: 10px auto;
   background-color:#ce5c65;
+  box-shadow: 0 10px 15px 0 rgb(207, 121, 121);
   font-size: 20px;
 }
 .twitter-auth-btn {
@@ -159,8 +161,9 @@ label {
   width: 250px;
   height: 50px;
   margin: 10px auto;
-  margin-top: 15px;
+  margin-top: 25px;
   background-color:#51abf5;
+  box-shadow: 0 10px 15px 0 rgb(116, 158, 214);
   font-size: 20px;
 }
 .github-auth-btn {
@@ -169,8 +172,9 @@ label {
   width: 250px;
   height: 50px;
   margin: 10px auto;
-  margin-top: 15px;
+  margin-top: 25px;
   background-color: #424649;
+  box-shadow: 0 10px 15px 0 rgb(97, 96, 96);
   font-size: 20px;
 }
 a {

@@ -13,6 +13,7 @@
             <option value="洋楽">洋楽</option>
             <option value="クラシック">クラシック</option>
             <option value="アニメソング">アニメソング</option>
+            <option value="その他">その他</option>
           </select>
       </div>
       <div class="button">
@@ -78,6 +79,7 @@ h1 {
   line-height: 20px;
   background: #aaefe7;
   color: #474747;
+  box-shadow: 0 5px 5px 0 rgb(97, 96, 96);
   border-radius: 25px;
   text-decoration: none;
   text-align: center;

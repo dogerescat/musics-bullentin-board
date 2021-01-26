@@ -172,6 +172,7 @@ export default {
   line-height: 20px;
   background: #ce5c65;
   color: #575757;
+  box-shadow: 0 5px 5px 0 rgb(97, 96, 96);
   border-radius: 25px;
   text-decoration: none;
   text-align: center;
@@ -184,6 +185,7 @@ export default {
   line-height: 20px;
   background: #aaefe7;
   color: #474747;
+  box-shadow: 0 5px 5px 0 rgb(97, 96, 96);
   border-radius: 25px;
   text-decoration: none;
   text-align: center;
@@ -193,6 +195,7 @@ export default {
   width: 85%;
   height: 400px;
   border: 1px solid;
+  box-shadow: 0 10px 25px 0 rgb(97, 96, 96);
   padding: 20px;
   margin: 40px auto;
   border-radius: 50px/50px;

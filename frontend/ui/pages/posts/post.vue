@@ -20,6 +20,7 @@
             <option value="洋楽">洋楽</option>
             <option value="クラシック">クラシック</option>
             <option value="アニメソング">アニメソング</option>
+            <option value="その他">その他</option>
           </select>
         </div>
         <div>

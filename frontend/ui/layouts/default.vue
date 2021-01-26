@@ -42,7 +42,7 @@
               >
                 {{userName}}
               </NuxtLink>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <div class="dropdown-menu logout" aria-labelledby="navbarDropdown">
                 <button class="dropdown-item" @click="logout">Logout</button>
               </div>
             </li>
@@ -141,5 +141,8 @@ li > .nav-link {
 }
 .btn {
   color: #474747;
+}
+.logout {
+  box-shadow: 0 5px 5px 0 rgb(97, 96, 96);
 }
 </style>
