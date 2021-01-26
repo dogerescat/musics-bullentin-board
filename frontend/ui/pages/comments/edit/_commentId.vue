@@ -108,6 +108,7 @@ h1 {
   line-height: 20px;
   background: #aaefe7;
   color: #474747;
+  box-shadow: 0 10px 10px 0 rgb(97, 96, 96);
   border-radius: 25px;
   text-decoration: none;
   text-align: center;
@@ -121,6 +122,7 @@ h1 {
   line-height: 20px;
   background: #aaefe7;
   color: #474747;
+  box-shadow: 0 10px 10px 0 rgb(97, 96, 96);
   border-radius: 25px;
   text-decoration: none;
   text-align: center;

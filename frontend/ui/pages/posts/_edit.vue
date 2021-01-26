@@ -5,15 +5,15 @@
         <h1>編集</h1>
       </div>
       <div class="post-input">
-        <div>
+        <div class="post-title1">
           <label for="">曲名</label>
           <input type="text" v-model="post.title">
         </div>
-        <div>
+        <div class="post-artist1">
           <label for="">アーティスト名</label>
           <input type="text" v-model="post.artist">
         </div>
-        <div>
+        <div class="post-category1">
           <label for="">カテゴリー</label>
           <select name="categoly" v-model="post.category" >
             <option value="j-pop">j-pop</option>
@@ -22,13 +22,13 @@
             <option value="アニメソング">アニメソング</option>
           </select>
         </div>
-        <div>
+        <div class="post-comment1">
           <label class="comment-label" for="">コメント</label>
           <textarea v-model="post.body" name="" id="" cols="60" rows="5"></textarea>
         </div>
         <div class="button">
-          <button class="btn" @click="backPage">戻る</button>
-          <button @click="editArticle" class="btn">編集</button>
+          <button class="btn btn1" @click="backPage">戻る</button>
+          <button @click="editArticle" class="btn btn2">編集</button>
         </div>
       </div>
     </div>
@@ -71,11 +71,10 @@ export default {
       if(!result.result) {
         this.$store.commit('errors/setError', result.error);
         return;
-      }
+      };
       this.$router.push('/posts');
     },
     async edit(editData) {
-      // const config = this.getToken();
       const token = this.$store.state.users.userData.token;
       const config = {
         headers: {
@@ -86,16 +85,6 @@ export default {
       const result = JSON.parse(res);
       return result;
     },
-    // getToken() {
-    //   let token = localStorage.getItem('token');
-    //   token = JSON.parse(token);
-    //   const config = {
-    //     headers: {
-    //       authorization: `Bearer ${token}`
-    //     }
-    //   }
-    //   return config;
-    // },
     backPage() {
       this.$router.go(-1);
     }
@@ -105,33 +94,29 @@ export default {
 
 <style scoped>
 .container {
-  margin: 0 auto;
-  min-height: 100vh;
+  width: 100%;
+  margin: 0 auto; 
+  min-height: 100vh; 
   text-align: center;
 }
 .post {
+  width: 100%;
   margin: 0 auto;
 }
-.post-input {
-  text-align: right;
-  margin: 0 auto;
-
-  margin-right: 30%;
-}
+/* .post-input {
+  text-align: center;  
+   width: 100%; 
+   margin: 0 auto;
+} */
 .title {
   width: 50%;
-  height: 200px;
-  position: relative;
+  height: 100px;
   margin: 0 auto;
+  margin-top: 30px;
+  margin-bottom: 20px;
   color: #474747;
 }
-h1 {
-  margin: 0;
-  position: absolute;
-  top: 30%;
-  left: 30%;
-}
-.btn {
+.btn1 {
   display: inline;
   height: 50px;
   width: 150px;
@@ -139,18 +124,50 @@ h1 {
   line-height: 20px;
   background: #aaefe7;
   color: #474747;
+  box-shadow: 0 10px 10px 0 rgb(97, 96, 96);
   border-radius: 25px;
   text-decoration: none;
   text-align: center;
   margin-top: 40px;
-  margin-left: 5px;
-  margin-right: 5px;
+  margin-right: 10px;
+}
+
+.btn2 {
+  display: inline;
+  height: 50px;
+  width: 150px;
+  margin: 0 auto;
+  line-height: 20px;
+  background: #aaefe7;
+  color: #474747;
+  box-shadow: 0 10px 10px 0 rgb(97, 96, 96);
+  border-radius: 25px;
+  text-decoration: none;
+  text-align: center;
+  margin-top: 40px;
+  margin-left: 10px;
 }
 input {
   width: 250px;
   height: 40px;
   padding: 5px;
   margin-bottom: 20px;
+}
+.post-title1 {
+  width: 70%;
+  text-align: right;
+}
+.post-artist1 {
+  width: 70%;
+  text-align: right;
+}
+.post-category1 {
+  width: 70%;
+  text-align: right;
+}
+.post-comment1 {
+  width: 70%;
+  text-align: right;
 }
 label {
   color: #474747;
@@ -169,6 +186,7 @@ textarea {
 }
 .comment-label {
   margin-right: 330px;
+  display: block;
 }
 .button {
   width: 60%;

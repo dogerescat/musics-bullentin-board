@@ -69,7 +69,6 @@ export default {
       this.$router.push('/posts');
     },
     async post(postData) {
-      // const config = this.getData();
       const token = this.$store.state.users.userData.token;
       const config = {
         headers: {
@@ -80,16 +79,6 @@ export default {
       const result =  JSON.parse(res);
       return result;
     },
-    // getData() {
-    //   let token = localStorage.getItem('token');
-    //   token = JSON.parse(token);
-    //   const config = {
-    //     headers: {
-    //       authorization: `Bearer ${token}`
-    //     }
-    //   }
-    //   return config;
-    // },
   }
 };
 </script>
@@ -106,21 +95,15 @@ export default {
 .post-input {
   text-align: right;
   margin: 0 auto;
-
   margin-right: 30%;
 }
 .title {
   width: 50%;
-  height: 200px;
-  position: relative;
+  height: 100px;
   margin: 0 auto;
+  margin-top: 30px;
+  margin-bottom: 20px;
   color: #474747;
-}
-h1 {
-  margin: 0;
-  position: absolute;
-  top: 30%;
-  left: 30%;
 }
 .btn {
   display: block;
@@ -130,6 +113,7 @@ h1 {
   line-height: 20px;
   background: #aaefe7;
   color: #474747;
+  box-shadow: 0 10px 10px 0 rgb(97, 96, 96);
   border-radius: 25px;
   text-decoration: none;
   text-align: center;

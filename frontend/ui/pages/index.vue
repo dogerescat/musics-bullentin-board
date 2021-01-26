@@ -5,19 +5,19 @@
         <h1>新規登録</h1>
       </div>
       <div class="register-input">
-        <div>
+        <div class="register-name">
           <label for="">Name</label>
           <input type="text" v-model="name" />
         </div>
-        <div>
+        <div class="register-email">
           <label for="">Email</label>
           <input type="email" v-model="email" />
         </div>
-        <div>
+        <div class="register-password">
           <label for="">Password</label>
           <input type="password" v-model="password" />
         </div>
-        <div>
+        <div class="register-confirmation">
           <label for="">Confirmation Password</label>
           <input type="password" v-model="confirmation" />
         </div>
@@ -87,16 +87,23 @@ export default {
 }
 .title {
   width: 50%;
-  height: 200px;
-  position: relative;
+  height: 100px;
   margin: 0 auto;
+  margin-top: 30px;
+  margin-bottom: 30px;
   color: #474747;
 }
-h1 {
-  margin: 0;
-  position: absolute;
-  top: 30%;
-  left: 30%;
+.register-name {
+  margin-right: 70px;
+}
+.register-email {
+  margin-right: 70px;
+}
+.register-password {
+  margin-right: 70px;
+}
+.register-confirmation {
+  margin-right: 70px;
 }
 .btn {
   display: block;
@@ -106,10 +113,11 @@ h1 {
   line-height: 20px;
   background: #aaefe7;
   color: #474747;
+  box-shadow: 0 10px 10px 0 rgb(97, 96, 96);
   border-radius: 25px;
   text-decoration: none;
   text-align: center;
-  margin-top: 40px;
+  margin-top: 60px;
   margin-right: 20%;
 }
 input {

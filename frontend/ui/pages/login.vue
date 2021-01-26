@@ -5,11 +5,11 @@
         <h1>ログイン</h1>
       </div>
       <div class="login-input">
-        <div>
+        <div class="login-email">
           <label for="">Email</label>
           <input type="email" v-model="email" />
         </div>
-        <div>
+        <div class="login-password">
           <label for="">Password</label>
           <input type="password" v-model="password" />
         </div>
@@ -103,16 +103,11 @@ export default {
 }
 .title {
   width: 50%;
-  height: 200px;
-  position: relative;
+  height: 100px;
   margin: 0 auto;
+  margin-top: 30px;
+  margin-bottom: 50px;
   color: #474747;
-}
-h1 {
-  margin: 0;
-  position: absolute;
-  top: 30%;
-  left: 30%;
 }
 .login-btn {
   display: block;
@@ -126,8 +121,14 @@ h1 {
   border-radius: 25px;
   text-decoration: none;
   text-align: center;
-  margin-top: 40px;
+  margin-top: 60px;
   margin-right: 20%;
+}
+.login-email {
+  margin-right: 70px;
+}
+.login-password {
+  margin-right: 70px;
 }
 input {
   width: 250px;
@@ -143,7 +144,7 @@ label {
   width: 60%;
   height: 300px;
   margin: 0 auto;
-  margin-top: 50px;
+  margin-top: 80px;
 }
 .google-auth-btn {
   display: block;

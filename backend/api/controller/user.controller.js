@@ -8,11 +8,12 @@ const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
 const transporter = nodemailer.createTransport({
-  host: 'mail',
-  port: 1025,
+  service: 'gmail',
+  secure: true,
+  port: 465,
   auth: {
-    user: 'user',
-    pass: 'password'
+    user: env.GOOGLE_ACOUNT_ADDRESS,
+    pass: env.GOOGLE_ACOUNT_PASSWORD,
   }
 });
 
@@ -46,26 +47,27 @@ const createToken = (user, msg) => {
   data.msg = msg;
   data = JSON.stringify(data);
   return {data, token};
-}
+};
+
 module.exports = {
   create: (req, res) => {
     const validationErrors = validationResult(req);
     if(!validationErrors.isEmpty()) {
       const response = createErrorMessage(validationErrors.errors[0].msg);
       return res.json(response);
-    }
+    };
     const salt = bcrypt.genSaltSync(8)
     const hashPassword = bcrypt.hashSync(req.body.password, salt);
     User.readEmail(req.body.email, (err, re) => {
       if(!re.length === 0) {
         const response = createErrorMessage('既に登録されています');
         return res.json(response);
-      }
+      };
       User.create(req.body, hashPassword, (error, result) => {
         if(error) {
           const response = createErrorMessage('登録できませんでした');
           return res.json(response);
-        }
+        };
         User.findOne(req.body.email, hashPassword, (erro, resu) => {
           const hash = crypto.createHash('sha1')
           .update(resu[0].email)
@@ -78,7 +80,7 @@ module.exports = {
             .digest('hex');
           verificationUrl += '&signature='+ signature;
           transporter.sendMail({
-            from: 'from@example.com',
+            from: env.GOOGLE_ACOUNT_ADDRESS,
             to: resu[0].email,
             text: "以下のURLをクリックして本登録を完了させてください。\n\n"+ verificationUrl,
             subject: '本登録メール',
@@ -89,12 +91,12 @@ module.exports = {
           };
           data = JSON.stringify(data);
           return res.json(data);
-        })
-      })
-    })
+        });
+      });
+    });
   },
   signUp: (req, res) => {
-    const id = req.params.id
+    const id = req.params.id;
     User.readUserId(id, (error, result) => {
       if(result.length === 0) {
         const response = createErrorMessage('このurlは正しくありません。');
@@ -102,7 +104,7 @@ module.exports = {
       } else if(result[0].emailVerifiedAt) {
         const response = createErrorMessage('本登録済みです');
         return res.json(response);
-      }
+      };
       const now = new Date();
         const hash = crypto.createHash('sha1')
           .update(result[0].email)
@@ -122,12 +124,12 @@ module.exports = {
             if(err) {
               const response = createErrorMessage('本登録できませんでした。');
               return res.json(response);  
-            }
+            };
             const data = createToken(result,'本登録完了しました。');
             res.json(data.data);
-          })
-        }
-    })
+          });
+        };
+    });
   },
   login: (req, res) => {
     if(req.session.thirtyMinutesLaterTime) {
@@ -151,7 +153,7 @@ module.exports = {
           saveThirtyMinutesLater(req);
         } else {
           req.session.falseLoginCounter++;
-        }
+        };
         const response = createErrorMessage('ユーザーが見つかりません。');
         return res.json(response);
       } else if(!bcrypt.compareSync(req.body.password, result[0].password)) {
@@ -159,7 +161,7 @@ module.exports = {
           req.session.falseLoginCounter = 1;
         } else {
           req.session.falseLoginCounter++;
-        }
+        };
         const response = createErrorMessage('パスワードが正しくありません。');
         return res.json(response);
       } else if(!result[0].emailVerifiedAt) {
@@ -190,7 +192,7 @@ module.exports = {
       response = JSON.stringify(response);
       res.json(response);
       return;
-    }
+    };
     jwt.verify(token, env.SECRET_KEY, (err, decoded) => {
       if (err) {
         response = JSON.stringify(response);
