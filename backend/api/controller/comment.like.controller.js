@@ -1,7 +1,7 @@
 const CommentLike = require('../model/comment.like');
 
 const createErrorMessage = (msg) => {
-  let message = {error: msg};
+  let message = { error: msg };
   message = JSON.stringify(message);
   return message;
 };
@@ -14,7 +14,7 @@ module.exports = {
         res.json(response);
         return;
       }
-      const response = JSON.stringify({ result: true});
+      const response = JSON.stringify({ result: true });
       res.json(response);
     });
   },
@@ -25,7 +25,7 @@ module.exports = {
         res.json(response);
         return;
       }
-      const response = JSON.stringify({ result: true});
+      const response = JSON.stringify({ result: true });
       res.json(response);
     });
   },

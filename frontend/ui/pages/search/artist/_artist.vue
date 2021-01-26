@@ -34,7 +34,7 @@ export default {
     if(!data.result) {
       store.commit('errors/setError', data.error);
       return;
-    };
+    }
     return { data };
   },
   components: {

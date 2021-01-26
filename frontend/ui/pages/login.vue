@@ -16,27 +16,41 @@
         <button class="btn login-btn" @click="login" href="#">ログイン</button>
       </div>
     </div>
-        <div class="oauth">
-          <div class="btn google-auth-btn" @click="loginGoogle">
-            <font-awesome-icon :icon="['fab','google']" style="color: #fff; font-size: 23px; margin-top: 5px;"/>
-            <a>Sign In with Google</a>
-          </div>
-          <div class="btn twitter-auth-btn" @click="loginTwitter">
-            <font-awesome-icon :icon="['fab','twitter']" style="color: #fff; font-size: 23px; margin-top: 5px;"/>
-            <a>Sign In with Twitter</a>
-          </div>
-          <div class="btn github-auth-btn" @click="loginGithub">
-            <font-awesome-icon :icon="['fab','github']" style="color: #fff; font-size: 23px; margin-top: 5px; margin-right: 5px;"/>
-            <a>Sign In with Github</a>
-          </div>
-        </div>
+    <div class="oauth">
+      <div class="btn google-auth-btn" @click="loginGoogle">
+        <font-awesome-icon
+          :icon="['fab', 'google']"
+          style="color: #fff; font-size: 23px; margin-top: 5px"
+        />
+        <a>Sign In with Google</a>
+      </div>
+      <div class="btn twitter-auth-btn" @click="loginTwitter">
+        <font-awesome-icon
+          :icon="['fab', 'twitter']"
+          style="color: #fff; font-size: 23px; margin-top: 5px"
+        />
+        <a>Sign In with Twitter</a>
+      </div>
+      <div class="btn github-auth-btn" @click="loginGithub">
+        <font-awesome-icon
+          :icon="['fab', 'github']"
+          style="
+            color: #fff;
+            font-size: 23px;
+            margin-top: 5px;
+            margin-right: 5px;
+          "
+        />
+        <a>Sign In with Github</a>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   validate({ store, redirect }) {
-    if(store.state.users.userData.isLogin) {
+    if (store.state.users.userData.isLogin) {
       redirect('/posts');
       return false;
     }
@@ -52,37 +66,37 @@ export default {
     async login() {
       if (this.email === '' || this.password === '') {
         return;
-      } 
+      }
       const data = await this.$store.dispatch('users/login', {
         email: this.email,
         password: this.password,
       });
-      if(!data.result) {
+      if (!data.result) {
         return;
       }
       this.$router.push('/posts');
     },
     loginGoogle() {
-      open('/api/oauth/google');  
+      open('/api/oauth/google');
       setInterval(() => {
         this.doReroad();
       }, 5000);
     },
     loginTwitter() {
-      open('/api/oauth/twitter');  
+      open('/api/oauth/twitter');
       setInterval(() => {
         this.doReroad();
       }, 5000);
     },
     loginGithub() {
-      open('/api/oauth/github');  
+      open('/api/oauth/github');
       setInterval(() => {
         this.doReroad();
       }, 5000);
     },
     doReroad() {
       location.reload();
-    }
+    },
   },
 };
 </script>
@@ -152,7 +166,7 @@ label {
   width: 250px;
   height: 50px;
   margin: 10px auto;
-  background-color:#ce5c65;
+  background-color: #ce5c65;
   box-shadow: 0 10px 15px 0 rgb(207, 121, 121);
   font-size: 20px;
 }
@@ -163,7 +177,7 @@ label {
   height: 50px;
   margin: 10px auto;
   margin-top: 25px;
-  background-color:#51abf5;
+  background-color: #51abf5;
   box-shadow: 0 10px 15px 0 rgb(116, 158, 214);
   font-size: 20px;
 }

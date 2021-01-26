@@ -3,7 +3,7 @@ const connection = require('./db');
 module.exports = {
   create: (postId, body, callback) => {
     connection.query(
-      `INSERT INTO comments SET post_id = '${postId}', user_id = '${body.userId}', body = '${body.body}'`,
+      `insert into comments SET post_id = '${postId}', user_id = '${body.userId}', body = '${body.body}'`,
       callback
     );
   },
@@ -33,8 +33,6 @@ module.exports = {
     );
   },
   read: (callback) => {
-    connection.query(
-        `select * from comments`, callback
-    )
-  }
+    connection.query(`select * from comments`, callback);
+  },
 };

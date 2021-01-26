@@ -6,7 +6,15 @@ const jwtAuth = require('../middleware/auth/jwtAuth');
 
 passport.use(jwtAuth);
 
-router.post('/:commentId/:userId', passport.authenticate('jwt', { session: false }), commentLikeController.create);
-router.delete('/delete/:commentId/:userId', passport.authenticate('jwt', { session: false }), commentLikeController.delete);
+router.post(
+  '/:commentId/:userId',
+  passport.authenticate('jwt', { session: false }),
+  commentLikeController.create
+);
+router.delete(
+  '/delete/:commentId/:userId',
+  passport.authenticate('jwt', { session: false }),
+  commentLikeController.delete
+);
 
 module.exports = router;

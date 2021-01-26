@@ -5,10 +5,10 @@ const Comment = require('../model/comment');
 const { validationResult } = require('express-validator');
 
 const createErrorMessage = (msg) => {
-  let message = {error: msg};
+  let message = { error: msg };
   message = JSON.stringify(message);
   return message;
-}
+};
 module.exports = {
   read: (req, res) => {
     Post.read((error, posts) => {
@@ -24,14 +24,16 @@ module.exports = {
           return;
         }
         PostLike.read((er, postLikes) => {
-          if(er) {
+          if (er) {
             const response = createErrorMessage('投稿を読み込めませんでした。');
             res.json(response);
             return;
           }
           Comment.read((e, comments) => {
-            if(e) {
-              const response = createErrorMessage('投稿を読み込めませんでした。');
+            if (e) {
+              const response = createErrorMessage(
+                '投稿を読み込めませんでした。'
+              );
               res.json(response);
               return;
             }
@@ -45,12 +47,12 @@ module.exports = {
             res.json(response);
           });
         });
-      }); 
+      });
     });
   },
   create: (req, res) => {
     const validationErrors = validationResult(req);
-    if(!validationErrors.isEmpty()) {
+    if (!validationErrors.isEmpty()) {
       const response = createErrorMessage(validationErrors.errors[0].msg);
       return res.json(response);
     }
@@ -59,29 +61,29 @@ module.exports = {
         const response = createErrorMessage('投稿できませんでした。');
         res.json(response);
         return;
-      };
-      const response = JSON.stringify({result: true});
+      }
+      const response = JSON.stringify({ result: true });
       res.json(response);
     });
   },
   getEdit: (req, res) => {
     Post.readPostId(req.params.id, (error, post) => {
-      if(error) {
+      if (error) {
         const response = createErrorMessage('投稿情報を取得できませんでした。');
         res.json(response);
         return;
       }
       let response = {
         result: true,
-        post: post[0]
-      }
+        post: post[0],
+      };
       response = JSON.stringify(response);
       res.json(response);
     });
   },
   searchCategory: (req, res) => {
     Post.searchCategory(req.params.category, (error, posts) => {
-      if(error) {
+      if (error) {
         const response = createErrorMessage('検索に失敗しました。');
         res.json(response);
         return;
@@ -89,19 +91,19 @@ module.exports = {
       User.read((err, users) => {
         if (err) {
           const response = createErrorMessage('検索に失敗しました。');
-          res.json(response);  
+          res.json(response);
           return;
         }
         PostLike.read((er, postLikes) => {
-          if(er) {
+          if (er) {
             const response = createErrorMessage('検索に失敗しました。');
-            res.json(response);    
+            res.json(response);
             return;
           }
           Comment.read((e, comments) => {
-            if(e) {
+            if (e) {
               const response = createErrorMessage('検索に失敗しました。');
-              res.json(response);      
+              res.json(response);
               return;
             }
             let data = {};
@@ -119,7 +121,7 @@ module.exports = {
   },
   searchArtist: (req, res) => {
     Post.searchArtist(req.params.artist, (error, posts) => {
-      if(error) {
+      if (error) {
         const response = createErrorMessage('検索に失敗しました。');
         res.json(response);
         return;
@@ -127,19 +129,19 @@ module.exports = {
       User.read((err, users) => {
         if (err) {
           const response = createErrorMessage('検索に失敗しました。');
-          res.json(response);  
+          res.json(response);
           return;
         }
         PostLike.read((er, postLikes) => {
-          if(er) {
+          if (er) {
             const response = createErrorMessage('検索に失敗しました。');
-            res.json(response);    
+            res.json(response);
             return;
           }
           Comment.read((e, comments) => {
-            if(e) {
+            if (e) {
               const response = createErrorMessage('検索に失敗しました。');
-              res.json(response);      
+              res.json(response);
               return;
             }
             let response = {};
@@ -157,34 +159,34 @@ module.exports = {
   },
   update: (req, res) => {
     const validationErrors = validationResult(req);
-    if(!validationErrors.isEmpty()) {
+    if (!validationErrors.isEmpty()) {
       const response = createErrorMessage(validationErrors.errors[0].msg);
       return res.json(response);
     }
-    Post.update(req.params.id, req.body,(error,result) => {
-      if(error) {
+    Post.update(req.params.id, req.body, (error, result) => {
+      if (error) {
         const response = createErrorMessage('更新に失敗しました。');
         res.json(response);
         return;
       }
-      const response = JSON.stringify({result: true});
+      const response = JSON.stringify({ result: true });
       res.json(response);
     });
   },
   delete: (req, res) => {
     Post.delete(req.params.id, (error, result) => {
-      if(error) {
+      if (error) {
         const response = createErrorMessage('削除に失敗しました。');
         res.json(response);
         return;
       }
       PostLike.deletePost(req.params.id, (err, resu) => {
-        if(err) {
+        if (err) {
           return;
         }
-        const response = JSON.stringify({result: true});
+        const response = JSON.stringify({ result: true });
         res.json(response);
-      })
-    })
-  }
+      });
+    });
+  },
 };

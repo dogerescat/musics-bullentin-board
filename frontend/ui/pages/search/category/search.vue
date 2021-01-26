@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     search() {
-      this.$router.push(`/search/category/${this.category}`) 
+      this.$router.push(`/search/category/${this.category}`); 
     }
   }
 };

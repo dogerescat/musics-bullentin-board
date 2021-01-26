@@ -19,7 +19,7 @@
       <button @click="deleteComment" class="btn4 btn">削除</button>
     </div>
     <div class="comment-contributor">
-      <p>投稿者:&nbsp; &nbsp;{{ contributor }}</p>
+      <p>投稿者:&nbsp; &nbsp;{{ computedContributor }}</p>
     </div>
   </div>
 </template>
@@ -31,6 +31,7 @@ export default {
   components: { Like, UnLike},  
   data() {
     return {
+      contributor: '',
       likes: {
         counter: 0,
         isLike: false,
@@ -126,14 +127,13 @@ export default {
     },
   },
   computed: {
-    contributor() {
-      let name;
+    computedContributor() {
       this.data.users.forEach((user) => {
         if (user.user_id === this.data.comments[this.index].user_id) {
-          name = user.name;
+          this.contributor = user.name;
         }
       });
-      return name;
+      return this.contributor;
     },
   },
 };

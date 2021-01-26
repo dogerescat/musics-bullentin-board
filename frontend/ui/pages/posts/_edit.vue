@@ -71,7 +71,7 @@ export default {
       if(!result.result) {
         this.$store.commit('errors/setError', result.error);
         return;
-      };
+      }
       this.$router.push('/posts');
     },
     async edit(editData) {
@@ -103,11 +103,6 @@ export default {
   width: 100%;
   margin: 0 auto;
 }
-/* .post-input {
-  text-align: center;  
-   width: 100%; 
-   margin: 0 auto;
-} */
 .title {
   width: 50%;
   height: 100px;

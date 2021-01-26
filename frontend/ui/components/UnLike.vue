@@ -7,7 +7,7 @@
 export default {
   methods: {
     onLike() {
-      this.$emit('onLike')
+      this.$emit('onLike');
     }
   }
 }

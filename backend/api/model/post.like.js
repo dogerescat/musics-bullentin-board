@@ -3,7 +3,7 @@ const connection = require('./db');
 module.exports = {
   create(params, callback) {
     connection.query(
-      `INSERT INTO post_likes SET post_id = '${params.postId}', user_id = '${params.userId}'`,
+      `insert into post_likes SET post_id = '${params.postId}', user_id = '${params.userId}'`,
       callback
     );
   },
@@ -21,5 +21,5 @@ module.exports = {
       `delete from post_likes where post_id = '${id}'`,
       callback
     );
-  }
+  },
 };

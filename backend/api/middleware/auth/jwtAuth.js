@@ -9,7 +9,7 @@ opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = env.SECRET_KEY;
 opts.algorithms = 'HS256';
 
-module.exports = new JwtStrategy(opts, function (jwt_payload, done) {
+module.exports = new JwtStrategy(opts, (jwt_payload, done) => {
   if (!jwt_payload.password) {
     User.readEmail(jwt_payload.email, (error, user) => {
       if (error) {

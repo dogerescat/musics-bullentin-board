@@ -4,15 +4,15 @@ const CommentLike = require('../model/comment.like');
 const { validationResult } = require('express-validator');
 
 const createErrorMessage = (msg) => {
-  let message = {error: msg};
+  let message = { error: msg };
   message = JSON.stringify(message);
   return message;
-}
+};
 
 module.exports = {
   create: (req, res) => {
     const validationErrors = validationResult(req);
-    if(!validationErrors.isEmpty()) {
+    if (!validationErrors.isEmpty()) {
       const response = createErrorMessage(validationErrors.errors[0].msg);
       return res.json(response);
     }
@@ -22,27 +22,27 @@ module.exports = {
         res.json(response);
         return;
       }
-      const response = JSON.stringify({result: true});
+      const response = JSON.stringify({ result: true });
       res.json(response);
     });
   },
   read: (req, res) => {
     Comment.readPostId(req.params.postId, (error, comments) => {
       if (error) {
-        const response = createErrorMessage('読み込みに失敗しました。')
+        const response = createErrorMessage('読み込みに失敗しました。');
         res.json(response);
         return;
       }
       User.read((err, users) => {
         if (err) {
-          const response = createErrorMessage('読み込みに失敗しました。')
-          res.json(response);  
+          const response = createErrorMessage('読み込みに失敗しました。');
+          res.json(response);
           return;
         }
         CommentLike.read((er, commentLikes) => {
           if (er) {
-            const response = createErrorMessage('読み込みに失敗しました。')
-            res.json(response);    
+            const response = createErrorMessage('読み込みに失敗しました。');
+            res.json(response);
             return;
           }
           let response = {
@@ -60,7 +60,7 @@ module.exports = {
   getEdit: (req, res) => {
     Comment.readCommentId(req.params.commentId, (error, comment) => {
       if (error) {
-        const response = createErrorMessage('読み込みに失敗しました。')
+        const response = createErrorMessage('読み込みに失敗しました。');
         res.json(response);
         return;
       }
@@ -74,7 +74,7 @@ module.exports = {
   },
   update: (req, res) => {
     const validationErrors = validationResult(req);
-    if(!validationErrors.isEmpty()) {
+    if (!validationErrors.isEmpty()) {
       const response = createErrorMessage(validationErrors.errors[0].msg);
       return res.json(response);
     }
@@ -85,8 +85,8 @@ module.exports = {
         return;
       }
       let response = {
-          result: true
-      }
+        result: true,
+      };
       response = JSON.stringify(response);
       res.json(response);
     });
@@ -99,7 +99,7 @@ module.exports = {
         return;
       }
       CommentLike.deleteComment(req.params.commentId, (err) => {
-        const response = JSON.stringify({result: true});
+        const response = JSON.stringify({ result: true });
         res.json(response);
       });
     });

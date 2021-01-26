@@ -6,7 +6,7 @@ module.exports = {
   },
   create: (body, password, callback) => {
     connection.query(
-      `INSERT INTO users SET name = '${body.name}', email = '${body.email}', password = '${password}'`,
+      `insert into users SET name = '${body.name}', email = '${body.email}', password = '${password}'`,
       callback
     );
   },
@@ -29,12 +29,16 @@ module.exports = {
       callback
     );
   },
-  snsFindEmail: (sns,callback) => {
-    connection.query(`select * from users where email = '${sns.email}'`, callback);
-  },
-  snsCreate: ( sns, callback) => {
+  snsFindEmail: (sns, callback) => {
     connection.query(
-      `insert into users set name = '${sns.displayName}', email = '${sns.emails[0].value}', sns = '${sns.provider}'`,callback
+      `select * from users where email = '${sns.email}'`,
+      callback
     );
-  }
+  },
+  snsCreate: (sns, callback) => {
+    connection.query(
+      `insert into users set name = '${sns.displayName}', email = '${sns.emails[0].value}', sns = '${sns.provider}'`,
+      callback
+    );
+  },
 };

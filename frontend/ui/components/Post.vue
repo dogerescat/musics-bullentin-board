@@ -32,7 +32,7 @@
         <button @click="deletePost" class="btn2 btn">削除</button>
       </div>
       <div class="contributor">
-        <p>投稿者:&nbsp; &nbsp;{{ contributor }}</p>
+        <p>投稿者:&nbsp; &nbsp;{{ computedContributor }}</p>
       </div>
     </div>
   </div>
@@ -47,6 +47,7 @@ export default {
   component: { Like, UnLike, CommentIcon },
   data() {
     return {
+      contributor: '',
       likes: {
         counter: 0,
         isLike: false  
@@ -151,14 +152,13 @@ export default {
     }
   },
   computed: {
-    contributor() {
-      let name;
+    computedContributor() {
       this.data.users.forEach(user => {
         if (user.user_id === this.data.posts[this.index].user_id) {
-          name = user.name;
+          this.contributor = user.name;
         }
       });
-      return name;
+      return this.contributor;
     },
   },
 };
