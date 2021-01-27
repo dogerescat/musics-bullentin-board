@@ -18,9 +18,13 @@ module.exports = new TwitterStrategy(
             return done(e, users[0]);
           });
         });
+      } else if (!user[0].sns) { 
+        return done(null, user[0], {
+          message: `このメールアドレスは別のアカウントに使用されています。`
+        });
       } else if (user[0].sns !== profile.provider) {
         return done(null, user[0], {
-          message: `このメールアドレスは${user[0].sns}のアカウントに使用されています。`,
+          message: `このメールアドレスは${user[0].sns}のアカウントに使用されています。`
         });
       } else {
         return done(err, user[0]);
