@@ -29,7 +29,7 @@ export default {
         authorization: `Bearer ${token}`,
       },
     };
-    let data = await $axios.$get(`/api/posts/search/artist/${params.artist}`, config);
+    let data = await $axios.$get(`/api/v1/posts/search/artist/${params.artist}`, config);
     data = await JSON.parse(data);
     if(!data.result) {
       store.commit('errors/setError', data.error);

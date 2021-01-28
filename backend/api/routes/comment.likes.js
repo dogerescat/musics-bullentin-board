@@ -12,7 +12,7 @@ router.post(
   commentLikeController.create
 );
 router.delete(
-  '/delete/:commentId/:userId',
+  '/:commentId/:userId',
   passport.authenticate('jwt', { session: false }),
   commentLikeController.delete
 );

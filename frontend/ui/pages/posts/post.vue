@@ -75,7 +75,7 @@ export default {
           authorization: `Bearer ${token}`
         }
       };
-      const res = await this.$axios.$post('/api/posts/create', postData, config);
+      const res = await this.$axios.$post('/api/v1/posts', postData, config);
       const result =  JSON.parse(res);
       return result;
     },

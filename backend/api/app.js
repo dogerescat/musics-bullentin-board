@@ -36,12 +36,12 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 
-app.use('/api/posts', postRouter);
-app.use('/api/users', usersRouter);
-app.use('/api/post/likes', postLikeRouter);
-app.use('/api/comments', commentRouter);
-app.use('/api/comment/likes', commnetLikeRouter);
-app.use('/api/oauth', oauthRouter);
+app.use('/api/v1/posts', postRouter);
+app.use('/api/v1/users', usersRouter);
+app.use('/api/v1/post/likes', postLikeRouter);
+app.use('/api/v1/comments', commentRouter);
+app.use('/api/v1/comment/likes', commnetLikeRouter);
+app.use('/api/v1/oauth', oauthRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

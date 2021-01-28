@@ -67,7 +67,7 @@ module.exports = {
     });
   },
   getEdit: (req, res) => {
-    Post.readPostId(req.params.id, (error, post) => {
+    Post.readPostId(req.params.postId, (error, post) => {
       if (error) {
         const response = createErrorMessage('投稿情報を取得できませんでした。');
         res.json(response);
@@ -163,7 +163,7 @@ module.exports = {
       const response = createErrorMessage(validationErrors.errors[0].msg);
       return res.json(response);
     }
-    Post.update(req.params.id, req.body, (error, result) => {
+    Post.update(req.params.postId, req.body, (error) => {
       if (error) {
         const response = createErrorMessage('更新に失敗しました。');
         res.json(response);
@@ -174,13 +174,13 @@ module.exports = {
     });
   },
   delete: (req, res) => {
-    Post.delete(req.params.id, (error, result) => {
+    Post.delete(req.params.postId, (error, result) => {
       if (error) {
         const response = createErrorMessage('削除に失敗しました。');
         res.json(response);
         return;
       }
-      PostLike.deletePost(req.params.id, (err, resu) => {
+      PostLike.deletePost(req.params.postId, (err, resu) => {
         if (err) {
           return;
         }

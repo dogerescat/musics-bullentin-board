@@ -38,7 +38,7 @@ export default {
       },
     };
     const res = await $axios.$get(
-      `/api/comments/edit/${params.commentId}`,
+      `/api/v1/comments/edit/${params.commentId}`,
       config
     );
     const data = await JSON.parse(res);
@@ -57,10 +57,10 @@ export default {
         },
       };
       const postData = {
-        body: this.data.comment.body,
+        body: this.comment.body,
       };
       const res = await this.$axios.$put(
-        `/api/comments/update/${this.$route.params.commentId}`,
+        `/api/v1/comments/${this.$route.params.commentId}`,
         postData,
         config
       );

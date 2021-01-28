@@ -70,7 +70,7 @@ export default {
           authorization: `Bearer ${this.$store.state.users.userData.token}`
         }
       }
-      const res = await this.$axios.$post(`api/comment/likes/${this.data.comments[this.index].comment_id}/${this.$store.state.users.userData.userId}`, null, config);
+      const res = await this.$axios.$post(`api/v1/comment/likes/${this.data.comments[this.index].comment_id}/${this.$store.state.users.userData.userId}`, null, config);
       const data = await JSON.parse(res);
       if (!data.result) {
         this.$store.commit('errors/setError', data.error);
@@ -85,7 +85,7 @@ export default {
           authorization: `Bearer ${this.$store.state.users.userData.token}`
         }
       }
-      const res = await this.$axios.$delete(`api/comment/likes/delete/${this.data.comments[this.index].comment_id}/${this.$store.state.users.userData.userId}`, config);
+      const res = await this.$axios.$delete(`api/v1/comment/likes/${this.data.comments[this.index].comment_id}/${this.$store.state.users.userData.userId}`, config);
       const data = await JSON.parse(res);
       if (!data.result) {
         this.$store.commit('errors/setError', data.error);
@@ -115,7 +115,7 @@ export default {
       };
       const commentId = this.data.comments[this.index].comment_id;
       const res = await this.$axios.$delete(
-        `api/comments/delete/${commentId}`,
+        `api/v1/comments/${commentId}`,
         config
       );
       const data = JSON.parse(res);

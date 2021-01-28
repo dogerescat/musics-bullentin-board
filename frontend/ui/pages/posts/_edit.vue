@@ -51,7 +51,7 @@ export default {
         authorization: `Bearer ${token}`,
       },
     };
-    const res = await $axios.$get(`/api/posts/${params.edit}`, config);
+    const res = await $axios.$get(`/api/v1/posts/${params.edit}`, config);
     const data = await JSON.parse(res);
     if(!data.result) {
       store.commit('errors/setError', data.error);
@@ -81,7 +81,7 @@ export default {
           authorization: `Bearer ${token}`
         }
       }
-      const res = await this.$axios.$put(`/api/posts/update/${this.$route.params.edit}`, editData, config);
+      const res = await this.$axios.$put(`/api/v1/posts/${this.$route.params.edit}`, editData, config);
       const result = JSON.parse(res);
       return result;
     },

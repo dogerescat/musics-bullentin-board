@@ -12,7 +12,7 @@ router.post(
   postLikeController.create
 );
 router.delete(
-  '/delete/:userId/:postId',
+  '/:userId/:postId',
   passport.authenticate('jwt', { session: false }),
   postLikeController.delete
 );

@@ -36,7 +36,7 @@ export const mutations = {
 
 export const actions = {
   async signUp({ commit }, userData) {
-    const res = await this.$axios.$post('/api/users/', userData);
+    const res = await this.$axios.$post('/api/v1/users/', userData);
     const data = JSON.parse(res);
     if (!data.result) {
       commit('errors/setError', data.error, { root: true });
@@ -46,7 +46,7 @@ export const actions = {
     return data;
   },
   async login({ commit }, userData) {
-    const res = await this.$axios.$post('/api/users/login', userData);
+    const res = await this.$axios.$post('/api/v1/users/login', userData);
     const data = JSON.parse(res);
     if (!data.result) {
       commit('errors/setError', data.error, { root: true });

@@ -67,7 +67,7 @@ export default {
       this.$router.push('/login');
     },
     async deleteSession() {
-      await this.$axios.get('/api/users/logout');
+      await this.$axios.get('/api/v1/users/logout');
     },
     showError() {
       this.$modal.show(

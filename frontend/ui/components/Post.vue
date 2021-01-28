@@ -92,7 +92,7 @@ export default {
           authorization: `Bearer ${this.$store.state.users.userData.token}`
         }
       }
-      const res = await this.$axios.$post(`api/post/likes/${this.$store.state.users.userData.userId}/${this.data.posts[this.index].post_id}`, null, config);
+      const res = await this.$axios.$post(`api/v1/post/likes/${this.$store.state.users.userData.userId}/${this.data.posts[this.index].post_id}`, null, config);
       const data = await JSON.parse(res);
       if(!data.result) {
         this.$store.commit('errors/setError', data.error);
@@ -107,7 +107,7 @@ export default {
           authorization: `Bearer ${this.$store.state.users.userData.token}`
         }
       }
-      const res = await this.$axios.$delete(`api/post/likes/delete/${this.$store.state.users.userData.userId}/${this.data.posts[this.index].post_id}`, config);
+      const res = await this.$axios.$delete(`api/v1/post/likes/${this.$store.state.users.userData.userId}/${this.data.posts[this.index].post_id}`, config);
       const data = await JSON.parse(res);
       if(!data.result){
         this.$store.commit('errors/setError', data.error);
@@ -142,7 +142,7 @@ export default {
         }
       };
       const postId = this.data.posts[this.index].post_id;
-      const res = await this.$axios.$delete(`api/posts/delete/${postId}`,config);
+      const res = await this.$axios.$delete(`api/v1/posts/${postId}`,config);
       const result = JSON.parse(res);
       if(!result.result) {
         this.$store.commit('errors/setError', result.error);

@@ -77,19 +77,19 @@ export default {
       this.$router.push('/posts');
     },
     loginGoogle() {
-      open('/api/oauth/google');
+      open('/api/v1/oauth/google');
       setInterval(() => {
         this.doReroad();
       }, 5000);
     },
     loginTwitter() {
-      open('/api/oauth/twitter');
+      open('/api/v1/oauth/twitter');
       setInterval(() => {
         this.doReroad();
       }, 5000);
     },
     loginGithub() {
-      open('/api/oauth/github');
+      open('/api/v1/oauth/github');
       setInterval(() => {
         this.doReroad();
       }, 5000);

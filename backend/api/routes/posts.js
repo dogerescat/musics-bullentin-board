@@ -13,13 +13,13 @@ router.get(
   postController.read
 );
 router.post(
-  '/create',
+  '/',
   passport.authenticate('jwt', { session: false  }),
   contentValidation,
   postController.create
 );
 router.get(
-  '/:id',
+  '/:postId',
   passport.authenticate('jwt', { session: false }),
   postController.getEdit
 );
@@ -34,13 +34,13 @@ router.get(
   postController.searchArtist
 );
 router.put(
-  '/update/:id',
+  '/:postId',
   passport.authenticate('jwt', { session: false }),
   contentValidation,
   postController.update
 );
 router.delete(
-  '/delete/:id',
+  '/:postId',
   passport.authenticate('jwt', { session: false }),
   postController.delete
 );

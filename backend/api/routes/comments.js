@@ -18,19 +18,19 @@ router.get(
   commentController.getEdit
 );
 router.post(
-  '/create/:postId',
+  '/:postId',
   passport.authenticate('jwt', { session: false }),
   contentValidation,
   commentController.create
 );
 router.put(
-  '/update/:commentId',
+  '/:commentId',
   passport.authenticate('jwt', { session: false }),
   contentValidation,
   commentController.update
 );
 router.delete(
-  '/delete/:commentId',
+  '/:commentId',
   passport.authenticate('jwt', { session: false }),
   commentController.delete
 );

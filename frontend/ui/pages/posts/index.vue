@@ -28,7 +28,7 @@ export default {
         authorization: `Bearer ${token}`,
       },
     };
-    let data = await $axios.$get('api/posts/', config);
+    let data = await $axios.$get('api/v1/posts/', config);
     data = await JSON.parse(data);
     if(!data.result) {
       store.commit('errors/setError', data.error);
