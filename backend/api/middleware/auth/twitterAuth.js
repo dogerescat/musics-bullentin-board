@@ -7,7 +7,7 @@ module.exports = new TwitterStrategy(
   {
     consumerKey: env.TWITTER_CONSUMER_KEY,
     consumerSecret: env.TWITTER_CONSUMER_SECRET,
-    callbackURL: 'http://localhost:3000/api/v1/oauth/twitter/callback',
+    callbackURL: `${env.LOCAL_HOST}api/v1/oauth/twitter/callback`,
     includeEmail: true,
   },
   (token, tokenSecret, profile, done) => {
