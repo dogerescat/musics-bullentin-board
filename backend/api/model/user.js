@@ -41,4 +41,20 @@ module.exports = {
       callback
     );
   },
+  saveToken: (token, id, callback) => {
+    connection.query(
+      `update users set token = ? where user_id = ?`,
+      [token, id],
+      callback
+    );
+  } ,
+  readToken: (sns, callback) => {
+    connection.query(
+      `select * from users where sns = '${sns}' and token is not null`,
+      callback
+    );
+  },
+  deleteToken: (id, callback) => {
+    connection.query(`update users set token = null where user_id = '${id}'`, callback);
+  }
 };

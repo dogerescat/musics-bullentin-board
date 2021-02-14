@@ -24,12 +24,12 @@
         />
         <a>Sign In with Google</a>
       </div>
-      <div class="btn twitter-auth-btn" @click="loginTwitter">
+      <div class="btn facebook-auth-btn" @click="loginFacebook">
         <font-awesome-icon
-          :icon="['fab', 'twitter']"
+          :icon="['fab', 'facebook-square']"
           style="color: #fff; font-size: 23px; margin-top: 5px"
         />
-        <a>Sign In with Twitter</a>
+        <a>Sign In with Facebook</a>
       </div>
       <div class="btn github-auth-btn" @click="loginGithub">
         <font-awesome-icon
@@ -76,26 +76,27 @@ export default {
       }
       this.$router.push('/posts');
     },
+    setToken(sns) {
+      setTimeout(async () => {
+        const res = await this.$axios.$get(`/api/v1/oauth/${sns}/login`);
+        const data = await JSON.parse(res);
+        if(!data.result) {
+          return;
+        }
+        location.href = 'https://musics-board.herokuapp.com/posts'
+      }, 10000);
+    },
     loginGoogle() {
       open('/api/v1/oauth/google');
-      setInterval(() => {
-        this.doReroad();
-      }, 5000);
+      this.setToken('google');
     },
-    loginTwitter() {
-      open('/api/v1/oauth/twitter');
-      setInterval(() => {
-        this.doReroad();
-      }, 5000);
+    loginFacebook() {
+      open('/api/v1/oauth/facebook');
+      this.setToken('facebook');
     },
     loginGithub() {
       open('/api/v1/oauth/github');
-      setInterval(() => {
-        this.doReroad();
-      }, 5000);
-    },
-    doReroad() {
-      location.reload();
+      this.setToken('github');
     },
   },
 };
@@ -163,28 +164,28 @@ label {
 .google-auth-btn {
   display: block;
   text-align: right;
-  width: 250px;
+  width: 280px;
   height: 50px;
   margin: 10px auto;
   background-color: #ce5c65;
   box-shadow: 0 10px 15px 0 rgb(207, 121, 121);
   font-size: 20px;
 }
-.twitter-auth-btn {
+.facebook-auth-btn {
   display: block;
   text-align: right;
-  width: 250px;
+  width: 280px;
   height: 50px;
   margin: 10px auto;
   margin-top: 25px;
-  background-color: #51abf5;
+  background-color: #2297f7;
   box-shadow: 0 10px 15px 0 rgb(116, 158, 214);
   font-size: 20px;
 }
 .github-auth-btn {
   display: block;
   text-align: right;
-  width: 250px;
+  width: 280px;
   height: 50px;
   margin: 10px auto;
   margin-top: 25px;

@@ -1,13 +1,13 @@
 const GitHubStrategy = require('passport-github2').Strategy;
 const User = require('../../model/user');
 require('dotenv').config();
-const env = process.env;
+// const env = process.env;
 
 module.exports = new GitHubStrategy(
   {
-    clientID: env.GITHUB_CLIENT_ID,
-    clientSecret: env.GITHUB_CLIENT_SECRET,
-    callbackURL: `${env.LOCAL_HOST}api/v1/oauth/github/callback`,
+    clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL: `${process.env.ORIGIN}api/v1/oauth/github/callback`,
     scope: ['user:email'],
   },
   (token, tokenSecret, profile, done) => {
