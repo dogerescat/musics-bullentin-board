@@ -1,6 +1,5 @@
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 require('dotenv').config();
-// const env = process.env;
 const User = require('../../model/user');
 
 module.exports = new GoogleStrategy(
