@@ -5,7 +5,7 @@ export default {
   },
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    title: 'nuxt_app',
+    title: 'musics board',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -14,12 +14,15 @@ export default {
     script: [
       { 
         src: 'https://code.jquery.com/jquery-3.3.1.slim.min.js',
+        defer: true
       },
       {
         src: "https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js",
+        defer: true
       },
       {
         src: "https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js",
+        defer: true
       }
     ],
     link: [
@@ -52,7 +55,7 @@ export default {
   },
   proxy: {
     '/api': {
-      target: 'https://musics-board-api.herokuapp.com',
+      target: process.env.API_URL,
     },
   },
   fontawesome: {

@@ -19,6 +19,7 @@ services:
   frontend: 
     build: ./docker/frontend
     container_name: frontend
+    env_file: ./docker/frontend/app.env
     environment: 
      - TZ=Asia/Tokyo
      - DEBUG=app:*
@@ -34,7 +35,7 @@ services:
   backend:
     build: ./docker/backend
     container_name: backend
-    env_file: ./backend/api/app.env
+    env_file: ./docker/backend/app.env
     environment: 
      - TZ=Asia/Tokyo
      - DEBUG=app:*

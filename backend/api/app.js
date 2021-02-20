@@ -14,44 +14,44 @@ const commnetLikeRouter = require('./routes/comment.likes');
 const oauthRouter = require('./routes/oauth');
 const app = express();
 const session = require('express-session');
-const MYSQLStore = require('express-mysql-session')(session);
-const mysql = require('mysql');
+// const MYSQLStore = require('express-mysql-session')(session);
+// const mysql = require('mysql');
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.set('trust proxy', 1);
 
-const sessionOptions = {
-  host: process.env.MYSQL_SESSION_HOST,
-  port: process.env.MYSQL_PORT,
-  user: process.env.MYSQL_SESSION_USER,
-  password: process.env.MYSQL_SESSION_PASSWORD,
-  database: process.env.MYSQL_SESSION_DATABASE,
-  checkExpirationInterval: 900000,
-	expiration: 86400000,
-	createDatabaseTable: true,
-	schema: {
-		tableName: 'sessions',
-		columnNames: {
-			session_id: 'session_id',
-			expires: 'expires',
-			data: 'data',
-		}
-	}
-};
-const connection = mysql.createPool(sessionOptions);
-const sessionStore = new MYSQLStore(sessionOptions, connection);
+// const sessionOptions = {
+//   host: process.env.MYSQL_SESSION_HOST,
+//   port: process.env.MYSQL_PORT,
+//   user: process.env.MYSQL_SESSION_USER,
+//   password: process.env.MYSQL_SESSION_PASSWORD,
+//   database: process.env.MYSQL_SESSION_DATABASE,
+//   checkExpirationInterval: 900000,
+// 	expiration: 86400000,
+// 	createDatabaseTable: true,
+// 	schema: {
+// 		tableName: 'sessions',
+// 		columnNames: {
+// 			session_id: 'session_id',
+// 			expires: 'expires',
+// 			data: 'data',
+// 		}
+// 	}
+// };
+// const connection = mysql.createPool(sessionOptions);
+// const sessionStore = new MYSQLStore(sessionOptions, connection);
 
 app.use(session({
   secret: process.env.SECRET_KEY,
   resave: false,
-  store: sessionStore,
+  // store: sessionStore,
   saveUninitialized: false,
   cookie: {
-    httpOnly: true,
+    // httpOnly: true,
     secure: true,
     maxAge: 30 * 60 * 1000,
-    sameSite: 'none'
+    // sameSite: 'none'
   }
 }));
 

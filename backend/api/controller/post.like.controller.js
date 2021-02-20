@@ -8,9 +8,8 @@ const createErrorMessage = (msg) => {
 
 module.exports = {
   create(req, res) {
-    PostLike.create(req.params, (error, result) => {
+    PostLike.create(req.params, (error) => {
       if (error) {
-        console.log('errorだよ');
         const response = createErrorMessage('いいねできませんでした。');
         return res.json(response);
       }

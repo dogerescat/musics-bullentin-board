@@ -9,7 +9,8 @@ const mysql_setting = {
   database: process.env.MYSQL_DATABASE,
 };
 const getConnection = () => {
-  const connection = mysql.createPool(mysql_setting);
+  const connection = mysql.createConnection(mysql_setting);
+  // const connection = mysql.createPool(mysql_setting);
   module.exports = connection;
 };
 getConnection();
