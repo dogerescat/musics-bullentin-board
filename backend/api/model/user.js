@@ -41,4 +41,11 @@ module.exports = {
       callback
     );
   },
+  update: (id, body, callback) => {
+    connection.query(
+      `update users set name = ?, message = ?, birthday = ? where user_id = ?`,
+      [body.name, body.message, body.birthday, id],
+      callback
+    );
+  }
 };

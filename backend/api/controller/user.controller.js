@@ -176,8 +176,10 @@ module.exports = {
         }
         const response = createErrorMessage('ユーザーが見つかりません。');
         return res.json(response);
-      } else if(result[0].sns) {
-        const response = createErrorMessage(`このメールアドレスは${result[0].sns}のアカウントで使用されています。`);
+      } else if (result[0].sns) {
+        const response = createErrorMessage(
+          `このメールアドレスは${result[0].sns}のアカウントで使用されています。`
+        );
         return res.json(response);
       } else if (!bcrypt.compareSync(req.body.password, result[0].password)) {
         if (!req.session.falseLoginCounter) {
@@ -229,6 +231,25 @@ module.exports = {
         response = JSON.stringify(response);
         res.json(response);
       }
+    });
+  },
+  read: (req, res) => {
+    User.readUserId(req.params.id, (error, user) => {
+      if (error) {
+        const response = createErrorMessage('ユーザーの取得に失敗しました。');
+        return res.json(response);
+      }
+      const response = JSON.stringify({ user: user[0], result: true });
+      res.json(response);
+    });
+  },
+  edit: (req, res) => {
+    User.update(req.params.id, req.body, (error) => {
+      if(error) {
+        const response = createErrorMessage('編集に失敗しました。');
+        return res.json(response);
+      }
+      res.json(JSON.stringify({result: true}));
     });
   },
   logout: (req, res) => {

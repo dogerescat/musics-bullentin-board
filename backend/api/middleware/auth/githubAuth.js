@@ -7,7 +7,7 @@ module.exports = new GitHubStrategy(
   {
     clientID: env.GITHUB_CLIENT_ID,
     clientSecret: env.GITHUB_CLIENT_SECRET,
-    callbackURL: `${env.LOCAL_HOST}api/v1/oauth/github/callback`,
+    callbackURL: `${env.APP_ORIGIN}api/v1/oauth/github/callback`,
     scope: ['user:email'],
   },
   (token, tokenSecret, profile, done) => {

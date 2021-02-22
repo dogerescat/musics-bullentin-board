@@ -7,6 +7,8 @@ CREATE TABLE IF NOT EXISTS `users` (
     `password` VARCHAR(80),
     `emailVerifiedAt` DATETIME(6) NULL,
     `sns` VARCHAR(10),
+    `message` VARCHAR(140),
+    `birthday` VARCHAR(15),
     PRIMARY KEY (`user_id`)
 )DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
@@ -32,6 +34,15 @@ CREATE TABLE IF NOT EXISTS `comments` (
     PRIMARY KEY (`comment_id`)
 )DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+DROP TABLE IF EXISTS `comment_likes`;
+
+CREATE TABLE IF NOT EXISTS `comment_likes` (
+    `comment_like_id` INT(20) AUTO_INCREMENT,
+    `user_id` INT(20) NOT NULL,
+    `comment_id` INT(40) NOT NULL,
+    PRIMARY KEY (`comment_like_id`)
+)DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
 DROP TABLE IF EXISTS `post_likes`;
 
 CREATE TABLE IF NOT EXISTS `post_likes` (
@@ -41,11 +52,3 @@ CREATE TABLE IF NOT EXISTS `post_likes` (
     PRIMARY KEY (`post_like_id`)
 )DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-DROP TABLE IF EXISTS `comment_likes`;
-
-CREATE TABLE IF NOT EXISTS `comment_likes` (
-    `comment_like_id` INT(20) AUTO_INCREMENT,
-    `user_id` INT(20) NOT NULL,
-    `comment_id` INT(40) NOT NULL,
-    PRIMARY KEY (`comment_like_id`)
-)DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
