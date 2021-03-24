@@ -1,8 +1,7 @@
 export default {
-  mode: 'universal',
   server: {
-    port: 3000,
-    host: '0.0.0.0',
+    port: process.env.PORT || 3000,
+    host: process.env.HOST || '0.0.0.0',
   },
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
@@ -49,12 +48,12 @@ export default {
     'nuxt-fontawesome'
   ],
   axios: {
-    proxy: true
+    proxy: true,
   },
   proxy: {
-    '/api/': {
-      target: 'http://backend:8080',
-    }
+    '/api': {
+      target: 'https://musics-board-api.herokuapp.com',
+    },
   },
   fontawesome: {
     imports: [

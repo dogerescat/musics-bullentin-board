@@ -1,25 +1,27 @@
 const User = require('../model/user');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-const env = process.env;
+require('date-utils');
+// const env = process.env;
 const { validationResult } = require('express-validator');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  // service: 'gmail',
+  host: 'smtp.gmail.com',
   secure: true,
   port: 465,
   auth: {
-    user: env.GOOGLE_ACOUNT_ADDRESS,
-    pass: env.GOOGLE_ACOUNT_PASSWORD,
+    user: process.env.GOOGLE_ACOUNT_ADDRESS,
+    pass: process.env.GOOGLE_ACOUNT_PASSWORD,
   },
 });
 
 const saveThirtyMinutesLater = (req) => {
   const now = new Date();
-  const thirtyMinutesLater = now.setMinutes(now.getMinutes() + 30);
+  const thirtyMinutesLater = now.setMinutes(now.getMinutes() + 1);
   req.session.thirtyMinutesLaterTime = thirtyMinutesLater;
   delete req.session.falseLoginCounter;
 };
@@ -41,7 +43,7 @@ const createToken = (user, msg) => {
     algorithm: 'HS256',
     expiresIn: '1h',
   };
-  const token = jwt.sign(data, env.SECRET_KEY, option);
+  const token = jwt.sign(data, process.env.SECRET_KEY, option);
   data.token = token;
   data.result = true;
   data.msg = msg;
@@ -74,7 +76,8 @@ module.exports = {
             .update(resu[0].email)
             .digest('hex');
           const now = new Date();
-          const expiration = now.setHours(now.getHours() + 1);
+          now.setHours(now.getHours() + 1);
+          const expiration = now.toFormat('YY-MM-DD-HH24-MI-SS');
           let verificationUrl =
             req.get('origin') +
             '/verify/' +
@@ -84,12 +87,12 @@ module.exports = {
             '?expires=' +
             expiration;
           const signature = crypto
-            .createHmac('sha256', env.APP_KEY)
+            .createHmac('sha256', process.env.APP_KEY)
             .update(verificationUrl)
             .digest('hex');
           verificationUrl += '&signature=' + signature;
           transporter.sendMail({
-            from: env.GOOGLE_ACOUNT_ADDRESS,
+            from: process.env.GOOGLE_ACOUNT_ADDRESS,
             to: resu[0].email,
             text:
               '以下のURLをクリックして本登録を完了させてください。\n\n' +
@@ -117,18 +120,19 @@ module.exports = {
         const response = createErrorMessage('本登録済みです');
         return res.json(response);
       }
-      const now = new Date();
+      let now = new Date();
       const hash = crypto
         .createHash('sha1')
         .update(result[0].email)
         .digest('hex');
       const isCorrectHash = hash === req.params.hash;
-      const isExpired = now.getTime() > parseInt(req.query.expires);
+      now = now.toFormat('YY-MM-DD-HH24-MI-SS');
+      const isExpired = now > parseInt(req.query.expires);
       const verificationUrl =
-        `http://localhost:3000/` +
+        process.env.APP_ORIGIN +
         req.originalUrl.split('&signature=')[0].split('users/')[1];
       const signature = crypto
-        .createHmac('sha256', env.APP_KEY)
+        .createHmac('sha256', process.env.APP_KEY)
         .update(verificationUrl)
         .digest('hex');
       const isCorrectSignature = signature === req.query.signature;
@@ -216,7 +220,7 @@ module.exports = {
       res.json(response);
       return;
     }
-    jwt.verify(token, env.SECRET_KEY, (err, decoded) => {
+    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
       if (err) {
         response = JSON.stringify(response);
         res.json(response);

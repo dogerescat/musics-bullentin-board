@@ -1,13 +1,13 @@
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 require('dotenv').config();
-const env = process.env;
+// const env = process.env;
 const User = require('../../model/user');
 
 module.exports = new GoogleStrategy(
   {
-    clientID: env.GOOGLE_CLIENT_KEY,
-    clientSecret: env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'http://localhost:3000/api/v1/oauth/google/callback',
+    clientID: process.env.GOOGLE_CLIENT_KEY,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: `${process.env.ORIGIN}api/v1/oauth/google/callback`,
   },
   function (token, tokenSecret, profile, done) {
     User.snsFindEmail({ email: profile.emails[0].value }, (err, user) => {

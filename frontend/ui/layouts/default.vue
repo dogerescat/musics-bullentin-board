@@ -13,6 +13,7 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
+        <span id="title">musics board</span>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item" v-if="!isLoginUser">
@@ -131,6 +132,9 @@ export default {
 };
 </script>
 <style scoped>
+#title {
+  font-size: 1.5rem;
+}
 .navbar {
   background-color: #aaefe7;
   height: 50px;
