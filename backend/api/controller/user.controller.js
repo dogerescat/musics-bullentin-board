@@ -125,7 +125,7 @@ module.exports = {
       const isCorrectHash = hash === req.params.hash;
       const isExpired = now.getTime() > parseInt(req.query.expires);
       const verificationUrl =
-        env.LOCAL_HOST +
+        env.APP_ORIGIN +
         req.originalUrl.split('&signature=')[0].split('users/')[1];
       const signature = crypto
         .createHmac('sha256', env.APP_KEY)

@@ -32,7 +32,7 @@
         <button @click="deletePost" class="btn2 btn">削除</button>
       </div>
       <div class="contributor">
-        <p>投稿者:&nbsp; &nbsp;{{ computedContributor }}</p>
+        <p class="contributor-btn" @click="goProfile">投稿者:&nbsp; &nbsp;{{ computedContributor }}</p>
       </div>
     </div>
   </div>
@@ -133,6 +133,9 @@ export default {
     },
     goCommentListPage() {
       this.$router.push(`/comments/${this.data.posts[this.index].post_id}`);
+    },
+    goProfile() {
+      this.$router.push(`/users/${this.data.posts[this.index].user_id}`);
     },
     async deletePost() {
       const token = this.$store.state.users.userData.token;
@@ -256,5 +259,8 @@ export default {
 }
 .comment-icon {
   display: inline;
+}
+.contributor-btn {
+  cursor: pointer;
 }
 </style>
