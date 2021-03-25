@@ -235,6 +235,25 @@ module.exports = {
       }
     });
   },
+  read: (req, res) => {
+    User.readUserId(req.params.id, (error, user) => {
+      if (error) {
+        const response = createErrorMessage('ユーザーの取得に失敗しました。');
+        return res.json(response);
+      }
+      const response = JSON.stringify({ user: user[0], result: true });
+      res.json(response);
+    });
+  },
+  edit: (req, res) => {
+    User.update(req.params.id, req.body, (error) => {
+      if(error) {
+        const response = createErrorMessage('編集に失敗しました。');
+        return res.json(response);
+      }
+      res.json(JSON.stringify({result: true}));
+    });
+  },
   logout: (req, res) => {
     delete req.session.accessToken;
     res.json();

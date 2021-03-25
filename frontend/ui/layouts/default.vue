@@ -44,6 +44,7 @@
                 {{userName}}
               </NuxtLink>
               <div class="dropdown-menu logout" aria-labelledby="navbarDropdown">
+                <button class="dropdown-item" @click="goProfile">プロフィール</button>
                 <button class="dropdown-item" @click="logout">Logout</button>
               </div>
             </li>
@@ -69,6 +70,9 @@ export default {
     },
     async deleteSession() {
       await this.$axios.get('/api/v1/users/logout');
+    },
+    goProfile() {
+      this.$router.push(`/users/${this.$store.state.users.userData.userId}`);
     },
     showError() {
       this.$modal.show(

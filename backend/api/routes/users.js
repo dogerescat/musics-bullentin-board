@@ -9,5 +9,7 @@ router.get('/verify/:id/:hash', userController.signUp);
 router.post('/login', loginValidation, userController.login);
 router.get('/login/jwt', userController.loginJwt);
 router.get('/logout', userController.logout);
+router.get('/:id', userController.read);
+router.put('/:id/edit', userController.edit);
 
 module.exports = router;
