@@ -69,7 +69,7 @@ export default {
       this.$router.push('/login');
     },
     async deleteSession() {
-      await this.$axios.get('/api/v1/users/logout');
+      await this.$axios.$get('/server/logout');
     },
     goProfile() {
       this.$router.push(`/users/${this.$store.state.users.userData.userId}`);

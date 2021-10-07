@@ -10,7 +10,6 @@ module.exports = {
   create(req, res) {
     PostLike.create(req.params, (error, result) => {
       if (error) {
-        console.log('errorだよ');
         const response = createErrorMessage('いいねできませんでした。');
         return res.json(response);
       }

@@ -5,7 +5,7 @@ RUN apk update && \
  npm install -g npm && \
  npm install -g create-nuxt-app@2.15.0
 
-WORKDIR /app/frontend/nuxt_app
+# WORKDIR /app/frontend/nuxt_app
 
 ENV PORT="3000"
 ENV HOST="0.0.0.0"

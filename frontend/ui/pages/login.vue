@@ -24,13 +24,13 @@
         />
         <a>Sign In with Google</a>
       </div>
-      <div class="btn facebook-auth-btn" @click="loginFacebook">
+      <!-- <div class="btn facebook-auth-btn">
         <font-awesome-icon
           :icon="['fab', 'facebook-square']"
           style="color: #fff; font-size: 23px; margin-top: 5px"
         />
         <a>Sign In with Facebook</a>
-      </div>
+      </div> -->
       <div class="btn github-auth-btn" @click="loginGithub">
         <font-awesome-icon
           :icon="['fab', 'github']"
@@ -76,27 +76,11 @@ export default {
       }
       this.$router.push('/posts');
     },
-    setToken(sns) {
-      setTimeout(async () => {
-        const res = await this.$axios.$get(`/api/v1/oauth/${sns}/login`);
-        const data = await JSON.parse(res);
-        if(!data.result) {
-          return;
-        }
-        location.href = 'https://musics-board.herokuapp.com/posts'
-      }, 10000);
-    },
     loginGoogle() {
-      open('/api/v1/oauth/google');
-      this.setToken('google');
-    },
-    loginFacebook() {
-      open('/api/v1/oauth/facebook');
-      this.setToken('facebook');
+      open('http://localhost:3000/server/google');
     },
     loginGithub() {
-      open('/api/v1/oauth/github');
-      this.setToken('github');
+      open('http://localhost:3000/server/github')
     },
   },
 };
@@ -166,12 +150,12 @@ label {
   text-align: right;
   width: 280px;
   height: 50px;
-  margin: 10px auto;
+  margin: 30px auto;
   background-color: #ce5c65;
   box-shadow: 0 10px 15px 0 rgb(207, 121, 121);
   font-size: 20px;
 }
-.facebook-auth-btn {
+/* .facebook-auth-btn {
   display: block;
   text-align: right;
   width: 280px;
@@ -181,14 +165,14 @@ label {
   background-color: #2297f7;
   box-shadow: 0 10px 15px 0 rgb(116, 158, 214);
   font-size: 20px;
-}
+} */
 .github-auth-btn {
   display: block;
   text-align: right;
   width: 280px;
   height: 50px;
   margin: 10px auto;
-  margin-top: 25px;
+  margin-top: 35px;
   background-color: #424649;
   box-shadow: 0 10px 15px 0 rgb(97, 96, 96);
   font-size: 20px;

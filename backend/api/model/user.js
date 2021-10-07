@@ -29,12 +29,6 @@ module.exports = {
       callback
     );
   },
-  snsFindEmail: (sns, callback) => {
-    connection.query(
-      `select * from users where email = '${sns.email}'`,
-      callback
-    );
-  },
   snsCreate: (sns, callback) => {
     connection.query(
       `insert into users set name = '${sns.displayName}', email = '${sns.emails[0].value}', sns = '${sns.provider}'`,
@@ -48,15 +42,6 @@ module.exports = {
       callback
     );
   } ,
-  readToken: (sns, callback) => {
-    connection.query(
-      `select * from users where sns = '${sns}' and token is not null`,
-      callback
-    );
-  },
-  deleteToken: (id, callback) => {
-    connection.query(`update users set token = null where user_id = '${id}'`, callback);
-  },
   update: (id, body, callback) => {
     connection.query(
       `update users set name = ?, message = ?, birthday = ? where user_id = ?`,

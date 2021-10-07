@@ -52,7 +52,7 @@ export default {
   },
   proxy: {
     '/api': {
-      target: 'https://musics-board-api.herokuapp.com',
+      target: 'http://backend:8080',
     },
   },
   fontawesome: {
@@ -73,5 +73,6 @@ export default {
   },
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
-  }
+  },
+  serverMiddleware: ['~/server']
 }
