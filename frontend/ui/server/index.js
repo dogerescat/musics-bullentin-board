@@ -78,12 +78,14 @@ app.get(
   passport.authenticate("github", { session: false }),
   authController.snsLogin
 );
+app.get('/signup/:id',
+  authController.signUp
+);
 app.post(
   '/login',
   loginValidator,
   authController.login
 );
-
 app.get(
   '/login/jwt',
   authController.loginJwt

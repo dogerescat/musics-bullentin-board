@@ -11,6 +11,15 @@ export default {
     let data = await $axios.$get(url);
     data = JSON.parse(data);
     return { data };
+  },
+  async mounted() {
+    if(this.data.msg) {
+      let res = await this.$axios.$get(`http://localhost:3000/server/signup/${this.$route.params.id}`);
+      res = JSON.parse(res);
+      if(res.result) {
+        location.href = 'http://localhost:3000/posts';
+      }
+    }
   }
 }
 </script>

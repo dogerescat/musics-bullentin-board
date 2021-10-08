@@ -1,6 +1,6 @@
 const baseAxios = require('axios');
 const axios = baseAxios.create({
-  baseURL: 'http://localhost:8080', 
+  baseURL: 'http://backend:8080', 
   headers: {
     'Content-Type': 'application/json',
     'X-Requested-With': 'XMLHttpRequest'
@@ -10,6 +10,7 @@ const axios = baseAxios.create({
 const { validationResult } = require("express-validator");
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 const createToken = user => {
   let data = {
@@ -47,6 +48,17 @@ module.exports = {
     }
     res.render('message.ejs',{ message: req.authInfo.message});
   },
+  signUp: async (req, res) => {
+    const response = await axios.get(`/api/v1/users/${req.params.id}`);
+    const data = JSON.parse(response.data);
+    if(data.result) {
+      const token = createToken(data.user);
+      req.session.accessToken = `Bearer ${token}`;
+      res.json(JSON.stringify({result: true}));
+      return 
+    }
+    res.json(JSON.stringify({result: false}));
+  },
   login: async (req, res) => {
     if (req.session.thirtyMinutesLaterTime) {
       const now = new Date();
@@ -63,44 +75,44 @@ module.exports = {
       const response = createErrorMessage(validationErrors.errors[0].msg);
       return res.json(response);
     }
-    const rp = await axios.post('/api/v1/users/login', req.body.userData.email);
-    const data = JSON.parse(rp);
+    const rp = await axios.post('/api/v1/users/login', {email: req.body.email});
+    const data = JSON.parse(rp.data);
     if(!data.result) {
-        res.json(rp);
+      res.json(rp);
     }
-    if (data.data.length === 0) {
-        if (!req.session.falseLoginCounter) {
-          req.session.falseLoginCounter = 1;
-        } else if (req.session.falseLoginCounter === 1) {
-          saveThirtyMinutesLater(req);
-        } else {
-          req.session.falseLoginCounter++;
-        }
-        const resp = createErrorMessage('ユーザーが見つかりません。');
-        return res.json(resp);
-      } else if(data.data[0].sns) {
-        const response = createErrorMessage(`このメールアドレスは${data.data[0].sns}のアカウントで使用されています。`);
-        return res.json(response);
-      } else if (!bcrypt.compareSync(req.body.password, data.data[0].password)) {
-        if (!req.session.falseLoginCounter) {
-          req.session.falseLoginCounter = 1;
-        } else {
-          req.session.falseLoginCounter++;
-        }
-        const response = createErrorMessage('パスワードが正しくありません。');
-        return res.json(response);
-      } else if (!data.data[0].emailVerifiedAt) {
-        if (!req.session.falseLoginCounter) {
-          req.session.falseLoginCounter = 1;
-        } else {
-          req.session.falseLoginCounter++;
-        }
-        const response = createErrorMessage('本登録が済んでいません。');
-        return res.json(response);
+    if (data.user.length === 0) {
+      if (!req.session.falseLoginCounter) {
+        req.session.falseLoginCounter = 1;
+      } else if (req.session.falseLoginCounter === 1) {
+        saveThirtyMinutesLater(req);
+      } else {
+        req.session.falseLoginCounter++;
       }
-      const response = createToken(data.data, 'ログインしました。');
-      req.session.accessToken = `Bearer ${response.token}`;
-      res.json(response.data);
+      const resp = createErrorMessage('ユーザーが見つかりません。');
+      return res.json(resp);
+    } else if(data.user[0].sns) {
+      const response = createErrorMessage(`このメールアドレスは${data.user[0].sns}のアカウントで使用されています。`);
+      return res.json(response);
+    } else if (!bcrypt.compareSync(req.body.password, data.user[0].password)) {
+      if (!req.session.falseLoginCounter) {
+        req.session.falseLoginCounter = 1;
+      } else {
+        req.session.falseLoginCounter++;
+      }
+      const response = createErrorMessage('パスワードが正しくありません。');
+      return res.json(response);
+    } else if (!data.user[0].emailVerifiedAt) {
+      if (!req.session.falseLoginCounter) {
+        req.session.falseLoginCounter = 1;
+      } else {
+        req.session.falseLoginCounter++;
+      }
+      const response = createErrorMessage('本登録が済んでいません。');
+      return res.json(response);
+    }
+    const token = createToken(data.user[0]);
+    req.session.accessToken = `Bearer ${token}`;
+    res.json(JSON.stringify({result: true}));
   },
   loginJwt: (req, res) => {
     let token = '';

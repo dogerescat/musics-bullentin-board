@@ -1,5 +1,4 @@
 const User = require('../model/user');
-const jwt = require('jsonwebtoken');
 require('dotenv').config();
 require('date-utils');
 const { validationResult } = require('express-validator');
@@ -22,25 +21,6 @@ const createErrorMessage = (msg) => {
   let message = { error: msg };
   message = JSON.stringify(message);
   return message;
-};
-
-const createToken = (user, msg) => {
-  let data = {
-    user_id: user[0].user_id,
-    name: user[0].name,
-    email: user[0].email,
-    password: user[0].password,
-  };
-  const option = {
-    algorithm: 'HS256',
-    expiresIn: '1h',
-  };
-  const token = jwt.sign(data, process.env.SECRET_KEY, option);
-  data.token = token;
-  data.result = true;
-  data.msg = msg;
-  data = JSON.stringify(data);
-  return { data, token };
 };
 
 module.exports = {
@@ -139,24 +119,21 @@ module.exports = {
             const response = createErrorMessage('本登録できませんでした。');
             return res.json(response);
           }
-          const data = createToken(result, '本登録完了しました。');
-          res.json(data.data);
+          res.json(JSON.stringify({msg: '本登録完了しました。'}));
         });
       }
     });
   },
-  //一部servermiddle
   login: (req, res) => {
-    User.readEmail(req.body.emails[0].value, (error, result) => {
+    User.readEmail(req.body.email, (error, result) => {
       let response = {}
       if(error) {
-        console.log(error);
         response.result = false
         res.json(JSON.stringify(response));
         return
       }
       response.result = true;
-      response.data = result;
+      response.user = result;
       res.json(JSON.stringify(response));
     });
   },

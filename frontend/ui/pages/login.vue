@@ -74,7 +74,8 @@ export default {
       if (!data.result) {
         return;
       }
-      this.$router.push('/posts');
+      // this.$router.push('/posts');
+      location.href = "http://localhost:3000/posts"
     },
     loginGoogle() {
       open('http://localhost:3000/server/google');
