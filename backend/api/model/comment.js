@@ -3,19 +3,22 @@ const connection = require('./db');
 module.exports = {
   create: (postId, body, callback) => {
     connection.query(
-      `insert into comments SET post_id = '${postId}', user_id = '${body.userId}', body = '${body.body}'`,
+      `insert into comments SET post_id = ?, user_id = ?, body = ?`,
+      [postId, body.userId, body.body],
       callback
     );
   },
   readPostId: (id, callback) => {
     connection.query(
-      `select * from comments where post_id = '${id}'`,
+      `select * from comments where post_id = ?`,
+      [id],
       callback
     );
   },
   readCommentId: (id, callback) => {
     connection.query(
-      `select * from comments where comment_id = '${id}'`,
+      `select * from comments where comment_id = ?`,
+      [id],
       callback
     );
   },
@@ -28,7 +31,8 @@ module.exports = {
   },
   delete: (id, callback) => {
     connection.query(
-      `delete from comments where comment_id = '${id}'`,
+      `delete from comments where comment_id = ?`,
+      [id],
       callback
     );
   },

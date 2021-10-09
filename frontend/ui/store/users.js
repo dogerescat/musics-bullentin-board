@@ -46,7 +46,7 @@ export const actions = {
     return data;
   },
   async login({ commit }, userData) {
-    const res = await this.$axios.$post('http://localhost:3000/server/login', userData);
+    const res = await this.$axios.$post(`${this.$config.APP_ORIGIN}server/login`, userData);
     const data = JSON.parse(res);
     if (!data.result) {
       commit('errors/setError', data.error, { root: true });

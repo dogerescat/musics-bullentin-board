@@ -3,7 +3,8 @@ const connection = require('./db');
 module.exports = {
   create: (params, callback) => {
     connection.query(
-      `insert into comment_likes SET comment_id = '${params.commentId}', user_id = '${params.userId}'`,
+      `insert into comment_likes SET comment_id = ?, user_id = ?`,
+      [params.commentId, params.userId],
       callback
     );
   },
@@ -12,13 +13,15 @@ module.exports = {
   },
   delete(params, callback) {
     connection.query(
-      `delete from comment_likes where user_id = '${params.userId}' and comment_id = '${params.commentId}'`,
+      `delete from comment_likes where user_id = ? and comment_id = ?`,
+      [params.userId, params.commentId],
       callback
     );
   },
   deleteComment: (id, callback) => {
     connection.query(
-      `delete from comment_likes where comment_id = '${id}'`,
+      `delete from comment_likes where comment_id = ?`,
+      [id],
       callback
     );
   },

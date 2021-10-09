@@ -86,7 +86,7 @@ module.exports = {
     const id = req.params.id;
     User.readUserId(id, (error, result) => {
       if (result.length === 0) {
-        const response = createErrorMessage('このurlは正しくありません。');
+        const response = createErrorMessage('このURLは正しくありません。');
         return res.json(response);
       } else if (result[0].emailVerifiedAt) {
         const response = createErrorMessage('本登録済みです');

@@ -5,7 +5,6 @@ const path = require('path');
 const passport = require("passport");
 const loginValidator = require('./middleware/validator/loginValidator');
 const googleAuth = require('./middleware/auth/googleAuth');
-const facebookAuth = require('./middleware/auth/facebookAuth');
 const githubAuth = require('./middleware/auth/githubAuth');
 require('dotenv').config();
 const authController = require('./controller/auth.controller');
@@ -28,7 +27,6 @@ app.use(passport.initialize());
 app.use(cookieParser());
 
 passport.use(googleAuth);
-passport.use(facebookAuth);
 passport.use(githubAuth);
 
 redisClient.on('error', function (err) {

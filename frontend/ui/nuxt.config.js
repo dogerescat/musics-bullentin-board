@@ -3,6 +3,10 @@ export default {
     port: process.env.PORT || 3000,
     host: process.env.HOST || '0.0.0.0',
   },
+  publicRuntimeConfig: {
+    APP_ORIGIN: process.env.APP_ORIGIN,
+    ORIGIN: process.env.ORIGIN
+  },
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     title: 'musics-board',

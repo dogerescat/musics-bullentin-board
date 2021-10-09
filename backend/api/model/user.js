@@ -6,21 +6,23 @@ module.exports = {
   },
   create: (body, password, callback) => {
     connection.query(
-      `insert into users SET name = '${body.name}', email = '${body.email}', password = '${password}'`,
+      `insert into users SET name = ?, email = ?, password = ?`,
+      [body.name, body.email, password],
       callback
     );
   },
   findOne: (email, password, callback) => {
     connection.query(
-      `select * from users where email = '${email}' and password = '${password}'`,
+      `select * from users where email = ? and password = ?`,
+      [email, password],
       callback
     );
   },
   readEmail: (email, callback) => {
-    connection.query(`select * from users where email = '${email}'`, callback);
+    connection.query(`select * from users where email = ?`, [email], callback);
   },
   readUserId: (id, callback) => {
-    connection.query(`select * from users where user_id = '${id}'`, callback);
+    connection.query(`select * from users where user_id = ?`, [id], callback);
   },
   addEmailVerifiedAt: (emailVerifiedAt, id, callback) => {
     connection.query(
@@ -31,22 +33,16 @@ module.exports = {
   },
   snsCreate: (sns, callback) => {
     connection.query(
-      `insert into users set name = '${sns.displayName}', email = '${sns.emails[0].value}', sns = '${sns.provider}'`,
+      `insert into users set name = ?, email = ?, sns = ?`,
+      [sns.displayName, sns.emails[0].value, sns.provider],
       callback
     );
   },
-  saveToken: (token, id, callback) => {
-    connection.query(
-      `update users set token = ? where user_id = ?`,
-      [token, id],
-      callback
-    );
-  } ,
   update: (id, body, callback) => {
     connection.query(
       `update users set name = ?, message = ?, birthday = ? where user_id = ?`,
       [body.name, body.message, body.birthday, id],
       callback
     );
-  }
+  },
 };
