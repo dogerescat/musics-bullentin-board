@@ -15,10 +15,10 @@ export default {
   },
   async mounted() {
     if(this.data.msg) {
-      let res = await this.$axios.$get(`${this.$config.APP_ORIGIN}server/signup/${this.$route.params.id}`);
+      let res = await this.$axios.$get(`${this.$config.APP_ORIGIN}/server/signup/${this.$route.params.id}`);
       res = JSON.parse(res);
       if(res.result) {
-        location.href = `${this.$config.APP_ORIGIN}posts`;
+        location.href = `${this.$config.APP_ORIGIN}/posts`;
       }
     }
   }

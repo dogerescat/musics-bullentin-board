@@ -1,14 +1,14 @@
 const baseAxios = require('axios');
+const { validationResult } = require("express-validator");
+require('dotenv').config();
 const axios = baseAxios.create({
-  baseURL: 'http://backend:8080', 
+  baseURL: process.env.APP_URL, 
   headers: {
     'Content-Type': 'application/json',
     'X-Requested-With': 'XMLHttpRequest'
   },
   responseType: 'json'  
 });
-const { validationResult } = require("express-validator");
-require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 

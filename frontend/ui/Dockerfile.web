@@ -1,15 +1,20 @@
 FROM node:14.15.3-alpine3.10
 
+COPY . ./app
+
+WORKDIR /app
+
 RUN apk update && \
  apk add git && \
  npm install -g npm && \
  npm install -g create-nuxt-app@2.15.0
 
-COPY . ./app/frontend/nuxt_app
+# WORKDIR /app
+# # COPY package*.json ./
+# COPY . ./
 
-WORKDIR /app/frontend/nuxt_app
+# RUN npm install
 
-RUN npm install
 RUN npm run build
 
 ENV LANG=C.UTF-8
@@ -19,3 +24,25 @@ ENV HOST 0.0.0.0
 
 EXPOSE 3000
 CMD [ "npm", "run", "start" ]
+# # Nodeイメージの取得
+# FROM node:14.4.0-alpine
+# # ワーキングディレクトリの指定
+# WORKDIR /app
+# # パッケージをコピー(このファイルだけ別にして先にインストールしたほうが良い)
+# COPY package*.json ./
+# # npm モジュールをインストール
+# RUN npm install --quiet
+# # その他のファイルをコピー
+# COPY . .
+# # このコマンドをしないといけないとwarnが出たので
+# RUN npm rebuild
+# # 本当はいらないが開発環境でvue-cliを使っていたのでそこに含まれているパッケージを使っているようでwarnが出たので入れる
+# RUN npm install vue-cli -g
+# # ビルドします
+# RUN npm run build
+# # なくても良い
+# ENV HOST 0.0.0.0
+# # なくても良い
+# EXPOSE 3000
+# # 起動コマンド
+# CMD ["npm", "run", "start"]

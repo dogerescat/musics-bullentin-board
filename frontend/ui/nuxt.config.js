@@ -3,10 +3,11 @@ export default {
     port: process.env.PORT || 3000,
     host: process.env.HOST || '0.0.0.0',
   },
-  publicRuntimeConfig: {
-    APP_ORIGIN: process.env.APP_ORIGIN,
-    ORIGIN: process.env.ORIGIN
-  },
+  // publicRuntimeConfig: {
+  //   APP_ORIGIN: process.env.APP_ORIGIN,
+  //   ORIGIN: process.env.APP_URL
+  // },
+  // dev: process.env.NODE_ENV !== 'production',
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     title: 'musics-board',
@@ -37,7 +38,7 @@ export default {
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
-    {src: '~/plugins/modal.js', ssr: false},
+    {src: '~/client/plugins/modal.js', ssr: false},
   ],
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
@@ -56,8 +57,11 @@ export default {
   },
   proxy: {
     '/api': {
-      target: 'http://backend:8080',
+      target: process.env.APP_URL,
     },
+    '/server': {
+      target: process.env.APP_ORIGIN
+    }
   },
   fontawesome: {
     imports: [
@@ -78,5 +82,7 @@ export default {
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
   },
-  serverMiddleware: ['~/server']
+  serverMiddleware: [
+    {path: '/server', handler: '~/server/index.js'}
+  ]
 }

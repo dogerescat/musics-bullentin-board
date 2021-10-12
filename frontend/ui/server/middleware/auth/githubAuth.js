@@ -2,7 +2,7 @@ const GitHubStrategy = require("passport-github2").Strategy;
 require("dotenv").config();
 const baseAxios = require("axios");
 const axios = baseAxios.create({
-  baseURL: "http://backend:8080", 
+  baseURL: process.env.APP_URL, 
   headers: {
     "Content-Type": "application/json",
     "X-Requested-With": "XMLHttpRequest"

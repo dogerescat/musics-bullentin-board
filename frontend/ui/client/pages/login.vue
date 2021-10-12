@@ -75,13 +75,14 @@ export default {
         return;
       }
       // this.$router.push('/posts');
-      location.href = "http://localhost:3000/posts"
+      location.href = `${this.$config.APP_ORIGIN}/posts`
     },
     loginGoogle() {
-      open('http://localhost:3000/server/google');
+      // open('http://localhost:3000/server/google');
+      open(`${this.$config.APP_ORIGIN}/server/google`);
     },
     loginGithub() {
-      open('http://localhost:3000/server/github')
+      open(`${this.$config.APP_ORIGIN}/server/github`);
     },
   },
 };
