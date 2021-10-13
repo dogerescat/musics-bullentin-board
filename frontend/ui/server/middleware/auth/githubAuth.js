@@ -2,7 +2,7 @@ const GitHubStrategy = require("passport-github2").Strategy;
 require("dotenv").config();
 const baseAxios = require("axios");
 const axios = baseAxios.create({
-  baseURL: process.env.APP_URL, 
+  baseURL: process.env.API_URL, 
   headers: {
     "Content-Type": "application/json",
     "X-Requested-With": "XMLHttpRequest"
@@ -14,7 +14,7 @@ module.exports = new GitHubStrategy(
   {
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: `${process.env.APP_ORIGIN}server/github/callback`,
+    callbackURL: `${process.env.APP_ORIGIN}/server/github/callback`,
     scope: ["user:email"]
   },
   async (token, tokenSecret, profile, done) => {

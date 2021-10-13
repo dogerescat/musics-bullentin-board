@@ -9,6 +9,9 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@babel/preset-env": "^7.15.8",
+    "@babel/runtime-corejs3": "^7.15.4",
+    "@nuxt/babel-preset-app": "^2.15.8",
     "@nuxtjs/axios": "^5.12.5",
     "@nuxtjs/proxy": "^2.1.0",
     "axios": "^0.21.1",
@@ -16,7 +19,7 @@
     "body-parser": "^1.19.0",
     "connect-redis": "^6.0.0",
     "cookie-parser": "^1.4.5",
-    "core-js": "^3.6.5",
+    "core-js": "^3.18.2",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",

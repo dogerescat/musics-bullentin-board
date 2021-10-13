@@ -2,7 +2,7 @@ const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 require('dotenv').config();
 const baseAxios = require('axios');
 const axios = baseAxios.create({
-  baseURL: process.env.APP_URL,
+  baseURL: process.env.API_URL,
   headers: {
     'Content-Type': 'application/json',
     'X-Requested-With': 'XMLHttpRequest'
@@ -14,7 +14,7 @@ module.exports = new GoogleStrategy(
   {
     clientID: process.env.GOOGLE_CLIENT_KEY,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: `${process.env.APP_ORIGIN}server/google/callback`,
+    callbackURL: `${process.env.APP_ORIGIN}/server/google/callback`,
   },
   async function (token, tokenSecret, profile, done) {
     let res = await axios.post("/api/v1/users/login", { email: profile.emails[0].value });

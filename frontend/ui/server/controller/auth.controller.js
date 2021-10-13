@@ -2,7 +2,7 @@ const baseAxios = require('axios');
 const { validationResult } = require("express-validator");
 require('dotenv').config();
 const axios = baseAxios.create({
-  baseURL: process.env.APP_URL, 
+  baseURL: process.env.API_URL, 
   headers: {
     'Content-Type': 'application/json',
     'X-Requested-With': 'XMLHttpRequest'

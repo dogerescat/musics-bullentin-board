@@ -1,13 +1,14 @@
+import session from 'express-session'
+
 export default {
   server: {
     port: process.env.PORT || 3000,
     host: process.env.HOST || '0.0.0.0',
   },
-  // publicRuntimeConfig: {
-  //   APP_ORIGIN: process.env.APP_ORIGIN,
-  //   ORIGIN: process.env.APP_URL
-  // },
-  // dev: process.env.NODE_ENV !== 'production',
+  publicRuntimeConfig: {
+    APP_ORIGIN: process.env.APP_ORIGIN,
+    ORIGIN: process.env.API_URL
+  },
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     title: 'musics-board',
@@ -35,10 +36,10 @@ export default {
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
   ],
-
+  srcDir:'./client/',
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
-    {src: '~/client/plugins/modal.js', ssr: false},
+    {src: '~/plugins/modal.js', ssr: false},
   ],
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
@@ -57,11 +58,8 @@ export default {
   },
   proxy: {
     '/api': {
-      target: process.env.APP_URL,
+      target: 'https://musics-board-api.herokuapp.com',
     },
-    '/server': {
-      target: process.env.APP_ORIGIN
-    }
   },
   fontawesome: {
     imports: [
@@ -81,8 +79,33 @@ export default {
   },
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
+    // babel: {
+    //   presets: [
+    //     [
+    //       '@babel/preset-env',
+    //       {
+    //         targets: {
+    //           ie: '11'
+    //         },
+    //         useBuiltIns: 'usage',
+    //         corejs: 3
+    //       }
+    //     ]
+    //   ]
+    // },
   },
   serverMiddleware: [
-    {path: '/server', handler: '~/server/index.js'}
+    session({
+      secret: 'secret',
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        path: '/',
+        httpOnly: true,
+        secure: true,
+        maxAge: 30 * 60 * 1000
+      }
+    }),
+    {path: '/server', handler: '~~/server'}
   ]
 }
